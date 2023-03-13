@@ -1,0 +1,166 @@
+{%- liquid
+  assign text_align = ''
+  case section.settings.text_align
+    when 'center'
+      assign text_align = 'tw-text-center'
+    when 'right'
+      assign text_align = 'tw-text-right'
+    else
+  endcase
+
+  assign mobile_content_order = ''
+  assign content_padding = ''
+  case section.settings.image_align
+    when 'left'
+      assign content_padding = 'md:tw-pl-12'
+    when 'right'
+      assign content_padding = 'md:tw-pr-12'
+      assign mobile_content_order = 'tw-order-1 md:tw-order-none'
+    else
+  endcase
+-%}
+
+<div data-section-id="{{ section.id }}" data-section-type="image-with-text">
+  <div class="{{ section.settings.width }}">
+
+    {% capture image_layout %}
+      {% if section.settings.image != blank %}
+        <div class="tw-relative tw-w-full md:tw-w-1/2">
+          {% render 'image', image: section.settings.image, width: 700, container_class: 'section-image ' image_class: '', height_class: '' %}
+        </div>
+      {% else %}
+        <div class="tw-relative tw-w-full md:tw-w-1/2 tw-border tw-rounded-lg">
+          {% render 'image', placeholder: 'lifestyle-2', image_class: 'placeholder_svg', container_class: 'tw-bg-btn-secondary-bg' %}
+        </div>
+      {% endif %}
+    {% endcapture %}
+
+    <div class="tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-center tw-w-full">
+
+      {% if section.settings.image_align == 'left' %}
+        {{ image_layout }}
+      {% endif %}
+
+      <div class="md:tw-w-1/2 tw-pt-6 md:tw-pt-0 {{ text_align }} {{ content_padding }} {{ mobile_content_order }}">
+        {% if section.settings.title != blank %}
+          <h2 class="tw-text-2xl md:tw-text-4xl tw-mb-4 tw-leading-none">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="rte">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a class="tw-btn tw-btn-primary tw-text-btn tw-inline-flex tw-justify-center tw-items-center tw-mt-4 tw-font-semibold tw-rounded-full" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_label | escape }}
+            {% if settings.show_button_arrow %}
+              {% render 'icon-arrow-right' %}
+            {% endif %}
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.image_align == 'right' %}
+        {{ image_layout }}
+      {% endif %}
+
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.image-with-text.name",
+    "class": "shopify-section-image-with-text",
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.image-with-text.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.image-with-text.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.image-with-text.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.image-with-text.settings.image.label"
+      },
+      {
+        "type": "radio",
+        "id": "image_align",
+        "label": "t:sections.image-with-text.settings.image_align.label",
+        "options": [
+          {
+           "value": "left",
+           "label": "t:sections.image-with-text.settings.image_align.options__1.label"
+          },
+          {
+           "value": "right",
+           "label": "t:sections.image-with-text.settings.image_align.options__2.label"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.image-with-text.settings.title.label",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "t:sections.image-with-text.settings.text.label",
+        "default": "<p>Provide details about a product or current promotions, availibility, or recent news</p>"
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "t:sections.image-with-text.settings.text_align.label",
+        "options": [
+          {
+            "value": "left",
+            "label": "t:sections.image-with-text.settings.text_align.options__1.label"
+          },
+          {
+            "value": "center",
+            "label": "t:sections.image-with-text.settings.text_align.options__2.label"
+          },
+          {
+            "value": "right",
+            "label": "t:sections.image-with-text.settings.text_align.options__3.label"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "t:sections.image-with-text.settings.button_link.label"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "t:sections.image-with-text.settings.button_label.label"
+      }
+    ],
+    "presets" : [
+      {
+        "name": "t:sections.image-with-text.presets.name",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

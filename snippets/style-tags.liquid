@@ -1,0 +1,12 @@
+
+{% assign env = 'prod' %} {%- if layout == 'theme' -%}
+<link type="text/css" href="{{ 'vendors@layout.theme.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link type="text/css" href="{{ 'vendors@layout.theme.css' | asset_url }}" rel="stylesheet"></noscript>
+{%- else -%}
+<link rel="prefetch" href="{{ 'vendors@layout.theme.css' | asset_url }}" as="style">
+{%- endif -%} {%- if layout == 'theme' -%}
+<link type="text/css" href="{{ 'layout.theme.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link type="text/css" href="{{ 'layout.theme.css' | asset_url }}" rel="stylesheet"></noscript>
+{%- else -%}
+<link rel="prefetch" href="{{ 'layout.theme.css' | asset_url }}" as="style">
+{%- endif -%}

@@ -1,0 +1,50 @@
+<article class="page-card">
+
+  {% if show_image and image != blank %}
+    {% render 'image', container_class: 'page-card-image mb-3', image: image, width: 500, link_url: page.url %}
+  {% endif %}
+
+  <div class="page-card-info">
+
+    <h3 class="page-card-title mb-0 font-5 tw-leading-tight">
+      {{ page.title | link_to: page.url }}
+    </h3>
+
+    {% if show_author or show_date %}
+      <div class="page-card-meta mt-1 font-7">
+
+        <span class="page-card-posted">
+          {{ 'blogs.article.posted' | t }}
+        </span>
+
+        {% if show_author %}
+          <span class="article-card-author">
+            {{ 'blogs.article.by_author' | t: author: page.author }}
+          </span>
+        {% endif %}
+
+        {% if show_date %}
+          {% assign date = page.published_at | date: '%B %d, %Y' %}
+          <span class="article-card-date">
+            {{ 'blogs.article.on_date' | t: date: date }}
+          </span>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+    {% if show_excerpt and page.content != blank %}
+      <p class="page-card-excerpt my-3">
+        {{ page.content | strip_html | truncatewords: excerpt_truncate }}
+      </p>
+      <a class="btn btn-link d-inline-flex justify-content-center align-items-center p-0 border-0 font-600" href="{{ article.url }}">
+        {{ 'blogs.article.read_more' | t }}
+        {% if settings.show_button_arrow %}
+          {% render 'icon-arrow-right' %}
+        {% endif %}
+      </a>
+    {% endif %}
+
+  </div>
+
+</article>

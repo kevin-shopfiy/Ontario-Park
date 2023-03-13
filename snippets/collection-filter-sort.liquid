@@ -1,0 +1,180 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+
+  assign is_filter_by_available = false
+  if section.settings.enable_tags and collection.all_tags.size > 0
+    assign is_filter_by_available = true
+  endif
+
+  if section.settings.enable_tags == false or section.settings.enable_sorting == false
+    assign single_filter = true
+  endif
+
+  assign stack_mobile = true
+  assign second_style = true
+-%}
+
+
+{% unless second_style %}
+
+  <div class="collection-sort d-flex justify-content-center my-4 {% if stack_mobile %} tw-flex-col md:tw-flex-row {% endif %}">
+    {% if section.settings.enable_tags %}
+      {% unless collection.all_tags.size == 0 %}
+        <div class="collection-sort__wrapper-item d-md-flex align-items-baseline {% unless stack_mobile %} mr-3 {% endunless %} mr-md-2">
+          <label class="collection-sort__label select-label mx-2 font-8" for="FilterTags">{{ 'collections.filters.title_tags' | t }}</label>
+          <div class="collection-sort__input-wrapper select-group">
+            <select class="collection-sort__input hidden py-2 px-3 {% if single_filter or stack_mobile %} tw-w-full {% else %} tw-w-1/2 {% endif %} md:tw-w-56 tw-bg-white" name="FilterTags" id="FilterTags" aria-describedby="a11y-refresh-page-message a11y-selection-message" data-select-input>
+              <option class="collection-sort__option" value="{{ collection.url }}">{{ 'collections.filters.all_tags' | t }}</option>
+              {% for tag in collection.all_tags %}
+                {%- assign new_url = tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first -%}
+                <option value="{{ new_url }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
+              {% endfor %}
+            </select>
+            {% render 'icon-chevron-down' %}
+          </div>
+        </div>
+      {% endunless %}
+    {% endif %}
+    {% if section.settings.enable_sorting %}
+      <div class="collection-sort__wrapper-item d-md-flex align-items-baseline">
+        <label class="collection-sort__label select-label mx-2 font-8" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+        <div class="collection-sort__input-wrapper select-group">
+          <select name="sort_by" id="SortBy"
+            class="collection-sort__input hidden py-2 px-3 {% if single_filter or stack_mobile %} tw-w-full {% else %} tw-w-1/2 {% endif %} md:tw-w-56 tw-bg-white"
+            aria-describedby="a11y-refresh-page-message a11y-selection-message"
+            data-default-sort-by="{{ collection.default_sort_by }}"
+            data-select-input
+          >
+            {%- for option in collection.sort_options -%}
+              <option class="collection-sort__option" value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          {% render 'icon-chevron-down' %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% else %}
+
+  <div class="collection-sort d-flex justify-content-center {% if stack_mobile %} tw-flex-col md:tw-flex-row {% endif %} my-4">
+    {% if section.settings.enable_tags %}
+      {% unless collection.all_tags.size == 0 %}
+        <div class="collection-sort__wrapper-item d-md-flex align-items-baseline mr-3 mr-md-2 {% if single_filter or stack_mobile %} tw-w-full {% else %} tw-w-1/2 {% endif %} md:tw-w-auto">
+
+          <h2 id="filter-heading" class="collection-sort__label select-label mx-2 font-8 tw-font-normal tw-font-base">
+            {{ 'collections.filters.title_tags' | t }}
+          </h2>
+
+          <div class="collection-sort__input-wrapper collection-sort__input-wrapper--first select-group">
+
+            <div class="tw-relative">
+
+              <button type="button" class="collection-sort-custom__input tw-relative tw-w-full md:tw-w-52 tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-left tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="filter-list" aria-describedby="a11y-refresh-page-message a11y-selection-message" data-select-input="custom" data-filter>
+                <span class="tw-flex tw-items-center">
+                  <span class="tw-block tw-truncate">
+                    {% if current_tags %}
+                      {{ current_tags.first }}
+                    {% else %}
+                      {{ 'collections.filters.all_tags' | t }}
+                    {% endif %}
+                  </span>
+                </span>
+                <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-filter-select-icon>
+                  {% render 'icon-chevron-down' %}
+                </span>
+              </button>
+
+              <ul id="filter-list" class="tw-max-h-56 tw-rounded-2xl tw-text-base tw-overflow-auto tw-avatar-scrollbar tw-absolute tw-mt-0.5 tw-w-full tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-opacity-0 tw-z-10 tw-hidden" tabindex="-1" data-filter-options-dropdown>
+                <li class="tw-flex tw-items-center tw-text-color tw-cursor-pointer tw-select-none tw-relative tw-py-2 tw-px-3 {% unless current_tags %} tw-bg-body-mix-2 {% else %} hover:tw-bg-body-mix-2{% endunless %}">
+                  <a href="{{ collection.url }}" class="tw-inline-block tw-w-full tw-font-normal tw-truncate">
+                    {{ 'collections.filters.all_tags' | t }}
+                  </a>
+
+                  {% comment %}
+                  {% unless current_tags %}
+                    <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                      {% render 'icon-check' %}
+                    </span>
+                  {% endunless %}
+                  {% endcomment %}
+
+                </li>
+                {% for tag in collection.all_tags %}
+                  {%- assign new_url = tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first -%}
+                  <li class="tw-flex tw-items-center tw-text-color tw-cursor-pointer tw-select-none tw-relative tw-py-2 tw-px-3 {% if current_tags contains tag %} tw-bg-body-mix-2 {% else %} hover:tw-bg-body-mix-2{% endif %}">
+                    <a href="{{ new_url }}" class="tw-inline-block tw-w-full tw-font-normal tw-truncate">
+                      {{ tag }}
+                    </a>
+
+                    {% comment %}
+                    {% if current_tags contains tag %}
+                      <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                        {% render 'icon-check' %}
+                      </span>
+                    {% endif %}
+                    {% endcomment %}
+
+                  </li>
+                {% endfor %}
+              </ul>
+
+            </div>
+
+          </div>
+        </div>
+      {% endunless %}
+    {% endif %}
+    {% if section.settings.enable_sorting %}
+      <div class="collection-sort__wrapper-item d-md-flex align-items-baseline {% if single_filter or stack_mobile %} tw-w-full {% else %} tw-w-1/2 {% endif %} md:tw-w-auto">
+
+        <h2 id="sort-heading" class="collection-sort__label select-label mx-2 font-8 tw-font-normal tw-font-base">
+          {{ 'collections.sorting.title' | t }}
+        </h2>
+        <div class="collection-sort__input-wrapper select-group">
+
+          <div class="tw-relative">
+
+            <button class="collection-sort-custom__input tw-relative tw-w-full md:tw-w-52 tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-left tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="filter-list" aria-describedby="a11y-refresh-page-message a11y-selection-message" data-default-sort-by="{{ collection.default_sort_by }}" data-select-input="custom" data-sort>
+              <span class="tw-flex tw-items-center">
+                <span class="tw-block tw-truncate">
+                  {%- for option in collection.sort_options -%}
+                    {% if option.value == sort_by %}
+                      {{ option.name }}
+                    {% endif %}
+                  {% endfor %}
+                </span>
+              </span>
+              <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-sort-select-icon>
+                {% render 'icon-chevron-down' %}
+              </span>
+            </button>
+
+            <ul class="tw-absolute tw-mt-0.5 tw-w-full tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-opacity-0 tw-z-10 tw-hidden tw-max-h-56 tw-rounded-2xl tw-text-base tw-overflow-auto tw-avatar-scrollbar" tabindex="-1" data-sort-options-dropdown>
+
+              {%- for option in collection.sort_options -%}
+                <li class="tw-flex tw-items-center tw-text-color tw-cursor-pointer tw-select-none tw-relative tw-py-2 tw-px-3
+                 {% if option.value == sort_by %} tw-bg-body-mix-2 {% else %} hover:tw-bg-body-mix-2 {% endif %}" data-value="{{ option.value }}">
+                  <a href="#" class="tw-inline-block tw-w-full tw-font-normal tw-truncate" data-value="{{ option.value }}">
+                   {{ option.name }}
+                  </a>
+
+                  {% comment %}
+                  {% if option.value == sort_by %}
+                    <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                      {% render 'icon-check' %}
+                    </span>
+                  {% endif %}
+                  {% endcomment %}
+
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% endunless %}

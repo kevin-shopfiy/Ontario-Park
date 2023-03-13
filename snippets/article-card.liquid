@@ -1,0 +1,84 @@
+<article class="article-card">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when 'image'-%}
+        {% if article.image %}
+          {% render 'image', container_class: 'article-card-image mb-3', image: article.image, width: 500, link_url: article.url %}
+        {% endif %}
+
+      {%- when 'info'-%}
+        <div class="article-card-info">
+
+          <h3 class="article-card-title mb-0 font-5 tw-leading-normal">
+            {{ article.title | link_to: article.url }}
+          </h3>
+
+          {% if block.settings.show_tags and article.tags.size > 0 %}
+            <ul class="tw-flex tw-space-x-2 tw-mt-2" aria-label="{{ 'blogs.article.tags' | t }}">
+              {% for tag in article.tags %}
+                <li class="tw-badge tw-bg-btn-bg tw-rounded-full tw-px-2 tw-py-1 tw-font-semibold">
+                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tw-text-btn">{{ tag }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if block.settings.show_author or show_date %}
+            <div class="article-card-meta mt-1 font-7">
+
+              {% if block.settings.show_author %}
+                <span class="article-card-author">
+                  {{ 'blogs.article.by_author' | t: author: article.author }}
+                </span>
+              {% endif %}
+
+              {% if block.settings.show_date %}
+                {% assign article_date = article.published_at | date: '%B %d, %Y' %}
+                <span class="article-card-date">
+                  {{ 'blogs.article.on_date' | t: date: article_date }}
+                </span>
+              {% endif %}
+
+            </div>
+          {% endif %}
+
+          {% if blog.comments_enabled? and article.comments_count > 0 and block.settings.show_comment_count %}
+            {% assign p1 = 'blogs.article.comment'  | t %}
+            {% assign p2 = 'blogs.article.comments' | t %}
+            <div class="article-card-comments mt-1 font-7">
+              <a href="{{ article.url }}#comments">
+                {{ article.comments_count }} {{ article.comments_count | pluralize: p1, p2 }}
+              </a>
+            </div>
+          {% endif %}
+
+          {% if block.settings.show_excerpt %}
+            <p class="article-card-excerpt my-3">
+              {% if article.excerpt.size > 0 %}
+                {% if block.settings.enable_truncate %}
+                  {{ article.excerpt | strip_html | truncatewords: block.settings.excerpt_truncate }}
+                {% else %}
+                  {{ article.excerpt | strip_html }}
+                {% endif %}
+              {% else %}
+                {% if block.settings.enable_truncate %}
+                  {{ article.content | strip_html | truncatewords: block.settings.excerpt_truncate }}
+                {% else %}
+                  {{ article.content | strip_html }}
+                {% endif %}
+              {% endif %}
+            </p>
+            <a class="btn btn-link d-inline-flex justify-content-center align-items-center p-0 border-0 font-600" href="{{ article.url }}">
+              {{ 'blogs.article.read_more' | t }}
+              {% if settings.show_button_arrow %}
+                {% render 'icon-arrow-right' %}
+              {% endif %}
+            </a>
+          {% endif %}
+
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+
+</article>

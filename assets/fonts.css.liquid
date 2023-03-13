@@ -1,0 +1,11 @@
+{% for variant in settings.font.variants %}
+  {{ variant | font_face: font_display: 'swap' }}
+{% endfor %}
+
+{% for variant in settings.h16_font.variants %}
+  {{ variant | font_face: font_display: 'swap' }}
+{% endfor %}
+
+{% for variant in settings.announcement_font.variants %}
+  {{ variant | font_face: font_display: 'swap' }}
+{% endfor %}

@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {}
+        },
+        "info": {
+          "type": "info",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image",
+        "info"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

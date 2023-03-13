@@ -1,0 +1,13 @@
+{% comment %} Custom Colors {% endcomment %}
+{%- for block in blocks -%}
+  {%- case block.type -%}
+    {%- when 'color' -%}
+      {%- assign color_downcase_strip = block.settings.title | downcase | replace: ' ', '' -%}
+      {%- if color == color_downcase_strip -%}
+      {{ block.settings.color_value }}
+      {% comment %} {%- case color -%}
+        {%- when color_downcase_strip -%}
+      {%- endcase -%} {% endcomment %}
+      {%- endif -%}
+  {%- endcase -%}
+{%- endfor -%}

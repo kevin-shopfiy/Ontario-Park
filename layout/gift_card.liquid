@@ -1,0 +1,59 @@
+{%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+{%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+{%- assign h16_font = settings.h16_font -%}
+{%- assign font = settings.font -%}
+
+<!doctype html>
+<html class="no-js {{ page_title | handle }} {{ template.name | handle }}" lang="{{ shop.locale }}">
+  <head>
+    <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+    <link rel="preload" as="font" href="{{ h16_font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
+
+    {% if settings.favicon != blank %}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    {% endif %}
+
+    {% render 'meta-social' %}
+
+    {% render 'css-variables' %}
+    {% render 'initial-css' %}
+
+    <link type="text/css" href="{{ 'layout.theme.css' | asset_url }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}" type="text/css">
+    <link rel="stylesheet" href="{{ 'theme-custom.css' | asset_url }}" type="text/css">
+
+    {% render 'style-tags', layout: 'theme' %}
+
+    <link rel="prefetch" href="{{ 'layout.theme.js' | asset_url }}" as="script">
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script>
+    <script src="{{ 'gift-card.js' | asset_url }}" defer="defer"></script>
+
+    <script>
+      var theme = {
+        strings: {
+          qrImageAlt: {{ 'gift_cards.issued.qr_image_alt' | t | json }}
+        }
+      };
+
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    {% render 'ie-css-var-poly' %}
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    {{ content_for_layout }}
+  </body>
+
+</html>

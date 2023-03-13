@@ -1,0 +1,198 @@
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+   #shopify-section-{{ section.id }} {
+    background-color: rgba(171, 174, 176, 0.14);
+  }
+</style>
+{{'section-info-badges.css'| asset_url | stylesheet_tag }}
+<div data-section-id="{{ section.id }}" data-section-type="info-badges">
+  
+    <!--removed default here - see back up code for reference of original-->
+    <div class="custom-container banner-tip">
+      {% for block in section.blocks %}
+     
+        <div class="banner-tip-element">
+          <div class="banner-tip-img">
+            {% if block.settings.image != blank %}
+              {% assign image_size = block.settings.image_size | remove: 'px' | times: 2 | append: 'x' %}
+              <img class="banner-tip-image" src="{{ block.settings.image | img_url: image_size }}" alt="{{ block.settings.image.alt }}"/>
+            {% endif %}           
+          </div>
+          <div class="banner-tip-content">
+              {% if block.settings.text != blank %}
+                <p class="banner-tip-title">{{ block.settings.text }}</p>
+              {% endif %}            
+              {% if block.settings.text_content != blank %}
+                <p class="text">{{block.settings.text_content}}</p>
+              {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+
+      {% comment %} Render if more rows are selected but not enough blocks {% endcomment %}
+      {% if section.blocks.size < section.settings.badges_per_row %}
+        {% assign row_extras = section.settings.badges_per_row | minus: section.blocks.size %}
+        {% for i in (1..row_extras) %}
+          <div class="col px-2 pb-3 tw-hidden md:tw-block">
+            <div class="shopify-block-badge rounded tw-bg-gray-200"></div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+    </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.info-badges.name",
+    "class": "shopify-section-info-badges",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.info-badges.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.info-badges.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.info-badges.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "label": "t:sections.info-badges.settings.height.label",
+        "info": "t:sections.info-badges.settings.height.info",
+        "min": 100,
+        "max": 300,
+        "step": 10,
+        "unit": "t:sections.info-badges.settings.height.unit",
+        "default": 150
+      },
+      {
+        "type": "range",
+        "id": "badges_per_row",
+        "label": "t:sections.info-badges.settings.badges_per_row.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.info-badges.settings.bg_color.label"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "badge",
+        "name": "t:sections.info-badges.blocks.badge.name",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.info-badges.blocks.badge.settings.image.label"
+          },
+          {
+            "type": "select",
+            "id": "image_size",
+            "label": "t:sections.info-badges.blocks.badge.settings.image_size.label",
+            "options": [
+              {
+                "value": "50px",
+                "label": "t:sections.info-badges.blocks.badge.settings.image_size.options__1.label"
+              },
+              {
+                "value": "75px",
+                "label": "t:sections.info-badges.blocks.badge.settings.image_size.options__2.label"
+              },
+              {
+                "value": "100px",
+                "label": "t:sections.info-badges.blocks.badge.settings.image_size.options__3.label"
+              }
+            ],
+            "default": "50px"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "t:sections.info-badges.blocks.badge.settings.text.label",
+            "default": "Badge Text"
+          },
+          {
+            "type": "text",
+            "id": "text_content",
+            "label": "Text content",
+            "placeholder": "write the text"
+          },
+          {
+            "type": "select",
+            "id": "font_size",
+            "label": "t:sections.info-badges.blocks.badge.settings.font_size.label",
+            "options": [
+              {
+                "value": "1rem",
+                "label": "t:sections.info-badges.blocks.badge.settings.font_size.options__1.label"
+              },
+              {
+                "value": "1.125rem",
+                "label": "t:sections.info-badges.blocks.badge.settings.font_size.options__2.label"
+              },
+              {
+                "value": "1.25rem",
+                "label": "t:sections.info-badges.blocks.badge.settings.font_size.options__3.label"
+              }
+            ],
+            "default": "1.125rem"
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "t:sections.info-badges.blocks.badge.settings.color.label",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "t:sections.info-badges.blocks.badge.settings.bg_color.label",
+            "default": "#eee"
+          }
+        ]
+      }
+    ],
+    "presets" : [
+      {
+        "name": "t:sections.info-badges.presets.name",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "badge",
+            "settings": {
+              "text": "Locally Owned"
+            }
+          },
+          {
+            "type": "badge",
+            "settings": {
+              "text": "Fast Shipping"
+            }
+          },
+          {
+            "type": "badge",
+            "settings": {
+              "text": "365 Day Guarantee"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

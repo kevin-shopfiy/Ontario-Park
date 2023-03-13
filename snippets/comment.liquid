@@ -1,0 +1,7 @@
+<div class="comment__content rte">
+  {{ comment.content }}
+</div>
+<div class="comment__meta tw-flex tw-justify-between">
+  <span class="tw-font-bold">{{ comment.author }}</span>
+  <span class="tw-italic">{{ comment.created_at | time_tag: format: 'date' }}</span>
+</div>

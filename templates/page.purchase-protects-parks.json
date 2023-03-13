@@ -1,0 +1,165 @@
+{
+  "sections": {
+    "1657043350fb560905": {
+      "type": "hero",
+      "settings": {
+        "width": "container-fluid",
+        "height": 400,
+        "mobile_height": 230,
+        "bg_color": "rgba(0,0,0,0)",
+        "image": "shopify:\/\/shop_images\/BalsamLake_TreeHiking_Comp.jpg",
+        "mobile_crop": "cover",
+        "title": "Collective Arts X Ontario Parks",
+        "text": "",
+        "font_size": "large",
+        "link_url": "",
+        "button": "",
+        "show_overlay": true,
+        "alpha": 20,
+        "content_color": "#ffffff",
+        "content_bg_color": "#303030"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "content"
+      ],
+      "settings": {}
+    },
+    "1657043749be07cb01": {
+      "type": "images-with-text",
+      "disabled": true,
+      "blocks": {
+        "1657043749677aa078-0": {
+          "type": "image",
+          "settings": {
+            "text": "Support the Forest Restoration Project",
+            "font_size": "calc(1.5rem + 1.5vw)",
+            "link_url": "https:\/\/collectiveartsbrewing.com\/",
+            "button": "Shop at CollectiveArtsBrewing.com",
+            "show_overlay": true,
+            "alpha": 50,
+            "color": "#ffffff",
+            "bg_color": "#000000"
+          }
+        },
+        "1657043749677aa078-1": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "text": "So many ways to express yourself",
+            "font_size": "calc(1.5rem + 1.5vw)",
+            "link_url": "\/",
+            "button": "Shop Now",
+            "show_overlay": false,
+            "alpha": 50,
+            "color": "#000000",
+            "bg_color": "#eeeeee"
+          }
+        }
+      },
+      "block_order": [
+        "1657043749677aa078-0",
+        "1657043749677aa078-1"
+      ],
+      "settings": {
+        "width": "container-fluid",
+        "height": 350,
+        "images_per_row": 1,
+        "bg_color": "#ffffff"
+      }
+    },
+    "1657043472261b7e61": {
+      "type": "separator",
+      "disabled": true,
+      "settings": {
+        "margin_top": "mt-5",
+        "margin_bottom": "mb-5",
+        "bg_color": "",
+        "show_line": true,
+        "line_thickness": "3px",
+        "line_width": "w-50",
+        "line_color": "#eeeeee"
+      }
+    },
+    "1657043500df586bdc": {
+      "type": "rich-text",
+      "disabled": true,
+      "settings": {
+        "width": "container-fluid",
+        "title": "See Your Support in Action!",
+        "text": "<p>Check back to learn more as the work progresses. <\/p>",
+        "align": "center"
+      }
+    },
+    "1658159773dfb7f3fb": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "width": "container",
+        "image": "shopify:\/\/shop_images\/AllSprucedUp.jpg",
+        "image_align": "right",
+        "title": "Support the Forest Restoration Project",
+        "text": "",
+        "text_align": "left",
+        "button_link": "https:\/\/collectiveartsontario.com\/products\/all-spruced-up-dad-hat-ontario-parks-collab",
+        "button_label": "Shop at CollectiveArtsBrewing.com"
+      }
+    },
+    "16581597847684b4e0": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "width": "container",
+        "image_align": "right",
+        "title": "Image with text",
+        "text": "<p>Provide details about a product or current promotions, availibility, or recent news<\/p>",
+        "text_align": "left",
+        "button_link": "",
+        "button_label": ""
+      }
+    },
+    "1661372183be92004a": {
+      "type": "hero",
+      "settings": {
+        "width": "container",
+        "height": 570,
+        "mobile_height": 300,
+        "bg_color": "",
+        "image": "shopify:\/\/shop_images\/AllSprucedUp_Crop2.jpg",
+        "mobile_crop": "cover",
+        "title": "",
+        "text": "",
+        "font_size": "large",
+        "link_url": "\/",
+        "button": "",
+        "show_overlay": false,
+        "alpha": 50,
+        "content_color": "#000",
+        "content_bg_color": "#eee"
+      }
+    }
+  },
+  "order": [
+    "1657043350fb560905",
+    "main",
+    "1657043749be07cb01",
+    "1657043472261b7e61",
+    "1657043500df586bdc",
+    "1658159773dfb7f3fb",
+    "16581597847684b4e0",
+    "1661372183be92004a"
+  ]
+}

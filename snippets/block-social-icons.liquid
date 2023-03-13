@@ -1,0 +1,25 @@
+<div id="shopify-block-{{ block.id }}" class="shopify-block shopify-block-social-icons" {{ block.shopify_attributes }}>
+
+  {% assign icons = 'facebook,twitter,pinterest,instagram,tumblr,snapchat,youtube,vimeo' | split: ',' %}
+
+  {% if block.settings.title != blank %}
+    <p class="h6 mb-3">{{ block.settings.title }}</p>
+  {% endif %}
+
+  {% unless settings.facebook_url == blank and settings.twitter_url == blank and settings.pinterest_url == blank and settings.instagram_url == blank and settings.tumblr_url == blank and settings.snapchat_url == blank and settings.youtube_url == blank and settings.vimeo_url == blank %}
+    <ul class="nav mx-n2 mx-md-0 tw-flex tw-justify-center md:tw-justify-start">
+      {% for icon in icons %}
+        {% assign id = 'social_url' | replace: 'social', icon %}
+        {% if settings[id] != blank %}
+          <li class="nav-item w-md-100">
+            <a class="nav-link p-2 px-md-0" href="{{ settings[id] }}">
+              <i class="social-icon fa fa-{{ icon }} p-1 mr-md-1 rounded text-center text-white" aria-hidden="true"></i>
+              <span class="d-none d-md-inline">{{ icon | capitalize }}</span>
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endunless %}
+
+</div>

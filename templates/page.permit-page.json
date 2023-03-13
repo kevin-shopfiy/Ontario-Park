@@ -1,0 +1,111 @@
+{
+  "sections": {
+    "1657043350fb560905": {
+      "type": "hero",
+      "settings": {
+        "width": "container-fluid",
+        "height": 350,
+        "mobile_height": 200,
+        "bg_color": "",
+        "mobile_crop": "cover",
+        "title": "",
+        "text": "",
+        "font_size": "large",
+        "link_url": "",
+        "button": "",
+        "show_overlay": false,
+        "alpha": 50,
+        "content_color": "#000000",
+        "content_bg_color": "#eeeeee"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "content"
+      ],
+      "settings": {}
+    },
+    "1657043472261b7e61": {
+      "type": "separator",
+      "settings": {
+        "margin_top": "mt-5",
+        "margin_bottom": "mb-5",
+        "bg_color": "",
+        "show_line": true,
+        "line_thickness": "3px",
+        "line_width": "w-50",
+        "line_color": "#eeeeee"
+      }
+    },
+    "1657043500df586bdc": {
+      "type": "rich-text",
+      "settings": {
+        "width": "container-fluid",
+        "title": "Where Can You See Your Impact?",
+        "text": "",
+        "align": "center"
+      }
+    },
+    "1657043749be07cb01": {
+      "type": "images-with-text",
+      "blocks": {
+        "1657043749677aa078-0": {
+          "type": "image",
+          "settings": {
+            "text": "",
+            "font_size": "calc(1.5rem + 1.5vw)",
+            "link_url": "shopify:\/\/collections\/turtle-protection-project",
+            "button": "Shop Turtle Protection",
+            "show_overlay": false,
+            "alpha": 50,
+            "color": "#000000",
+            "bg_color": "#eeeeee"
+          }
+        },
+        "1657043749677aa078-1": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "text": "So many ways to express yourself",
+            "font_size": "calc(1.5rem + 1.5vw)",
+            "link_url": "\/",
+            "button": "Shop Now",
+            "show_overlay": false,
+            "alpha": 50,
+            "color": "#000000",
+            "bg_color": "#eeeeee"
+          }
+        }
+      },
+      "block_order": [
+        "1657043749677aa078-0",
+        "1657043749677aa078-1"
+      ],
+      "settings": {
+        "width": "container-fluid",
+        "height": 350,
+        "images_per_row": 1,
+        "bg_color": "#f9fafc"
+      }
+    }
+  },
+  "order": [
+    "1657043350fb560905",
+    "main",
+    "1657043472261b7e61",
+    "1657043500df586bdc",
+    "1657043749be07cb01"
+  ]
+}

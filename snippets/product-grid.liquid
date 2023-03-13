@@ -1,0 +1,49 @@
+{% assign xs = columns | at_most: 2 %}
+{% assign md = columns | at_most: 3 %}
+{% assign lg = columns %}
+
+<div class="row row-cols-{{ xs }} row-cols-md-{{ md }} row-cols-lg-{{ lg }} align-items-baseline mx-n2 mx-sm-n3 mb-n4">
+  {% for product in products limit: product_limit %}
+
+    <div class="col px-2 px-sm-3 pb-4">
+       {% render 'product-card', collection: collection, product: product, show_vendor: show_vendor, show_price: show_price, show_compare_at_price: show_compare_at_price, show_from: show_from, show_sale_badge: show_sale_badge, show_add_to_cart_button: false, price_style: price_style %}
+    </div>
+
+  {% else %}
+
+    {% for i in (1..product_limit) %}
+      <div class="col px-2 px-sm-3 pb-4">
+        <article class="product-card">
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {% assign placeholder = 'product-' | append: current %}
+          {% render 'image', container_class: 'product-card-image mb-3 border bg-white', placeholder: placeholder %}
+          <div class="product-card-info text-center">
+            <h2 class="product-card-title mb-0 font-5 font-600 tw-leading-tight">
+              {{ 'homepage.onboarding.product_title' | t }}
+            </h2>
+            {% if show_vendor %}
+              <div class="product-card-vendor">
+                <ly-as-555452>Shopify</ly-as-555452>
+              </div>
+            {% endif %}
+            {% if show_price or show_compare_at_price %}
+              <div class="product-card-prices mt-1">
+                {% if show_price %}
+                  <span class="product-card-price font-600">
+                    {{ '1999' | money }}
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      </div>
+    {% endfor %}
+
+  {% endfor %}
+</div>
+
+
+
+
+

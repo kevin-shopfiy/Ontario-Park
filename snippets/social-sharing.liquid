@@ -1,0 +1,33 @@
+<ul class="social-sharing tw-flex">
+
+  {% if settings.share_facebook %}
+    <li>
+      <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}" class="tw-mr-3 tw-py-1 tw-px-2 tw-border tw-border-grey-500">
+        <i class="social-icon fa fa-facebook" aria-hidden="true"></i>
+        <span class="tw-inline-block" aria-hidden="true">{{ 'general.social.share_on_facebook' | t }}</span>
+        <span class="tw-absolute tw-h-0 tw-m-0 tw-overflow-hidden tw-w-0 tw-h-0">{{ 'general.social.alt_text.share_on_facebook' | t }}</span>
+      </a>
+    </li>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <li>
+      <a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}" class="tw-mr-3 tw-py-1 tw-px-2 tw-border tw-border-grey-500">
+        <i class="social-icon fa fa-twitter" aria-hidden="true"></i>
+        <span class="tw-inline-block" aria-hidden="true">{{ 'general.social.share_on_twitter' | t }}</span>
+        <span class="tw-absolute tw-h-0 tw-m-0 tw-overflow-hidden tw-w-0 tw-h-0">{{ 'general.social.alt_text.share_on_twitter' | t }}</span>
+      </a>
+    </li>
+  {% endif %}
+
+  {% if settings.share_pinterest %}
+    <li>
+      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}" class="tw-mr-3 tw-py-1 tw-px-2 tw-border tw-border-grey-500">
+        <i class="social-icon fa fa-pinterest" aria-hidden="true"></i>
+        <span class="tw-inline-block" aria-hidden="true">{{ 'general.social.share_on_pinterest' | t }}</span>
+        <span class="tw-absolute tw-h-0 tw-m-0 tw-overflow-hidden tw-w-0 tw-h-0">{{ 'general.social.alt_text.share_on_pinterest' | t }}</span>
+      </a>
+    </li>
+  {% endif %}
+
+</ul>

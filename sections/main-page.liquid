@@ -1,0 +1,41 @@
+{% render 'breadcrumb-nav' %}
+
+<div class="container">
+
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'title' -%}
+        <h1 class="tw-text-3xl md:tw-text-5xl tw-my-6 md:tw-my-10 tw-text-center">
+          {{ page.title }}
+        </h1>
+      {%- when 'content' -%}
+        <div class="rte tw-mb-12">
+          {{ page.content }}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+  
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-page.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "content",
+      "name": "t:sections.main-page.blocks.content.name",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

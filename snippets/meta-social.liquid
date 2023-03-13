@@ -1,0 +1,68 @@
+<meta property="og:site_name" content="{{ shop.name }}">
+
+{% if template.name == 'product' %}
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="{{ product.title | strip_html }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:description" content="{{ product.description | strip_html }}">
+  {% if product.featured_media.preview_image != blank %}
+    <meta property="og:image" content="http:{{ product.featured_media.preview_image | img_url: '1200x630' }}">
+    <meta property="og:image:secure_url" content="https:{{ product.featured_media.preview_image | img_url: '1200x630' }}">
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+  {% endif %}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ shop.currency }}">
+{% elsif template.name == 'article' %}
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ article.title | strip_html }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:description" content="{{ article.excerpt_or_content | strip_html }}">
+  {% if article.image != blank %}
+    <meta property="og:image" content="http:{{ article.image | img_url: '1200x630' }}">
+    <meta property="og:image:secure_url" content="https:{{ article.image | img_url: '1200x630' }}">
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+  {% endif %}
+{% elsif template.name == 'password' %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url | replace: '/password', '' }}">
+  <meta property="og:description" content="{{ shop.description | default: shop.name }}">
+{% else %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:description" content="{{ page_description | default: shop.description | default: shop.name }}">
+  <meta property="og:image" content="http:{{ page_image | img_url: '1200x630' }}">
+  <meta property="og:image:secure_url" content="https:{{ page_image | img_url: '1200x630' }}">
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+{% endif %}
+
+{% if template.name == 'article' and article.image %}
+  <meta name="twitter:card" content="summary_large_image">
+{% else %}
+  <meta name="twitter:card" content="summary">
+{% endif %}
+
+{% if settings.twitter_url != blank %}
+  <meta name="twitter:site" content="@{{ settings.twitter_url | split: 'twitter.com/' | last }}">
+{% endif %}
+
+{% if template.name == 'index' %}
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_description | default: shop.description | default: shop.name }}">
+{% elsif template.name == 'product' %}
+  <meta name="twitter:title" content="{{ product.title | strip_html }}">
+  <meta name="twitter:description" content="{{ product.description | strip_html | truncate: 200, '' }}">
+  <meta name="twitter:image" content="https:{{ product | img_url: '1200x630' }}">
+  <meta name="twitter:image:width" content="1024">
+  <meta name="twitter:image:height" content="1024">
+{% elsif template.name == 'article' %}
+  <meta name="twitter:title" content="{{ article.title | strip_html }}">
+  <meta name="twitter:description" content="{{ article.excerpt_or_content | strip_html | truncate: 200, '' }}">
+  {% if article.image %}
+    <meta property="twitter:image" content="https:{{ article | img_url: '1200x630' }}">
+  {% endif %}
+{% endif %}

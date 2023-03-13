@@ -1,0 +1,34 @@
+<div id="shopify-block-{{ block.id }}" class="shopify-block shopify-block-menu" {{ block.shopify_attributes }}>
+
+    {% if block.settings.title != blank %}
+    <p class="h6 mb-3">{{ block.settings.title }}</p>
+    {% endif %}
+
+    {% assign menu = linklists[block.settings.menu] %}
+
+    {% unless menu == empty %}
+    <ul class="nav flex-column">
+        {% for link in menu.links %}
+        <li class="nav-item">
+            <a class="nav-link px-0" href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link px-0" href="/policies/terms-of-service">{{ 'layout.footer.terms_of_service' | t }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link px-0" href="/policies/privacy-policy">{{ 'layout.footer.privacy_policy' | t }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link px-0" href="/policies/shipping-policy">{{ 'layout.footer.shipping_policy' | t }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link px-0" href="/policies/refund-policy">{{ 'layout.footer.refund_policy' | t }}</a>
+        </li>
+    </ul>
+    {% endunless %}
+
+</div>

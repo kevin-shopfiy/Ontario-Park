@@ -1,0 +1,151 @@
+<section data-section-id="{{ section.id }}" data-section-type="images-with-text">
+  
+    <div class="custom-container">
+    {% if section.settings.images_per_row == 1 %}
+      <div class="one-image">
+     
+    {% elsif section.settings.images_per_row == 2 %} 
+      <div class="two-images">
+      
+    {% endif %}
+
+        {% for block in section.blocks limit: 5 %}
+          <div class="img-text">
+            {% if block.settings.image != blank %}
+              <img class="image-text--img" src="{{block.settings.image | img_url: '500x'}}" >
+            {%endif%}
+            {% if block.settings.mobile_image != blank %}
+              <img class="mobile_image" src="{{block.settings.mobile_image | img_url: '500x'}}" >
+            {%endif%}
+            <div class="image-content">
+              <div class="text">
+                  {% if block.settings.title != blank %}
+                  <h1 class="title">{{block.settings.title}}</h1>
+                  {% endif %}
+                  {% if block.settings.mobile_title != blank %}
+                    <h1 class="mobile_title">{{block.settings.mobile_title}}</h1>
+                    {% endif %}
+                  {% if block.settings.text != blank %}
+                    <p class="text-content">{{block.settings.text}}</p>
+                  {%endif%}
+                  {% if block.settings.mobile_text != blank %}
+                    <p class="mobile_text-content">{{block.settings.mobile_text}}</p>
+                  {%endif%}
+              </div>
+                {% if block.settings.button != blank and block.settings.link_url != blank %}
+                  <a class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center mt-4 font-600 rounded-pill" href="{{ block.settings.link_url }}">
+                    {{ block.settings.button | escape }}
+                    {% if settings.show_button_arrow %}
+                      {% render 'icon-arrow-right' %}
+                    {% endif %}
+                  </a>
+                {% endif %}
+            </div>
+          </div>
+        {%endfor%}       
+      </div>
+    
+</section>
+{{'section-image-text.css'| asset_url | stylesheet_tag }}
+{% schema %}
+  {
+    "name": "t:sections.images-with-text.name",
+    "class": "shopify-section-images-with-text",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "range",
+        "id": "images_per_row",
+        "label": "t:sections.images-with-text.settings.images_per_row.label",
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "t:sections.images-with-text.blocks.image.name",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.images-with-text.blocks.image.settings.image.label"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "t:sections.images-with-text.blocks.image.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Content"
+          },
+          {
+            "type": "text",
+            "id": "mobile_title",
+            "label": "Mobile Title"
+          },
+          {
+            "type": "text",
+            "id": "mobile_text",
+            "label": "Mobile Content"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "t:sections.images-with-text.blocks.image.settings.link_url.label"
+          },
+          {
+            "type": "text",
+            "id": "button",
+            "label": "t:sections.images-with-text.blocks.image.settings.button.label"
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "t:sections.images-with-text.blocks.image.settings.color.label",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "t:sections.images-with-text.blocks.image.settings.bg_color.label",
+            "default": "#eee"
+          }
+        ]
+      }      
+    ],
+    "presets" : [
+      {
+        "name": "Images-text",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "/",
+              "button": "See more"
+            }
+          },
+          {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "/",
+              "button": "See more"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

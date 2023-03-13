@@ -1,0 +1,323 @@
+{%- liquid
+  if section.settings.mobile_crop == 'contain'
+    if section.settings.image_mobile.aspect_ratio == blank
+      assign min_aspect_ratio = 2.0
+    else
+      assign min_aspect_ratio = section.settings.image_mobile.aspect_ratio
+    endif
+    assign wrapper_height = 100 | divided_by: min_aspect_ratio
+  endif
+-%}
+
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+  {% if section.settings.bg_color != blank and alpha > 0 %}
+    #shopify-section-{{ section.id }} {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      background-color: {{ section.settings.bg_color }};
+    }
+  {% endif %}
+  {% if section.settings.show_overlay %}
+    {% assign alpha = section.settings.alpha | divided_by: 100.0 | round: 1 %}
+    #shopify-section-{{ section.id }} .overlay {
+      background-color: {{ section.settings.content_bg_color | color_modify: 'alpha', alpha }};
+    }
+  {% endif %}
+  {% case section.settings.font_size %}
+    {% when 'small' %}
+      #shopify-section-{{ section.id }} h2 {
+        font-size: calc(1.75rem + 1.5vw);
+      }
+      #shopify-section-{{ section.id }} p {
+        font-size: 1.25rem;
+      }
+    {% when 'medium' %}
+      #shopify-section-{{ section.id }} h2 {
+        font-size: calc(2rem + 1.75vw);
+      }
+      #shopify-section-{{ section.id }} p {
+        font-size: 1.5rem;
+      }
+    {% when 'large' %}
+      #shopify-section-{{ section.id }} h2 {
+        font-size: calc(2.25rem + 2vw);
+      }
+      #shopify-section-{{ section.id }} p {
+        font-size: 1.75rem;
+      }
+  {% endcase %}
+  #shopify-section-{{ section.id }} .cover {
+    color: {{ section.settings.content_color }};
+    {% if section.settings.mobile_crop == 'contain' %}
+      height: {{ wrapper_height }}vw;
+    {% else %}
+      height: {{ section.settings.mobile_height | append: 'px' }};
+      background-color: {{ section.settings.content_bg_color }};
+    {% endif %}
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .cover {
+      background-size: cover;
+      height: {{ section.settings.height | append: 'px' }};
+    }
+  }
+  @media (min-width: 2560px) {
+    #shopify-section-{{ section.id }} .cover {
+      height: {{ section.settings.height | times: 1.5 | round | append: 'px' }};
+    }
+  }
+</style>
+{{'section-hero.css'| asset_url | stylesheet_tag }}
+<div data-section-id="{{ section.id }}" data-section-type="hero" data-crop="{{ section.settings.mobile_crop }}">
+  <div class="custom-hero {{ section.settings.width }}" >
+
+    {% if section.settings.link_url != blank and section.settings.button == blank %}
+      <a class="d-block" href="{{ section.settings.link_url }}">
+    {% endif %}
+
+    <div class="cover tw-w-full {% if section.settings.image_mobile != blank %}tw-hidden md:tw-table{% else %}tw-table{% endif %} tw-relative text-center rounded lazyload"{% if section.settings.image != blank %} data-bgset="{% render 'image-bgset', image: section.settings.image %}" data-sizes="auto" data-parent-fit="cover"{% endif %} data-hero-image>
+
+      {%- if section.settings.image == blank -%}
+        <div class="tw-bg-img-placeholder">
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        </div>
+      {%- endif -%}
+
+      <div class="{% if section.settings.show_overlay %} overlay {% endif %} tw-table-cell tw-align-middle w-100 h-100 tw-relative">
+
+        <div class="custom-container content tw-mx-auto tw-py-8 tw-px-4 {% if section.settings.image == blank %} tw-z-1 {% endif %}" data-hero-content>
+
+          {% if section.settings.title != blank %}
+            <h2 class="mb-0 lh-1 tw-break-words">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <p class="mt-4 mb-0 tw-font-medium tw-break-words">
+              {{ section.settings.text }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.link_url != blank and section.settings.button != blank %}
+            <a class="hero-btn tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center px-5 mt-4 font-600 rounded-pill" href="{{ section.settings.link_url }}">
+              {{ section.settings.button }}
+              {% if settings.show_button_arrow %}
+                {% comment %} {% render 'icon-arrow-right' %} {% endcomment %}
+              {% endif %}
+            </a>
+          {% endif %}
+
+        </div>
+
+      </div>
+    </div>
+    {% render 'noscript', tag: 'div', media: section.settings.image, size: '1400x600' %}
+
+    {% if section.settings.image_mobile != blank %}
+    <div class="cover tw-table tw-w-full text-center rounded lazyload md:tw-hidden" data-bgset="{% render 'image-bgset', image: section.settings.image_mobile %}" data-sizes="auto" data-parent-fit="{{ section.settings.mobile_crop }}">
+
+
+      <div class="{% if section.settings.show_overlay %} overlay {% endif %} tw-table-cell tw-align-middle w-100 h-100">
+
+        <div class="content tw-mx-auto tw-py-8 tw-container tw-px-4">
+
+          {% if section.settings.title != blank %}
+            <h2 class="hero-lh-1 mb-0 tw-break-words">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <p class="mt-4 mb-0 tw-font-medium tw-break-words">
+              {{ section.settings.text }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.link_url != blank and section.settings.button != blank %}
+            <a class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center px-5 mt-4 font-600 rounded-pill" href="{{ section.settings.link_url }}">
+              {{ section.settings.button }}
+              {% if settings.show_button_arrow %}
+                {% render 'icon-arrow-right' %}
+              {% endif %}
+            </a>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    </div>
+    {% endif %}
+
+    {% if section.settings.link_url != blank and section.settings.button == blank %}
+      </a>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.hero.name",
+    "class": "shopify-section-hero",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.hero.settings.header__1.content"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.hero.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.hero.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.hero.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "label": "t:sections.hero.settings.height.label",
+        "min": 100,
+        "max": 1000,
+        "step": 10,
+        "unit": "px",
+        "default": 500
+      },
+      {
+        "type": "range",
+        "id": "mobile_height",
+        "label": "t:sections.hero.settings.mobile_height.label",
+        "min": 50,
+        "max": 600,
+        "step": 10,
+        "unit": "px",
+        "default": 300
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.hero.settings.bg_color.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.hero.settings.header__2.content"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.hero.settings.image.label"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "t:sections.hero.settings.image_mobile.label",
+        "info": "t:sections.hero.settings.image_mobile.info"
+      },
+      {
+        "type": "select",
+        "id": "mobile_crop",
+        "label": "t:sections.hero.settings.mobile_crop.label",
+        "options": [
+          {
+          "value": "cover",
+          "label": "t:sections.hero.settings.mobile_crop.options__1.label"
+          },
+          {
+          "value": "contain",
+          "label": "t:sections.hero.settings.mobile_crop.options__2.label"
+          }
+        ],
+        "default": "cover",
+        "info": "t:sections.hero.settings.mobile_crop.info"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.hero.settings.title.label"
+      },
+      {
+        "type": "textarea",
+        "id": "text",
+        "label": "t:sections.hero.settings.text.label"
+      },
+      {
+        "type": "select",
+        "id": "font_size",
+        "label": "t:sections.hero.settings.font_size.label",
+        "options": [
+          {
+            "value": "small",
+            "label": "t:sections.hero.settings.font_size.options__1.label"
+          },
+          {
+            "value": "medium",
+            "label": "t:sections.hero.settings.font_size.options__2.label"
+          },
+          {
+            "value": "large",
+            "label": "t:sections.hero.settings.font_size.options__3.label"
+          }
+        ],
+        "default": "large"
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "t:sections.hero.settings.link_url.label"
+      },
+      {
+        "type": "text",
+        "id": "button",
+        "label": "t:sections.hero.settings.button.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_overlay",
+        "label": "t:sections.hero.settings.show_overlay.label"
+      },
+      {
+        "type": "range",
+        "id": "alpha",
+        "label": "t:sections.hero.settings.alpha.label",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "default": 50
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "t:sections.hero.settings.content_color.label",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "content_bg_color",
+        "label": "t:sections.hero.settings.content_bg_color.label",
+        "default": "#eee"
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.hero.presets.name",
+        "category": "Image",
+        "settings": {
+          "title": "So many ways to express yourself",
+          "link_url": "/",
+          "button": "Shop Now"
+        }
+      }
+    ]
+  }
+{% endschema %}

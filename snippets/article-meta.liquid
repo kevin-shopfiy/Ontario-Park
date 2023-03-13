@@ -1,0 +1,35 @@
+{% unless class %}
+  {% assign class = 'tw-text-center tw-mt-3' %}
+{% endunless %}
+
+
+
+<div class="meta {{ class }}">
+  {% if show_author %}
+    <span class="author group tw-font-bold tw-mr-1">{{ article.author }}</span>
+  {% endif %}
+  {% if show_publish_date %}
+    <span class="tw-mr-1">&#183;</span>
+    <span class="published group tw-mr-1">{{ article.published_at | time_tag: format: 'date' }}</span>
+  {% endif %}
+  {% if blog.comments_enabled? and article.comments_count > 0 and show_comment_count %}
+    {% assign p1 = 'blogs.article.comment'  | t %}
+    {% assign p2 = 'blogs.article.comments' | t %}
+    <span class="tw-mr-1">&#183;</span>
+    <a href="#comments">
+      <span class="comment group">{{ article.comments_count }} {{ article.comments_count | pluralize: p1, p2 }}</span>
+    </a>
+  {% endif %}
+</div>
+
+{% if show_tags and article.tags.size > 0 %}
+  <ul class="tw-flex tw-justify-center tw-space-x-2 tw-mt-2" aria-label="{{ 'blogs.article.tags' | t }}">
+    {% for tag in article.tags %}
+      <li class="tw-badge tw-bg-btn-bg tw-rounded-full tw-px-2 tw-py-1 tw-font-semibold">
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tw-text-btn">{{ tag }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% assign class = nil %}

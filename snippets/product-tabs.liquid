@@ -1,0 +1,65 @@
+{%- liquid
+  assign enable_container = block.settings.enable_tab_container
+  assign container_height = block.settings.tab_container_height
+  assign image_one = block.settings.tab_image_one
+  assign image_two = block.settings.tab_image_two
+  assign order_one = block.settings.tab_order_one
+  assign order_two = block.settings.tab_order_two
+-%}
+
+<style>
+ .tab-contain .tab-pane {
+   max-height: {{ container_height | append: 'px'}}
+ }
+</style>
+
+<div class="product-tabs mt-3" data-tabs>
+  <ul class="nav nav-tabs" role="tablist">
+
+    <li class="nav-item" role="tab" aria-controls="description-{{ block.id }}" aria-selected="true">
+      <a id="description-tab-{{ block.id }}" class="nav-link font-600 mr-4 px-0 pb-3 active" data-toggle="tab" href="#description" data-tab-index="0">{{ 'products.product.description_heading' | t }}</a>
+    </li>
+
+    {% if block.settings.show_tab_one %}
+      <li class="nav-item" role="tab" aria-controls="additional_one-{{ block.id }}" aria-selected="false">
+        <a id="{{ block.settings.tab_title_one | handle }}-tab-{{ block.id }}" class="nav-link font-600 px-0 pb-3 mr-4" data-toggle="tab" href="#additional_one"  data-tab-index="1">{{ block.settings.tab_title_one }}</a>
+      </li>
+    {% endif %}
+    {% if block.settings.show_tab_two %}
+      <li class="nav-item" role="tab" aria-controls="additional_two-{{ block.id }}" aria-selected="false">
+        <a id="{{ block.settings.tab_title_two | handle }}-tab-{{ block.id }}" class="nav-link font-600 px-0 pb-3" data-toggle="tab" href="#additional_two" data-tab-index="2">{{ block.settings.tab_title_two }}</a>
+      </li>
+    {% endif %}
+
+  </ul>
+  <div class="rte tab-content {% if enable_container %}tab-contain{% endif %} mt-3">
+
+    <div class="tab-pane active" id="description-{{ block.id }}" role="tabpanel" aria-labelledby="description-tab-{{ block.id }}">
+      {{ product.description }}
+    </div>
+
+    {% if block.settings.show_tab_one %}
+      <div class="tab-pane" id="additional_one-{{ block.id }}" role="tabpanel" aria-labelledby="{{ block.settings.tab_title_one | handle }}-tab-{{ block.id }}">
+      {% if image_one != blank and order_one == 'image' %}
+          {% render 'image', image: image_one, width: 500, container_class: 'tab-image mb-3' %}
+        {% endif %}
+        {{ block.settings.tab_content_one }}
+        {% if image_one != blank and order_one == 'text' %}
+          {% render 'image', image: image_one, width: 500, container_class: 'tab-image mt-2' %}
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if block.settings.show_tab_two %}
+      <div class="tab-pane" id="additional_two-{{ block.id }}" role="tabpanel" aria-labelledby="{{ block.settings.tab_title_two | handle }}-tab-{{ block.id }}">
+      {% if image_two != blank and order_two == 'image' %}
+          {% render 'image', image: image_two, width: 500, container_class: 'tab-image mb-3' %}
+        {% endif %}
+        {{ block.settings.tab_content_two }}
+        {% if image_two != blank and order_two == 'text' %}
+          {% render 'image', image: image_two, width: 500, container_class: 'tab-image mt-2' %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>

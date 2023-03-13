@@ -1,0 +1,316 @@
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+  {% if section.settings.bg_color != blank and alpha > 0 %}
+    #shopify-section-{{ section.id }} {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      background-color: {{ section.settings.bg_color }};
+    }
+  {% endif %}
+  {% assign alpha = section.settings.alpha | divided_by: 100.0 | round: 1 %}
+   .collection-card-info {
+    color: {{ section.settings.collections_color }};
+    {% comment %} background-color: #DDE5EA; {% endcomment %}
+  }
+  .shopify-section-featured-colllections {
+    background-color: #DDE5EA;
+  }
+  {% comment %} .align-items-baseline {
+    padding: 0px 33px 51px 33px;
+  } {% endcomment %}
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }}{
+        margin-top: 51px;
+    }
+  }
+</style>
+{{'section-collection-list.css'| asset_url | stylesheet_tag }}
+<script src="{{ 'section-collection.js' | asset_url }}" defer="defer"></script>
+{%- liquid
+  case section.settings.grid_aspect
+    when '1/1'
+      assign aspect_ratio = 'tw-aspect-w-1 tw-aspect-h-1'
+    when '2/3'
+      assign aspect_ratio = 'tw-aspect-w-2 tw-aspect-h-3'
+    when '4/3'
+      assign aspect_ratio = 'tw-aspect-w-4 tw-aspect-h-3'
+    else
+      assign aspect_ratio = false
+  endcase
+
+  if aspect_ratio != false and section.settings.image_fit == 'fill'
+    assign aspect_ratio = aspect_ratio | append: ' tw-aspect-cover'
+  endif
+-%}
+
+<div data-section-id="{{ section.id }}" data-section-type="featured-collections" data-collection-count="{{section.settings.collections_per_row}}">
+  <div class="custom-container">
+    <div class="{{ section.settings.width }}">
+
+      {% if section.settings.title != blank %}
+        <h2 class="title_collection mb-4 lh-1 text-center">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <div class="collection-list align-items-baseline slick-collection">
+        {% for block in section.blocks %}
+
+          {% assign collection = collections[block.settings.collection] %}
+
+          {% if collection != empty %}
+            {% assign collection_title = collection.title %}
+            {% assign collection_count = collection.all_products_count %}
+            {% if collection.image %}
+              {% assign collection_image = collection.metafields.my_fields.custom_banner_prod %}
+            {% else %}
+              {% assign collection_image = collection.products.first.featured_image %}
+            {% endif %}
+          {% else %}
+            {% assign collection_title = 'homepage.onboarding.collection_title' | t %}
+            {% assign collection_count = 10 %}
+          {% endif %}
+          <div>
+            <div>
+              {% if collection != empty %}
+                <a class="collection-card-link d-block w-100 h-100" href="{{ collection.url }}">
+              {% endif %}
+
+              <div class="collection-card position-relative rounded">
+
+                {% if collection != empty %}
+                  {% render 'image', image: collection_image, width: 500, container_class: 'collection-card-image', aspect_ratio: aspect_ratio %}
+                {% else %}
+                  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                  {% assign placeholder = 'collection' | append: '-' | append: current %}
+                  {% render 'image', placeholder: placeholder %}
+                {% endif %}
+
+                <div class="collection-card-info rounded">
+
+                  <h3 class="collection-card-title">
+                    {{ collection_title }}                    
+                  </h3>
+                  <button class="arrow tw-btn" type="submit" aria-label="{{ 'general.accessibility.submit' | t }}">
+                    {% if settings.show_button_arrow %}
+                      {% render 'icon-arrow-right-blue' %}
+                    {% endif %}
+                  </button>
+                  
+                  {% if section.settings.show_collection_count %}
+                    <div class="collection-card-count mt-n3 mb-1 ml-3 tw-leading-tight md:tw-leading-normal">
+                      {{ 'sections.collection_list.item_count' | t: count: collection_count }}
+                    </div>
+                  {% endif %}
+
+                </div>
+
+              </div>
+
+              {% if collection != empty %}
+                </a>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} {% if section.settings.show_view_all %}
+        <div class="mt-4 text-center">
+          <a class="tw-btn tw-btn-secondary d-inline-flex justify-content-center align-items-center font-600 rounded-pill" href="{{ routes.collections_url }}">
+            {{ 'sections.collection_list.view_all' | t }}
+            {% if settings.show_button_arrow %}
+              {% render 'icon-arrow-right' %}
+            {% endif %}
+          </a>
+        </div>
+      {% endif %} {% endcomment %}
+
+    </div>
+  </div> 
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.featured-collections.name",
+    "class": "shopify-section-featured-colllections",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collections"
+      },
+      {
+        "type": "text",
+        "id": "title_page",
+        "label": "Title",
+        "default": "Collections"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.featured-collections.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.featured-collections.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.featured-collections.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.featured-collections.settings.title.label"
+      },
+      {
+        "type": "range",
+        "id": "collections_per_row",
+        "label": "t:sections.featured-collections.settings.collections_per_row.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "select",
+        "id": "collections_per_row_mobile",
+        "label": "t:sections.featured-collections.settings.collections_per_row_mobile.label",
+        "options": [
+          {
+            "value": "1",
+            "label": "t:sections.featured-collections.settings.collections_per_row_mobile.options__1.label"
+          },
+          {
+            "value": "2",
+            "label": "t:sections.featured-collections.settings.collections_per_row_mobile.options__2.label"
+          }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "t:sections.featured-collections.settings.show_view_all.label",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.featured-collections.settings.bg_color.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.featured-collections.settings.header.content"
+      },
+      {
+        "type": "select",
+        "id": "grid_aspect",
+        "label": "t:sections.featured-collections.settings.grid_aspect.label",
+        "options": [
+          {
+            "value": "disabled",
+            "label": "t:sections.featured-collections.settings.grid_aspect.options__1.label"
+          },
+          {
+            "value": "1/1",
+            "label": "t:sections.featured-collections.settings.grid_aspect.options__2.label"
+          },
+          {
+            "value": "2/3",
+            "label": "t:sections.featured-collections.settings.grid_aspect.options__3.label"
+          },
+          {
+            "value": "4/3",
+            "label": "t:sections.featured-collections.settings.grid_aspect.options__4.label"
+          }
+        ],
+        "default": "1/1",
+        "info": "t:sections.featured-collections.settings.grid_aspect.info"
+      },
+      {
+        "type": "select",
+        "id": "image_fit",
+        "label": "t:sections.featured-collections.settings.image_fit.label",
+        "options": [
+          {
+            "value": "fill",
+            "label": "t:sections.featured-collections.settings.image_fit.options__1.label"
+          },
+          {
+            "value": "fit",
+            "label": "t:sections.featured-collections.settings.image_fit.options__2.label"
+          }
+        ],
+        "default": "fill",
+        "info": "t:sections.featured-collections.settings.image_fit.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_count",
+        "label": "t:sections.featured-collections.settings.show_collection_count.label"
+      },
+      {
+        "type": "range",
+        "id": "alpha",
+        "label": "t:sections.featured-collections.settings.alpha.label",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "default": 30
+      },
+      {
+        "type": "color",
+        "id": "collections_color",
+        "label": "t:sections.featured-collections.settings.collections_color.label",
+        "default": "#eee"
+      },
+      {
+        "type": "color",
+        "id": "collections_bg_color",
+        "label": "t:sections.featured-collections.settings.collections_bg_color.label",
+        "default": "#000"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "t:sections.featured-collections.blocks.collection.name",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.featured-collections.presets.name",
+        "category": "Collection",
+        "settings": {
+          "title": "Collection list",
+          "show_collection_count": false
+        },
+        "blocks": [
+          {
+            "type": "collection"
+          },
+          {
+            "type": "collection"
+          },
+          {
+            "type": "collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

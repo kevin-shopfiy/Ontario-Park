@@ -1,0 +1,142 @@
+{% assign class = 'tw-hidden md:tw-flex' %}
+{% if id == 'swiper-mobile' %}
+    {% assign class = 'tw-flex md:tw-hidden' %}
+{% endif %}
+
+{%- liquid
+  assign expand_slide_overflow = true
+  if expand_slide_overflow
+    assign slider_container_class = 'tw-table tw-w-full'
+    assign slider_content_class = 'tw-table-cell'
+  else
+    assign slider_container_class = 'd-flex justify-content-center align-items-center'
+    assign slider_content_class = ''
+  endif
+-%}
+
+<div class="swiper-container {{ class }}" data-slideshow="{{ id | append: '-' | append: section.id }}" data-swiper-autoheight="{{ expand_slide_overflow | json }}">
+  <div class="swiper-wrapper">
+    {% for block in section.blocks %}
+      <style>
+        #shopify-block-{{ block.id }} .cover {
+          color: {{ block.settings.color }};
+          {% if section.settings.mobile_crop != 'contain' %}
+            background-color: {{ block.settings.bg_color }};
+          {% endif %}
+        }
+        {% if block.settings.show_overlay %}
+          {% assign alpha = block.settings.alpha | divided_by: 100.0 | round: 1 %}
+          #shopify-block-{{ block.id }} .overlay {
+            background-color: {{ block.settings.bg_color | color_modify: 'alpha', alpha }};
+          }
+        {% endif %}
+        {% case block.settings.font_size %}
+          {% when 'small' %}
+            #shopify-block-{{ block.id }} h2 {
+              font-size: calc(1.75rem + 1.5vw);
+            }
+            #shopify-block-{{ block.id }} p {
+              font-size: 1.25rem;
+            }
+          {% when 'medium' %}
+            #shopify-block-{{ block.id }} h2 {
+              font-size: calc(2rem + 1.75vw);
+            }
+            #shopify-block-{{ block.id }} p {
+              font-size: 1.5rem;
+            }
+          {% when 'large' %}
+            #shopify-block-{{ block.id }} h2 {
+              font-size: calc(2.25rem + 2vw);
+            }
+            #shopify-block-{{ block.id }} p {
+              font-size: 1.75rem;
+            }
+        {% endcase %}
+      </style>
+
+      <div id="shopify-block-{{ block.id }}"
+        class="swiper-slide"
+        data-slideshow-slide="{{ block.id }}"
+        data-index="{{ forloop.index }}"
+        {{ block.shopify_attributes }}
+        {% if section.settings.autoplay %}
+          data-swiper-autoplay="{{ section.settings.interval | times: 1000 }}"
+        {% endif %}>
+
+        {% if block.settings.link_url != blank and block.settings.button == blank %}
+          <a class="d-block" href="{{ block.settings.link_url }}">
+        {% endif %}
+
+        {% assign image = block.settings.image %}
+
+        {% if id == 'swiper-mobile' and block.settings.image_mobile != blank %}
+          {% assign image = block.settings.image_mobile %}
+        {% endif %}
+
+        <div class="cover {{ slider_container_class }} tw-relative text-center rounded lazyload"{% if block.settings.image != blank %} data-bgset="{% render 'image-bgset', image: image %}" data-sizes="auto" data-parent-fit="cover"{% endif %}>
+
+
+          <div class="{% if block.settings.show_overlay %} overlay {% endif %} d-flex justify-content-center align-items-center w-100 h-100 tw-relative">
+
+
+            {%- if block.settings.image == blank -%}
+              {% assign placeholder = 'lifestyle-1' %}
+              {% assign block_even_odd = forloop.index | modulo: 2 %}
+              {% if block_even_odd == 0 %}
+                {% assign placeholder = 'lifestyle-2' %}
+              {% endif %}
+
+              <div class="tw-bg-img-placeholder">
+                {{ placeholder | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+
+            <div class="content {{ slider_content_class }} tw-py-8 tw-container tw-px-4 {% if block.settings.image == blank %} tw-z-1 {% endif %}">
+
+              {% if block.settings.title != blank %}
+                <h2 class="mb-0 lh-1 tw-break-words">{{ block.settings.title }}</h2>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p class="mt-4 mb-0 tw-font-medium tw-break-words ">{{ block.settings.text }}</p>
+              {% endif %}
+
+              {% if block.settings.link_url != blank and block.settings.button != blank %}
+                <a class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center px-5 mt-4 font-600 rounded-pill" href="{{ block.settings.link_url }}">
+                  {{ block.settings.button }}
+                  {% if settings.show_button_arrow %}
+                    {% render 'icon-arrow-right' %}
+                  {% endif %}
+                </a>
+              {% endif %}
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+        {% if block.settings.link_url != blank and block.settings.button == blank %}
+          </a>
+        {% endif %}
+
+      </div>
+
+    {% endfor %}
+
+    {% assign first_block = section.blocks | first %}
+    {% render 'noscript', tag: 'div', media: first_block.settings.image, size: '1060x500' %}
+  </div>
+
+  {% if section.settings.show_indicators %}
+    <div class="swiper-pagination"></div>
+  {% endif %}
+
+  {% if section.settings.show_controls %}
+    <div class="swiper-button-prev swiper-control tw-bg-transparent tw-hidden md:tw-flex tw-opacity-80 hover:tw-opacity-100"></div>
+    <div class="swiper-button-next swiper-control tw-bg-transparent tw-hidden md:tw-flex tw-opacity-80 hover:tw-opacity-100"></div>
+  {% endif %}
+
+</div>

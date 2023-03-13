@@ -1,0 +1,55 @@
+.banner-tip .banner-tip-content {
+    max-width: 300px;
+}
+.banner-tip {
+    display: flex;
+    justify-content: center;
+    padding-top: 36px;
+    padding-bottom: 29px;
+    gap: 35px;
+}
+.banner-tip-element {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.banner-tip-element .banner-tip-img img {
+    min-width: 48px;
+}
+.banner-tip-element .banner-tip-content .banner-tip-title {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: 0.01em;
+
+    /* Accent-1/Primary */
+
+    color: #0475BC;
+}
+.banner-tip-element .banner-tip-content .banner-tip-title .text {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    /* or 17px */
+
+    letter-spacing: 0.01em;
+
+    /* Text/Primary */
+
+    color: #0E0F0F;
+
+    opacity: 0.7;
+}
+@media(max-width:767px){
+    .banner-tip {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .banner-tip .banner-tip-content{
+        max-width: unset;
+    }
+}

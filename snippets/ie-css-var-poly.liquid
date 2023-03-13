@@ -1,0 +1,9 @@
+<script type="text/javascript">
+   if (window.MSInputMethodContext && document.documentMode) {
+     var scripts = document.getElementsByTagName('script')[0];
+     var polyfill = document.createElement("script");
+     polyfill.defer = true;
+     polyfill.src = "{{ 'ie11CustomProperties.min.js' | asset_url }}";
+     scripts.parentNode.insertBefore(polyfill, scripts);
+   }
+</script>

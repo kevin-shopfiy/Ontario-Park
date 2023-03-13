@@ -1,0 +1,149 @@
+<section id="section--{{section.id}}">
+<div class="custom-container">
+    <div class="featured-products--wrapper section-{{section.id}}-padding" data-image-count="{{section.settings.image_count}}">
+        <div class="featured-products--title content">
+            {% if section.settings.title != blank %}
+                <h1>{{section.settings.title}}</h1>
+            {%endif%}
+            {% if section.settings.link_url != blank and section.settings.button != blank %}
+                <a class="desk-btn tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center rounded-pill" href="{{ section.settings.link_url }}">
+                  {{ section.settings.button }}
+                  {% if settings.show_button_arrow %}
+                    {% render 'icon-arrow-right' %}
+                  {% endif %}
+                </a>
+              {% endif %}
+        </div>
+        <div class="desk-top featured-products--content">
+            {% if section.settings.collection != blank %}
+                {% for product in section.settings.collection.products limit: 5 %}
+                    <a href="{{product.url}}" class="product--item">
+                        {% if product.featured_image != blank %}
+                            <img class="product--item--image" src="{{product.featured_image | img_url: '500x'}}" >
+                        {%endif%}
+                        <div class="product--item--text">
+                            {% if product.title != blank %}
+                                <h3 class="product--item--title">{{product.title}}</h3>                            
+                            {% endif %}
+                            {% if product.price != blank %}
+                                <span class="product--item--signal">$</span>
+                                <span class="product--item--price">{{product.price | divided_by: 100.0 }}</span>                            
+                            {% endif %}
+                        </div>
+                    </a>                    
+                {% endfor %}
+            {%endif%}
+        </div>
+        <div class="mobile featured-products--content">
+            {% if section.settings.collection != blank %}
+                {% for product in section.settings.collection.products limit: 4 %}
+                    <a href="{{product.url}}" class="product--item">
+                        {% if product.featured_image != blank %}
+                            <img class="product--item--image" src="{{product.featured_image | img_url: '500x'}}" >
+                        {%endif%}
+                        <div class="product--item--text">
+                            {% if product.title != blank %}
+                                <h3 class="product--item--title">{{product.title}}</h3>                            
+                            {% endif %}
+                            {% if product.price != blank %}
+                                <span class="product--item--signal">$</span>
+                                <span class="product--item--price">{{product.price | divided_by: 100.0 }}</span>                            
+                            {% endif %}
+                        </div>
+                    </a>                    
+                {% endfor %}
+            {%endif%}
+        </div>
+        <div class="mobile-btn">
+            {% if section.settings.link_url != blank and section.settings.button != blank %}
+                <a class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center rounded-pill" href="{{ section.settings.link_url }}">
+                  {{ section.settings.button }}
+                  {% if settings.show_button_arrow %}
+                    {% render 'icon-arrow-right' %}
+                  {% endif %}
+                </a>
+              {% endif %}
+        </div>
+    </div>
+</div>
+</section>
+{{'section-featured-products.css'| asset_url | stylesheet_tag }}
+{% comment %} {%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.3 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%} {% endcomment %}
+<script src="{{ 'section-featured-products.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+    {
+        "name": "Featured products",
+        "class": "featured-products",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "default": "New Arrival"
+            },
+            {
+                "type": "collection",
+                "id": "collection",
+                "label": "Collection"
+            },
+            {
+                "type": "url",
+                "id": "link_url",
+                "label": "t:sections.hero.settings.link_url.label"
+            },
+            {
+                "type": "text",
+                "id": "button",
+                "label": "t:sections.hero.settings.button.label"
+              },
+            {
+                "type": "range",
+                "id": "image_count",
+                "min": 2,
+                "max": 4,
+                "step": 1,
+                "unit": "n",
+                "label": "Image count",
+                "default": 4
+            },
+            {
+                "type": "range",
+                "id": "padding_top",
+                "min": 40,
+                "max": 50,
+                "step": 1,
+                "unit": "px",
+                "label": "Padding top",
+                "default": 46
+            },
+            {
+                "type": "range",
+                "id": "padding_bottom",
+                "min": 60,
+                "max": 80,
+                "step": 1,
+                "unit": "px",
+                "label": "Padding bottom",
+                "default": 68
+            }
+        ],
+        "presets": [
+            {
+                "name":"Featured products"
+            }
+        ]
+    }
+{% endschema %}
+

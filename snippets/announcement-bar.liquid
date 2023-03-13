@@ -1,0 +1,69 @@
+
+{%- liquid
+  assign announcement_bg_color = section.settings.announcement_bg_color
+  assign announcement_color = section.settings.announcement_color
+  assign announcement_size = section.settings.announcement_size
+  assign announcement_link = section.settings.announcement_link
+  assign announcement_enable_dismiss = section.settings.announcement_enable_dismiss
+  assign announcement_enable_auto_hide = section.settings.announcement_enable_auto_hide
+  assign announcement_delay = section.settings.announcement_delay
+  assign announcement_enable_font = section.settings.announcement_enable_font
+  assign announcement_font = section.settings.announcement_font
+
+  case announcement_size
+    when 'small'
+      assign announcement_text_size = 'tw-text-base'
+      assign announcement_container_padding = 'tw-py-1'
+      assign button_padding = 'md:tw-py-1'
+    when 'medium'
+      assign announcement_text_size = 'tw-text-lg'
+      assign announcement_container_padding = 'tw-py-2'
+    when 'large'
+      assign announcement_text_size = 'tw-text-xl'
+      assign announcement_container_padding = 'tw-py-3'
+    else
+  endcase
+
+  if announcement_enable_dismiss
+    assign x_padding = 'tw-px-8 md:tw-px-20'
+  else
+    assign x_padding = 'tw-px-4'
+  endif
+-%}
+
+<style>
+  .announcement-bar__container {
+    background-color: {{ announcement_bg_color }};
+  }
+
+  .announcement-bar__container .icon {
+    color: {{ announcement_color }};
+  }
+  .announcement-bar__content {
+    color: {{ announcement_color }};
+  }
+</style>
+
+<div
+  data-section-type="announcement-bar"
+  data-section-id="{{ section.id | append: '-announcement-bar'}}"
+  class="announcement-bar__container tw-relative tw-max-h-72 md:tw-max-h-32 tw-transition-max-h tw-duration-700"
+  role="region"
+  aria-label="{{ 'sections.header.announcement_bar_label' | t }}"
+  data-announcement-bar-container
+  data-announcement-settings='{
+    "dismiss": {{ announcement_enable_dismiss | json }},
+    "autoDismiss": {{ announcement_enable_auto_hide | json }},
+    "delay": {{ announcement_delay | times: 1000 }}
+  }'>
+  {% if announcement_link != blank %}
+    <a href="{{ announcement_link }}" class="tw-absolute tw-inset-0"></a>
+  {% endif %}
+
+  <div class="announcement-bar__content tw-flex tw-justify-center tw-items-start md:tw-items-center tw-container tw-mx-auto tw-text-center {{ announcement_text_size }} {{ announcement_container_padding }} {{ x_padding }} tw-transition-visibility tw-duration-300" role="heading" aria-level="2" data-announcement-bar-content>
+    <p>{{ section.settings.announcement_text }}</p>
+    {% if announcement_enable_dismiss %}
+      <button class="tw-border-0 tw-bg-transparent tw-absolute tw-right-0 md:tw-right-12 tw-p-2 {{ button_padding }} tw-z-10" aria-label="{{ 'general.accessibility.close' | t }}" data-announcement-bar-close>{% render 'icon-close' %}</button>
+    {% endif %}
+  </div>
+</div>

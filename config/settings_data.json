@@ -1,0 +1,778 @@
+{
+  "current": {
+    "color": "#303030",
+    "link_color": "#036daf",
+    "bg_color": "#F9FAFC",
+    "regular_color": "#00834e",
+    "sale_color": "#AF3737",
+    "header_logo_color": "#303030",
+    "link_color_hover": "#1097ec",
+    "bg_color_nav": "#EFF0F3",
+    "footer_logo_color": "#FFFFFF",
+    "footer_color": "#ffffff",
+    "footer_bg_color": "#00834e",
+    "btn_color": "#ffffff",
+    "btn_bg_color": "#0475bc",
+    "secondary_btn_color": "#454545",
+    "secondary_btn_bg_color": "#f2f2f2",
+    "facet_btn_bg_color": "#f0f0f1",
+    "facet_btn_bg_color_active": "#eff0f3",
+    "h16_font": "libre_franklin_n7",
+    "logo_font_size": 26,
+    "section_space": "3",
+    "show_pages_search": true,
+    "descriptions_search": true,
+    "facebook_url": "https:\/\/facebook.com\/ontarioparks",
+    "twitter_url": "https:\/\/twitter.com\/ontarioparks",
+    "pinterest_url": "",
+    "instagram_url": "https:\/\/instagram.com\/ontarioparks",
+    "favicon": "shopify:\/\/shop_images\/favicon.png",
+    "checkout_header_image": "shopify:\/\/shop_images\/checkout-banner_cbb732d7-822a-46f0-9822-47d14f12e654.jpg",
+    "checkout_logo_image": "shopify:\/\/shop_images\/checkout-logo.png",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify:\/\/shop_images\/op-shop-logo.png",
+          "logo_width": 250,
+          "logo_position": "left",
+          "enable_sticky_header": false,
+          "display_announcement": "show",
+          "announcement_text": "Free shipping over $100 in Canada",
+          "announcement_link": "",
+          "announcement_bg_color": "#036daf",
+          "announcement_color": "#f9fafc",
+          "announcement_size": "small",
+          "announcement_enable_dismiss": false,
+          "announcement_enable_auto_hide": false,
+          "announcement_delay": 15,
+          "menu": "main-menu",
+          "menu_style": "menu-dropdown",
+          "mobile_columns": "one",
+          "mobile_submenu_icon": "chevron",
+          "mobile_featured_product": false,
+          "featured_product_1": "",
+          "featured_product_2": "",
+          "featured_product_3": "",
+          "featured_product_4": "",
+          "featured_product_5": "",
+          "featured_product_6": "",
+          "featured_product_7": "",
+          "featured_product_8": "",
+          "featured_product_9": "",
+          "featured_product_10": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "01": {
+            "type": "menu",
+            "settings": {
+              "title": "Information",
+              "menu": "footer"
+            }
+          },
+          "2c995da6-76a8-48a8-8a9f-7454c945c153": {
+            "type": "legal",
+            "settings": {
+              "title": "Legal",
+              "menu": "policy-menu"
+            }
+          },
+          "cbd2e01c-4587-4c63-bd27-3e61648054b9": {
+            "type": "text",
+            "disabled": true,
+            "settings": {
+              "title": "",
+              "text": "<p><a href=\"\/pages\/contact\" title=\"Contact\">Contact Us<\/a><\/p><p><a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Terms & Conditions<\/a><\/p><p><a href=\"\/policies\/privacy-policy\" title=\"Privacy Policy\">Privacy Policy<\/a><\/p>"
+            }
+          },
+          "39cd3e70-dd95-44ca-b2a4-67d762bc1e7a": {
+            "type": "menu",
+            "settings": {
+              "title": "Plan Your Visit",
+              "menu": "plan-your-trip"
+            }
+          },
+          "18e35eb5-41a2-4ba8-af1f-9f66aa21e953": {
+            "type": "social_icons",
+            "settings": {
+              "title": "Follow Us"
+            }
+          }
+        },
+        "block_order": [
+          "01",
+          "2c995da6-76a8-48a8-8a9f-7454c945c153",
+          "cbd2e01c-4587-4c63-bd27-3e61648054b9",
+          "39cd3e70-dd95-44ca-b2a4-67d762bc1e7a",
+          "18e35eb5-41a2-4ba8-af1f-9f66aa21e953"
+        ],
+        "settings": {
+          "footer_style": "style-one",
+          "logo_width": 150,
+          "logo_position": "right",
+          "about": "",
+          "show_address": false,
+          "show_phone": false,
+          "show_email": false,
+          "show_payment_icons": false,
+          "show_locale_selector": true,
+          "show_currency_selector": true
+        }
+      },
+      "1605120224fb26a4ab": {
+        "type": "hero",
+        "settings": {
+          "title": "So many ways to express yourself",
+          "font_size": "large",
+          "link_url": "shopify:\/\/collections",
+          "button": "Shop Now",
+          "content_color": "#000000"
+        }
+      },
+      "1605120245dab98ee6": {
+        "type": "info-badges",
+        "blocks": {
+          "1605120245dab98ee6-0": {
+            "type": "badge",
+            "settings": {
+              "image_size": "50px",
+              "text": "Locally Owned",
+              "font_size": "1rem",
+              "color": "#545779",
+              "bg_color": "#eeeeee"
+            }
+          },
+          "1605120245dab98ee6-1": {
+            "type": "badge",
+            "settings": {
+              "text": "Fast Shipping",
+              "color": "#545779",
+              "bg_color": "#eeeeee"
+            }
+          },
+          "1605120245dab98ee6-2": {
+            "type": "badge",
+            "settings": {
+              "text": "365 Day Guarantee",
+              "color": "#545779",
+              "bg_color": "#eeeeee"
+            }
+          }
+        },
+        "block_order": [
+          "1605120245dab98ee6-0",
+          "1605120245dab98ee6-1",
+          "1605120245dab98ee6-2"
+        ],
+        "settings": {}
+      },
+      "1605120562fb06ef3f": {
+        "type": "featured-collections",
+        "blocks": {
+          "1605120562fb06ef3f-0": {
+            "type": "collection",
+            "settings": {
+              "collection": "all"
+            }
+          },
+          "1605120562fb06ef3f-1": {
+            "type": "collection",
+            "settings": {
+              "collection": ""
+            }
+          },
+          "1605120562fb06ef3f-2": {
+            "type": "collection",
+            "settings": {
+              "collection": ""
+            }
+          },
+          "1605120562fb06ef3f-3": {
+            "type": "collection",
+            "settings": {
+              "collection": ""
+            }
+          }
+        },
+        "block_order": [
+          "1605120562fb06ef3f-0",
+          "1605120562fb06ef3f-1",
+          "1605120562fb06ef3f-2",
+          "1605120562fb06ef3f-3"
+        ],
+        "settings": {
+          "title": "Featured Collections",
+          "alpha": 30
+        }
+      },
+      "16051208237d9aa7e8": {
+        "type": "featured-collection",
+        "settings": {
+          "collection": "all",
+          "show_price": true,
+          "show_compare_at_price": true,
+          "show_sale_badge": true,
+          "show_from": false
+        }
+      },
+      "1605194530e498ba6d": {
+        "type": "featured-collection",
+        "settings": {
+          "show_price": true,
+          "show_compare_at_price": true,
+          "show_sale_badge": true,
+          "show_from": false
+        }
+      },
+      "1605121509c75dda05": {
+        "type": "images-with-text",
+        "blocks": {
+          "1605121509c75dda05-0": {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "shopify:\/\/collections",
+              "button": "Shop Now"
+            }
+          },
+          "1605121509c75dda05-1": {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "shopify:\/\/collections",
+              "button": "Shop Now"
+            }
+          }
+        },
+        "block_order": [
+          "1605121509c75dda05-0",
+          "1605121509c75dda05-1"
+        ],
+        "settings": {}
+      },
+      "160512186359bb4293": {
+        "type": "featured-blog",
+        "settings": {
+          "width": "container",
+          "title": "Latest Blog Articles",
+          "blog": "news"
+        }
+      },
+      "newsletter-apparel": {
+        "type": "newsletter",
+        "settings": {
+          "bg_image_style": "dark"
+        }
+      },
+      "product-recommendations": {
+        "type": "product-recommendations",
+        "settings": {}
+      },
+      "cart-recommendations": {
+        "type": "cart-recommendations",
+        "settings": {}
+      },
+      "email-modal": {
+        "type": "email-modal",
+        "settings": {
+          "enabled": false,
+          "third_party_ar": false,
+          "modal_heading": "Hey!",
+          "modal_heading_size": "md",
+          "modal_heading_color": "",
+          "modal_body": "<p>Let's keep in touch. Sign up for our newsletter!<\/p>",
+          "modal_body_size": "md",
+          "modal_body_color": "",
+          "modal_bg_color": "#f9fafc",
+          "modal_button_color": "",
+          "modal_button_bg_color": "",
+          "modal_success_message": "",
+          "cookie_length": 7,
+          "enable_test_mode": false
+        }
+      }
+    },
+    "content_for_index": [
+      "1605120224fb26a4ab",
+      "1605120245dab98ee6",
+      "1605120562fb06ef3f",
+      "16051208237d9aa7e8",
+      "1605194530e498ba6d",
+      "1605121509c75dda05",
+      "160512186359bb4293",
+      "newsletter-apparel"
+    ]
+  },
+  "presets": {
+    "Royal": {
+      "color": "#303030",
+      "link_color": "#4E4681",
+      "link_color_hover": "#4e34f1",
+      "bg_color": "#F9FAFC",
+      "regular_color": "#277b73",
+      "sale_color": "#AF3737",
+      "header_logo_color": "#303030",
+      "footer_logo_color": "#FFFFFF",
+      "footer_color": "#BDC0C2",
+      "footer_bg_color": "#1B1735",
+      "btn_color": "#303030",
+      "btn_bg_color": "#F0A73E",
+      "bg_color_nav": "#EFF0F3",
+      "secondary_btn_color": "#4E4681",
+      "secondary_btn_bg_color": "#e1e2e8",
+      "facet_btn_bg_color": "#f0f0f1",
+      "facet_btn_bg_color_active": "#716aa2",
+      "h16_font": "cooper_bt_n9",
+      "logo_font_size": 35,
+      "facebook_url": "\/",
+      "twitter_url": "\/",
+      "pinterest_url": "\/",
+      "instagram_url": "\/",
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "announcement_bg_color": "#4E4681",
+            "announcement_color": "#f9fafc"
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "01": {
+              "type": "menu",
+              "settings": {
+                "title": "Shop",
+                "menu": "footer"
+              }
+            },
+            "cbd2e01c-4587-4c63-bd27-3e61648054b9": {
+              "type": "text",
+              "settings": {
+                "title": "Customer Service",
+                "text": "<p><a href=\"\/pages\/contact-us\" title=\"Contact Us\">Contact Us<\/a><\/p><p><a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Terms &amp; Conditions<\/a><\/p><p><a href=\"\/policies\/privacy-policy\" title=\"Privacy Policy\">Privacy Policy<\/a><\/p>"
+              }
+            },
+            "18e35eb5-41a2-4ba8-af1f-9f66aa21e953": {
+              "type": "social_icons",
+              "settings": {
+                "title": "Follow Us"
+              }
+            }
+          },
+          "block_order": [
+            "01",
+            "cbd2e01c-4587-4c63-bd27-3e61648054b9",
+            "18e35eb5-41a2-4ba8-af1f-9f66aa21e953"
+          ],
+          "settings": {}
+        },
+        "1605120224fb26a4ab": {
+          "type": "hero",
+          "settings": {
+            "title": "So many ways to express yourself",
+            "font_size": "large",
+            "link_url": "shopify:\/\/collections",
+            "button": "Shop Now",
+            "content_color": "#000000"
+          }
+        },
+        "1605120245dab98ee6": {
+          "type": "info-badges",
+          "blocks": {
+            "1605120245dab98ee6-0": {
+              "type": "badge",
+              "settings": {
+                "image_size": "50px",
+                "text": "Locally Owned",
+                "font_size": "1rem",
+                "color": "#545779",
+                "bg_color": "#eeeeee"
+              }
+            },
+            "1605120245dab98ee6-1": {
+              "type": "badge",
+              "settings": {
+                "text": "Fast Shipping",
+                "color": "#545779",
+                "bg_color": "#eeeeee"
+              }
+            },
+            "1605120245dab98ee6-2": {
+              "type": "badge",
+              "settings": {
+                "text": "365 Day Guarantee",
+                "color": "#545779",
+                "bg_color": "#eeeeee"
+              }
+            }
+          },
+          "block_order": [
+            "1605120245dab98ee6-0",
+            "1605120245dab98ee6-1",
+            "1605120245dab98ee6-2"
+          ],
+          "settings": {}
+        },
+        "1605120562fb06ef3f": {
+          "type": "featured-collections",
+          "blocks": {
+            "1605120562fb06ef3f-0": {
+              "type": "collection",
+              "settings": {
+                "collection": "all"
+              }
+            },
+            "1605120562fb06ef3f-1": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            },
+            "1605120562fb06ef3f-2": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            },
+            "1605120562fb06ef3f-3": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            }
+          },
+          "block_order": [
+            "1605120562fb06ef3f-0",
+            "1605120562fb06ef3f-1",
+            "1605120562fb06ef3f-2",
+            "1605120562fb06ef3f-3"
+          ],
+          "settings": {
+            "title": "Featured Collections",
+            "alpha": 30
+          }
+        },
+        "16051208237d9aa7e8": {
+          "type": "featured-collection",
+          "settings": {
+            "collection": "all",
+            "show_price": true,
+            "show_compare_at_price": true,
+            "show_sale_badge": true,
+            "show_from": false
+          }
+        },
+        "1605194530e498ba6d": {
+          "type": "featured-collection",
+          "settings": {
+            "show_price": true,
+            "show_compare_at_price": true,
+            "show_sale_badge": true,
+            "show_from": false
+          }
+        },
+        "1605121509c75dda05": {
+          "type": "images-with-text",
+          "blocks": {
+            "1605121509c75dda05-0": {
+              "type": "image",
+              "settings": {
+                "text": "So many ways to express yourself",
+                "link_url": "shopify:\/\/collections",
+                "button": "Shop Now"
+              }
+            },
+            "1605121509c75dda05-1": {
+              "type": "image",
+              "settings": {
+                "text": "So many ways to express yourself",
+                "link_url": "shopify:\/\/collections",
+                "button": "Shop Now"
+              }
+            }
+          },
+          "block_order": [
+            "1605121509c75dda05-0",
+            "1605121509c75dda05-1"
+          ],
+          "settings": {}
+        },
+        "160512186359bb4293": {
+          "type": "featured-blog",
+          "settings": {
+            "width": "container",
+            "title": "Latest Blog Articles",
+            "blog": "news"
+          }
+        },
+        "newsletter-apparel": {
+          "type": "newsletter",
+          "settings": {
+            "bg_image_style": "dark"
+          }
+        },
+        "product-recommendations": {
+          "type": "product-recommendations",
+          "settings": {}
+        },
+        "cart-recommendations": {
+          "type": "cart-recommendations",
+          "settings": {}
+        },
+        "email-modal": {
+          "type": "email-modal",
+          "settings": {}
+        }
+      },
+      "content_for_index": [
+        "1605120224fb26a4ab",
+        "1605120245dab98ee6",
+        "1605120562fb06ef3f",
+        "16051208237d9aa7e8",
+        "1605194530e498ba6d",
+        "1605121509c75dda05",
+        "160512186359bb4293",
+        "newsletter-apparel"
+      ]
+    },
+    "Adoration": {
+      "color": "#303030",
+      "link_color": "#c14f1a",
+      "link_color_hover": "#696969",
+      "bg_color": "#ffffff",
+      "regular_color": "#303030",
+      "sale_color": "#AF3737",
+      "header_logo_color": "#c75d2b",
+      "footer_logo_color": "#FFFFFF",
+      "footer_color": "#BDC0C2",
+      "footer_bg_color": "#344569",
+      "btn_color": "#ffffff",
+      "btn_bg_color": "#c14f1a",
+      "bg_color_nav": "#fbf9f3",
+      "secondary_btn_color": "#000000",
+      "secondary_btn_bg_color": "#f3f0e5",
+      "facet_btn_bg_color": "#f0f0f1",
+      "facet_btn_bg_color_active": "#b15f3d",
+      "h16_font": "georgia_pro_n6",
+      "logo_font_size": 35,
+      "facebook_url": "\/",
+      "twitter_url": "\/",
+      "pinterest_url": "\/",
+      "instagram_url": "\/",
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "announcement_bg_color": "#c14f1a",
+            "announcement_color": "#ffffff"
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "01": {
+              "type": "menu",
+              "settings": {
+                "title": "Shop",
+                "menu": "footer"
+              }
+            },
+            "cbd2e01c-4587-4c63-bd27-3e61648054b9": {
+              "type": "text",
+              "settings": {
+                "title": "Customer Service",
+                "text": "<p><a href=\"\/pages\/contact-us\" title=\"Contact Us\">Contact Us<\/a><\/p><p><a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Terms &amp; Conditions<\/a><\/p><p><a href=\"\/policies\/privacy-policy\" title=\"Privacy Policy\">Privacy Policy<\/a><\/p>"
+              }
+            },
+            "18e35eb5-41a2-4ba8-af1f-9f66aa21e953": {
+              "type": "social_icons",
+              "settings": {
+                "title": "Follow Us"
+              }
+            }
+          },
+          "block_order": [
+            "01",
+            "cbd2e01c-4587-4c63-bd27-3e61648054b9",
+            "18e35eb5-41a2-4ba8-af1f-9f66aa21e953"
+          ],
+          "settings": {}
+        },
+        "1605120224fb26a4ab": {
+          "type": "hero",
+          "settings": {
+            "title": "So many ways to express yourself",
+            "font_size": "large",
+            "link_url": "shopify:\/\/collections",
+            "button": "Shop Now",
+            "content_color": "#ffffff"
+          }
+        },
+        "1605120245dab98ee6": {
+          "type": "info-badges",
+          "blocks": {
+            "1605120245dab98ee6-0": {
+              "type": "badge",
+              "settings": {
+                "image_size": "50px",
+                "text": "Locally Owned",
+                "font_size": "1rem",
+                "color": "#303030",
+                "bg_color": "#faf9f5"
+              }
+            },
+            "1605120245dab98ee6-1": {
+              "type": "badge",
+              "settings": {
+                "text": "Fast Shipping",
+                "color": "#545779",
+                "bg_color": "#faf9f5"
+              }
+            },
+            "1605120245dab98ee6-2": {
+              "type": "badge",
+              "settings": {
+                "text": "365 Day Guarantee",
+                "color": "#303030",
+                "bg_color": "#faf9f5"
+              }
+            }
+          },
+          "block_order": [
+            "1605120245dab98ee6-0",
+            "1605120245dab98ee6-1",
+            "1605120245dab98ee6-2"
+          ],
+          "settings": {}
+        },
+        "1605120562fb06ef3f": {
+          "type": "featured-collections",
+          "blocks": {
+            "1605120562fb06ef3f-0": {
+              "type": "collection",
+              "settings": {
+                "collection": "all"
+              }
+            },
+            "1605120562fb06ef3f-1": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            },
+            "1605120562fb06ef3f-2": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            },
+            "1605120562fb06ef3f-3": {
+              "type": "collection",
+              "settings": {
+                "collection": ""
+              }
+            }
+          },
+          "block_order": [
+            "1605120562fb06ef3f-0",
+            "1605120562fb06ef3f-1",
+            "1605120562fb06ef3f-2",
+            "1605120562fb06ef3f-3"
+          ],
+          "settings": {
+            "title": "Featured Collections",
+            "alpha": 30
+          }
+        },
+        "16051208237d9aa7e8": {
+          "type": "featured-collection",
+          "settings": {
+            "collection": "all",
+            "show_price": true,
+            "show_compare_at_price": true,
+            "show_sale_badge": true,
+            "show_from": false
+          }
+        },
+        "1605194530e498ba6d": {
+          "type": "featured-collection",
+          "settings": {
+            "show_price": true,
+            "show_compare_at_price": true,
+            "show_sale_badge": true,
+            "show_from": false
+          }
+        },
+        "1605121509c75dda05": {
+          "type": "images-with-text",
+          "blocks": {
+            "1605121509c75dda05-0": {
+              "type": "image",
+              "settings": {
+                "text": "So many ways to express yourself",
+                "link_url": "shopify:\/\/collections",
+                "button": "Shop Now",
+                "color": "#ffffff"
+              }
+            },
+            "1605121509c75dda05-1": {
+              "type": "image",
+              "settings": {
+                "text": "So many ways to express yourself",
+                "link_url": "shopify:\/\/collections",
+                "button": "Shop Now",
+                "color": "#ffffff"
+              }
+            }
+          },
+          "block_order": [
+            "1605121509c75dda05-0",
+            "1605121509c75dda05-1"
+          ],
+          "settings": {}
+        },
+        "160512186359bb4293": {
+          "type": "featured-blog",
+          "settings": {
+            "width": "container",
+            "title": "Latest Blog Articles",
+            "blog": "news"
+          }
+        },
+        "newsletter-jewelry": {
+          "type": "newsletter",
+          "settings": {
+            "content_color": "#303030",
+            "bg_image_style": "light"
+          }
+        },
+        "product-recommendations": {
+          "type": "product-recommendations",
+          "settings": {}
+        },
+        "cart-recommendations": {
+          "type": "cart-recommendations",
+          "settings": {}
+        },
+        "email-modal": {
+          "type": "email-modal",
+          "settings": {}
+        }
+      },
+      "content_for_index": [
+        "1605120224fb26a4ab",
+        "1605120245dab98ee6",
+        "1605120562fb06ef3f",
+        "16051208237d9aa7e8",
+        "1605194530e498ba6d",
+        "1605121509c75dda05",
+        "160512186359bb4293",
+        "newsletter-jewelry"
+      ]
+    }
+  }
+}

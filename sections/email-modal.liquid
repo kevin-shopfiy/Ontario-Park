@@ -1,0 +1,307 @@
+{% liquid
+  assign cookie_length = section.settings.cookie_length
+  assign enable_test_mode = section.settings.enable_test_mode
+  assign third_party_ar = section.settings.third_party_ar
+
+  assign heading_size = section.settings.modal_heading_size
+  assign body_size = section.settings.modal_body_size
+
+  case heading_size
+    when 'sm'
+      assign heading_font_size = 'tw-text-lg'
+    when 'md'
+      assign heading_font_size = 'tw-text-2xl'
+    when 'lg'
+      assign heading_font_size = 'tw-text-4xl'
+    when 'xl'
+      assign heading_font_size = 'tw-text-6xl'
+    else
+  endcase
+
+  case body_size
+    when 'sm'
+      assign body_font_size = 'tw-text-sm'
+    when 'md'
+      assign body_font_size = 'tw-text-base'
+    when 'lg'
+      assign body_font_size = 'tw-text-lg'
+    when 'xl'
+      assign body_font_size = 'tw-text-xl'
+    else
+  endcase
+%}
+
+<style>
+  {% assign alpha_bg_color = section.settings.modal_bg_color | color_extract: 'alpha' %}
+  {% if alpha_bg_color > 0 %}
+  .email-modal__content {
+    background-color: {{ section.settings.modal_bg_color }};
+  }
+  {% endif %}
+
+
+  {% assign alpha_heading_color = section.settings.modal_heading_color | color_extract: 'alpha' %}
+  {% if alpha_heading_color > 0   %}
+  .email-modal__heading {
+    color: {{ section.settings.modal_heading_color }};
+  }
+  {% endif %}
+
+  {% assign alpha_body_color = section.settings.modal_body_color | color_extract: 'alpha' %}
+  {% if alpha_body_color > 0 %}
+  .email-modal__body, .email-modal__close {
+    color: {{ section.settings.modal_body_color }};
+  }
+  {% endif %}
+
+  {% assign alpha_button = section.settings.modal_button_color | color_extract: 'alpha' %}
+  {% if alpha_button > 0%}
+  .email-modal__button, .email-modal__button:hover {
+    color: {{ section.settings.modal_button_color }} !important;
+  }
+  {% endif %}
+
+  {% assign alpha_button_bg = section.settings.modal_button_bg_color | color_extract: 'alpha' %}
+  {% if alpha_button_bg > 0 %}
+  .email-modal__button, .email-modal__button:hover {
+    background-color: {{ section.settings.modal_button_bg_color }} !important;
+    border-color: {{ section.settings.modal_button_bg_color }} !important;
+  }
+  {% endif %}
+</style>
+
+{% if section.settings.enabled %}
+
+  <div class="tw-invisible tw-opacity-0 tw-pointer-events-none tw-fixed tw-w-full tw-h-full tw-inset-0 tw-flex tw-place-items-center tw-z-20 tw-transition-opacity tw-duration-300 critical-hidden" data-section-id="{{ section.id }}" data-section-type="email-modal"
+  data-section-settings='{
+    "cookieLength": {{ cookie_length | json }},
+    "testMode": {{ enable_test_mode | json}},
+    "thirdParty": {{ third_party_ar | json}}
+  }'>
+
+    <div class="tw-w-11/12 md:tw-max-w-md tw-mx-auto tw-rounded tw-shadow-lg tw-z-30 tw-overflow-y-auto" data-email-modal-container>
+
+      <div class="email-modal__content tw-relative tw-py-4 tw-text-left tw-px-6 tw-leading-normal " role="dialog" aria-modal="true" aria-labelledby="email-signup-modal-heading" data-email-modal-content>
+        <button class="email-modal__close tw-border-0 tw-bg-transparent tw-absolute tw-top-2 tw-right-2 tw-z-30" aria-label="{{ 'general.accessibility.close' | t }}" data-email-modal-close>
+          {% render 'icon-close' %}
+        </button>
+        <h2 id="email-signup-modal-heading" class="email-modal__heading tw-text-center {{ heading_font_size }} tw-font-bold tw-pb-3">{{ section.settings.modal_heading }}</h2>
+        {% unless form.posted_successfully? %}
+          <div class="email-modal__body tw-text-center {{ body_font_size }}">{{ section.settings.modal_body }}</div>
+        {% endunless %}
+
+        {% form 'customer', id: 'newsletter-modal', novalidate: 'novalidate', class: 'mt-4', data-email-modal-form: '' %}
+
+          {% comment %} Theme editor preview success {% endcomment %}
+          {% if request.design_mode and section.settings.modal_success_message != blank %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black {{ modal_body_size }}">{{ section.settings.modal_success_message }}</div>
+          {% endif %}
+
+
+          {% comment %} Shopify AR success/errors  {% endcomment %}
+          {% if form.posted_successfully? %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black {{ modal_body_size }}" data-email-modal-success>
+              {% if section.settings.modal_success_message != blank %}
+                {{ section.settings.modal_success_message }}
+              {% else %}
+                <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+              {% endif %}
+            </div>
+          {% elsif form.errors contains 'email' %}
+            <p class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-red-200 tw-border-red-600 tw-border-2 tw-rounded tw-text-black">
+              {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.
+            </p>
+          {% endif %}
+
+          {% comment %} Third-party {% endcomment %}
+          {% if third_party_ar %}
+            <div class="tw-hidden tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black {{ modal_body_size }}" data-email-modal-ar-success>
+              {% if section.settings.modal_success_message != blank %}
+                {{ section.settings.modal_success_message }}
+              {% else %}
+                <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+              {% endif %}
+            </div>
+
+            <p class="tw-hidden tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-red-200 tw-border-red-600 tw-border-2 tw-rounded tw-text-black" data-email-modal-ar-error>
+              <ly-as-545906>Error</ly-as-545906>
+            </p>
+          {% endif %}
+
+          <input type="hidden" name="contact[tags]" value="newsletter"/>
+
+          <div class="input-group" data-email-modal-input-field>
+
+            {% unless form.posted_successfully? %}
+
+              <input id="shopify-section-{{ section.id }}-email" class="email-modal__input form-control tw-rounded-tl-full tw-rounded-bl-full tw-border-r-0" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ 'general.newsletter_form.email_address' | t }}" aria-label="{{ 'general.newsletter_form.email_address' | t }}" {% if form.posted_successfully? %} data-email-modal-success {% elsif form.errors contains 'email' %} data-email-modal-error {% endif %}/>
+
+              <div class="input-group-append ml-0">
+                <button class="email-modal__button tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center font-600 tw-rounded-tr-full tw-rounded-br-full" type="submit" data-email-modal-submit>
+                  <span class="d-inline-flex justify-content-center align-items-center" data-email-modal-submit-content>
+                    {{ 'general.newsletter_form.sign_up' | t }}
+                    {% if settings.show_button_arrow %}
+                      {% render 'icon-arrow-right' %}
+                    {% endif %}
+                  </span>
+                  <span class="tw-mx-2 tw-hidden" data-email-modal-spinner>
+                    {% render 'icon-spinner', size: 'small' %}
+                  </span>
+                </button>
+              </div>
+
+            {% endunless %}
+
+
+          </div>
+
+        {% endform %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+{% endif %}
+
+<script>
+  (function ExitModal(){
+    Avatar.skup.exitModal = {{ section.settings.enabled | json }}
+  })()
+</script>
+
+{% schema %}
+  {
+    "name": "t:sections.email-modal.name",
+    "class": "shopify-section-email-modal",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enabled",
+        "label": "t:sections.email-modal.settings.enabled.label",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "third_party_ar",
+        "label": "t:sections.email-modal.settings.third_party_ar.label",
+        "default": false,
+        "info": "t:sections.email-modal.settings.third_party_ar.info"
+      },
+      {
+        "type": "text",
+        "id": "modal_heading",
+        "label": "t:sections.email-modal.settings.modal_heading.label",
+        "default": "Hey!"
+      },
+      {
+        "type": "select",
+        "id": "modal_heading_size",
+        "label": "t:sections.email-modal.settings.modal_heading_size.label",
+        "options": [
+          {
+            "value": "sm",
+            "label": "t:sections.email-modal.settings.modal_heading_size.options__1.label"
+          },
+          {
+            "value": "md",
+            "label": "t:sections.email-modal.settings.modal_heading_size.options__2.label"
+          },
+          {
+            "value": "lg",
+            "label": "t:sections.email-modal.settings.modal_heading_size.options__3.label"
+          },
+          {
+            "value": "xl",
+            "label": "t:sections.email-modal.settings.modal_heading_size.options__4.label"
+          }
+        ],
+        "default": "md"
+      },
+      {
+        "type": "color",
+        "id": "modal_heading_color",
+        "label": "t:sections.email-modal.settings.modal_heading_color.label"
+      },
+      {
+        "type": "richtext",
+        "id": "modal_body",
+        "label": "t:sections.email-modal.settings.modal_body.label",
+        "default": "<p>Let's keep in touch. Sign up for our newsletter!</p>"
+      },
+      {
+        "type": "select",
+        "id": "modal_body_size",
+        "label": "t:sections.email-modal.settings.modal_body_size.label",
+        "options": [
+          {
+            "value": "sm",
+            "label": "t:sections.email-modal.settings.modal_body_size.options__1.label"
+          },
+          {
+            "value": "md",
+            "label": "t:sections.email-modal.settings.modal_body_size.options__2.label"
+          },
+          {
+            "value": "lg",
+            "label": "t:sections.email-modal.settings.modal_body_size.options__3.label"
+          },
+          {
+            "value": "xl",
+            "label": "t:sections.email-modal.settings.modal_body_size.options__4.label"
+          }
+        ],
+        "default": "md"
+      },
+      {
+        "type": "color",
+        "id": "modal_body_color",
+        "label": "t:sections.email-modal.settings.modal_body_color.label"
+      },
+      {
+        "type": "color",
+        "id": "modal_bg_color",
+        "label": "t:sections.email-modal.settings.modal_bg_color.label",
+        "default": "#F9FAFC"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.email-modal.settings.header.content"
+      },
+      {
+        "type": "color",
+        "id": "modal_button_color",
+        "label": "t:sections.email-modal.settings.modal_button_color.label"
+      },
+      {
+        "type": "color",
+        "id": "modal_button_bg_color",
+        "label": "t:sections.email-modal.settings.modal_button_bg_color.label"
+      },
+      {
+        "type": "richtext",
+        "id": "modal_success_message",
+        "label": "t:sections.email-modal.settings.modal_success_message.label",
+        "info": "t:sections.email-modal.settings.modal_success_message.info"
+      },
+      {
+        "type": "range",
+        "id": "cookie_length",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "unit": "day",
+        "label": "t:sections.email-modal.settings.cookie_length.label",
+        "default": 7
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_test_mode",
+        "label": "t:sections.email-modal.settings.enable_test_mode.label",
+        "default": false,
+        "info": "t:sections.email-modal.settings.enable_test_mode.info"
+      }
+    ]
+  }
+{% endschema %}

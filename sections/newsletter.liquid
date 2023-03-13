@@ -1,0 +1,245 @@
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+  {% if section.settings.bg_color != blank and alpha > 0 %}
+    #shopify-section-{{ section.id }} {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      background-color: {{ section.settings.bg_color }};
+    }
+  {% endif %}
+  #shopify-section-{{ section.id }} .cover {
+    color: {{ section.settings.content_color }};
+    {% unless section.settings.show_overlay %}
+      background-color: {{ section.settings.content_bg_color }};
+    {% endunless %}
+  }
+  {% if section.settings.show_overlay %}
+    {% assign alpha = section.settings.alpha | divided_by: 100.0 | round: 1 %}
+    #shopify-section-{{ section.id }} .overlay {
+      background-color: {{ section.settings.content_bg_color | color_modify: 'alpha', alpha }};
+    }
+  {% endif %}
+</style>
+
+{%- liquid
+  case section.settings.bg_image_style
+    when 'dark'
+      assign bg_image_style = 'newsletter-bg.png'
+    when 'light'
+      assign bg_image_style = 'newsletter-bg-light.png'
+    else
+  endcase
+
+-%}
+
+<div data-section-id="{{ section.id }}" data-section-type="newsletter">
+  <div class="{{ section.settings.width }}">
+
+    <div class="cover rounded lazyload" {% if section.settings.show_bg_image %}data-bgset="{% if section.settings.content_bg_image != blank %}{% render 'image-bgset', image: section.settings.content_bg_image %}{% else %}{{ bg_image_style | asset_img_url: '1400x400' }} 1400w 400h{% endif %}" data-sizes="auto" data-parent-fit="cover"{% endif %}>
+
+      {% capture html_content %}
+
+      {% if section.settings.show_overlay %}
+        <div class="overlay">
+      {% endif %}
+
+      <div class="content py-4 py-md-5 mx-auto text-center">
+
+        {% if section.settings.title != blank %}
+          <h2 class="mb-0 lh-1 tw-break-words">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="rte mt-3 mb-0 tw-break-words">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% form 'customer', class: 'mt-4' %}
+
+          {% if form.posted_successfully? %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black {{ modal_body_size }}" data-form-status>
+              <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+            </div>
+          {% endif %}
+          {% if form.errors %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-red-200 tw-border-red-600 tw-border-2 tw-rounded tw-text-black" data-form-status>
+              <p>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</p>
+            </div>
+          {% endif %}
+
+          <input type="hidden" name="contact[tags]" value="newsletter"/>
+
+          <div class="input-group">
+
+            <label class="sr-only" for="shopify-section-{{ section.id }}-email">
+              {{ 'general.newsletter_form.email_address' | t }}
+            </label>
+
+            <input type="email"
+              id="shopify-section-{{ section.id }}-email"
+              class="form-control {% if form.errors %}tw-border-red-400{% endif %}"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+              autocorrect="off"
+              autocapitalize="off"
+              aria-required="true"
+              aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-email-error"
+              {% endif %}
+            />
+
+            <div class="input-group-append ml-0">
+              <button class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center font-600 tw-rounded-r-full" type="submit" aria-label="{{ 'general.accessibility.submit' | t }}">
+                {{ 'general.newsletter_form.sign_up' | t }}
+                {% if settings.show_button_arrow %}
+                  {% render 'icon-arrow-right' %}
+                {% endif %}
+              </button>
+            </div>
+
+          </div>
+
+          {%- if form.errors contains 'email' -%}
+            <span id="{{ formId }}-email-error" class="sr-only">
+              <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+            </span>
+          {%- endif -%}
+
+        {% endform %}
+
+      </div>
+
+      {% if section.settings.show_overlay %}
+        </div>
+      {% endif %}
+
+      {% endcapture %}
+
+      {{ html_content }}
+    </div>
+
+    <div class="cover">
+      {% render 'noscript', tag: 'div', media: section.settings.content_bg_image, size: '1400x352', content: html_content %}
+    </div>
+
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.newsletter.name",
+    "class": "shopify-section-newsletter",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.newsletter.settings.header__1.content",
+        "info": "t:sections.newsletter.settings.header__1.info"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.newsletter.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.newsletter.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.newsletter.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.newsletter.settings.bg_color.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.newsletter.settings.header__2.content"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.newsletter.settings.title.label",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "t:sections.newsletter.settings.text.label",
+        "default": "<p>Sign up for our newsletter to recieve news, promotions, and annoucements.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_overlay",
+        "label": "t:sections.newsletter.settings.show_overlay.label",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "alpha",
+        "label": "t:sections.newsletter.settings.alpha.label",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "unit": "t:sections.newsletter.settings.alpha.unit",
+        "default": 50
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "t:sections.newsletter.settings.content_color.label",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "content_bg_color",
+        "label": "t:sections.newsletter.settings.content_bg_color.label",
+        "default": "#545779"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_bg_image",
+        "label": "t:sections.newsletter.settings.show_bg_image.label",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "bg_image_style",
+        "label": "t:sections.newsletter.settings.bg_image_style.label",
+        "options": [
+          {
+            "value": "dark",
+            "label": "t:sections.newsletter.settings.bg_image_style.options__1.label"
+          },
+          {
+            "value": "light",
+            "label": "t:sections.newsletter.settings.bg_image_style.options__2.label"
+          }
+        ],
+        "default": "dark"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_bg_image",
+        "label": "t:sections.newsletter.settings.content_bg_image.label"
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.newsletter.presets.name",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

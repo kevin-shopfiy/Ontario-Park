@@ -1,0 +1,48 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "width": "container-fluid",
+        "products_per_page": 20,
+        "products_per_row": 4,
+        "price_style": "variant",
+        "show_vendor": false,
+        "show_price": true,
+        "show_compare_at_price": true,
+        "show_sale_badge": true,
+        "show_image": true,
+        "show_author": true,
+        "show_date": true,
+        "show_comment_count": true,
+        "show_excerpt": true,
+        "excerpt_truncate": 50,
+        "page_show_image": true,
+        "page_show_author": true,
+        "page_show_date": true,
+        "page_show_excerpt": true,
+        "page_excerpt_truncate": 50
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "disabled": true,
+      "settings": {
+        "width": "container-fluid",
+        "bg_color": "",
+        "title": "Subscribe to our newsletter",
+        "text": "<p>Sign up for our newsletter to recieve news, promotions, and annoucements.<\/p>",
+        "show_overlay": false,
+        "alpha": 50,
+        "content_color": "#fff",
+        "content_bg_color": "#545779",
+        "show_bg_image": true,
+        "bg_image_style": "dark"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "newsletter"
+  ]
+}

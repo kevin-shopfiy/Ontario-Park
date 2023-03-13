@@ -1,0 +1,180 @@
+{
+  "sections": {
+    "1657043350fb560905": {
+      "type": "hero",
+      "settings": {
+        "width": "container-fluid",
+        "height": 400,
+        "mobile_height": 230,
+        "bg_color": "",
+        "image": "shopify:\/\/shop_images\/TurtleLong.jpg",
+        "mobile_crop": "cover",
+        "title": "Turtle Protection",
+        "text": "",
+        "font_size": "large",
+        "link_url": "",
+        "button": "",
+        "show_overlay": true,
+        "alpha": 20,
+        "content_color": "#ffffff",
+        "content_bg_color": "#303030"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "content"
+      ],
+      "settings": {}
+    },
+    "165842318017ae22cb": {
+      "type": "rich-text",
+      "settings": {
+        "width": "container-fluid",
+        "title": "Shop the Turtle Protection Collection",
+        "text": "<p>Proceeds directly support protection, research, and education in Ontario Provincial Parks.<\/p>",
+        "align": "center"
+      }
+    },
+    "1657043433507d5388": {
+      "type": "featured-collection",
+      "settings": {
+        "width": "container-fluid",
+        "title": "",
+        "collection": "turtle-protection-project",
+        "products_per_row": 6,
+        "product_rows": 1,
+        "show_view_all": false,
+        "bg_color": "",
+        "show_vendor": false,
+        "show_price": true,
+        "show_compare_at_price": true,
+        "show_sale_badge": true,
+        "show_from": true
+      }
+    },
+    "1657043472261b7e61": {
+      "type": "separator",
+      "settings": {
+        "margin_top": "mt-5",
+        "margin_bottom": "mb-5",
+        "bg_color": "",
+        "show_line": true,
+        "line_thickness": "3px",
+        "line_width": "w-50",
+        "line_color": "#eeeeee"
+      }
+    },
+    "1657043500df586bdc": {
+      "type": "rich-text",
+      "settings": {
+        "width": "container-fluid",
+        "title": "Where Can You See Your Impact?",
+        "text": "",
+        "align": "center"
+      }
+    },
+    "1657043529b1f4ce46": {
+      "type": "image-with-text",
+      "settings": {
+        "width": "container",
+        "image": "shopify:\/\/shop_images\/Kawartha_Highlands.jpg",
+        "image_align": "left",
+        "title": "Kawartha Highlands Signature Site Provincial Park",
+        "text": "<p>Placed chain-link-fence-style turtle next covers throughout the park. Five Snapping Turtles and one Blanding's Turtle have been identified and protected here so far.<\/p><p>All five Snapping Turtle nests hatched within the first two weeks of September 2021, with an average of 24 eggs per nest.<\/p><p>Amazingly, 119 of the 121 eggs have hatched altogether. That's more than a 98% hatching rate!<\/p><p>Considering unprotected nests are destroyed by predators at rates of 59-94%, this is an indisputed success!<\/p>",
+        "text_align": "left",
+        "button_link": "",
+        "button_label": ""
+      }
+    },
+    "1657043533310b4df9": {
+      "type": "image-with-text",
+      "settings": {
+        "width": "container",
+        "image": "shopify:\/\/shop_images\/Presqu_ile2.jpg",
+        "image_align": "right",
+        "title": "Presqu'ile Provincial Park",
+        "text": "<p>Expanded two existing turtle nesting mounds and created two more sites in locations where turtles previously showed interest.<\/p><p>After the turtles nested, the biodiversity team placed protected covers over the eggs. Throughout 2021, they delivered more than 100 hatchlings safely to the shore -- more than ever before!<\/p>",
+        "text_align": "left",
+        "button_link": "",
+        "button_label": ""
+      }
+    },
+    "16570435460dff2f3f": {
+      "type": "image-with-text",
+      "settings": {
+        "width": "container",
+        "image": "shopify:\/\/shop_images\/Grundy.jpg",
+        "image_align": "left",
+        "title": "Grundy Lake Provincial Park",
+        "text": "<p>Converted a road into the new Pakeshkag Lake Trail to protect a significant nesting areas and installed signage to bring awareness to the species found in the park.<\/p><p>In 2021, the road was turned into a trail. In 2022, nine turtle nests were covered to protect the dozens of hatchlings, which would have previously been destroyed by cars and then predated. <\/p>",
+        "text_align": "left",
+        "button_link": "",
+        "button_label": ""
+      }
+    },
+    "165876549755d13d54": {
+      "type": "separator",
+      "settings": {
+        "margin_top": "mt-5",
+        "margin_bottom": "mb-5",
+        "bg_color": "",
+        "show_line": true,
+        "line_thickness": "3px",
+        "line_width": "w-50",
+        "line_color": "#eeeeee"
+      }
+    },
+    "1658423191ebe2771e": {
+      "type": "rich-text",
+      "settings": {
+        "width": "container-fluid",
+        "title": "Shop the Turtle Protection Collection",
+        "text": "<p>Proceeds directly support protection, research, and education in Ontario Provincial Parks.<\/p>",
+        "align": "center"
+      }
+    },
+    "16584231971563d0f2": {
+      "type": "featured-collection",
+      "settings": {
+        "width": "container-fluid",
+        "title": "",
+        "collection": "turtle-protection-project",
+        "products_per_row": 6,
+        "product_rows": 1,
+        "show_view_all": false,
+        "bg_color": "",
+        "show_vendor": false,
+        "show_price": true,
+        "show_compare_at_price": true,
+        "show_sale_badge": true,
+        "show_from": true
+      }
+    }
+  },
+  "order": [
+    "1657043350fb560905",
+    "main",
+    "165842318017ae22cb",
+    "1657043433507d5388",
+    "1657043472261b7e61",
+    "1657043500df586bdc",
+    "1657043529b1f4ce46",
+    "1657043533310b4df9",
+    "16570435460dff2f3f",
+    "165876549755d13d54",
+    "1658423191ebe2771e",
+    "16584231971563d0f2"
+  ]
+}

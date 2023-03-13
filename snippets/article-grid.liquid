@@ -1,0 +1,80 @@
+{% assign xs = columns | at_most: 1 %}
+{% assign md = columns | at_most: 2 %}
+{% assign lg = columns %}
+
+<div class="row row-cols-{{ xs }} row-cols-md-{{ md }} row-cols-lg-{{ lg }} mx-md-n4 mb-n4">
+  {% for article in articles limit: article_limit %}
+
+    <div class="col px-4 pb-4">
+      {% render 'article-card', blog: blog, article: article %}
+    </div>
+
+  {% else %}
+
+    {% for i in (1..article_limit) %}
+      <div class="col px-4 pb-4">
+        <article class="article-card">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+
+              {%- when 'image' -%}
+                {% render 'image', container_class: 'article-card-image mb-3 tw-bg-btn-secondary-bg', placeholder: 'image' %}
+              {%- when 'info'-%}
+                <div class="article-card-info">
+                  <h3 class="article-card-title mb-0 font-5 tw-leading-normal">
+                    {{ 'homepage.onboarding.article_title' | t }}
+                  </h3>
+                  {% if block.settings.show_author or block.settings.show_date %}
+                    <div class="article-card-meta mt-1 font-7">
+
+                      <span class="article-card-posted">
+                        {{ 'blogs.article.posted' | t }}
+                      </span>
+
+                      {% if block.settings.show_author %}
+                        <span class="article-card-author">
+                          {{ 'blogs.article.by_author' | t: author: 'Shopify' }}
+                        </span>
+                      {% endif %}
+
+                      {% if block.settings.show_date %}
+                        {% assign article_date = article.published_at | date: '%B %d, %Y' %}
+                        <span class="article-card-date">
+                          {{ 'blogs.article.on_date' | t: date: 'August 1, 2020' }}
+                        </span>
+                      {% endif %}
+
+                    </div>
+                  {% endif %}
+                  {% if block.settings.show_comment_count %}
+                    {% assign p1 = 'blogs.article.comment' | t %}
+                    {% assign p2 = 'blogs.article.comments' | t %}
+                    <div class="article-card-comments mt-1 font-7">
+                      {{ 10 }} {{ 10 | pluralize: p1, p2 }}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.show_excerpt %}
+                    <p class="article-card-excerpt my-3">
+                      {% if block.settings.enable_truncate %}
+                        {{ 'homepage.onboarding.article_excerpt' | t | truncatewords: block.settings.excerpt_truncate }}
+                      {% else %}
+                        {{ 'homepage.onboarding.article_excerpt' | t }}
+                      {% endif %}
+                    </p>
+                    <a class="btn btn-link d-inline-flex justify-content-center align-items-center p-0 border-0 font-600">
+                      {{ 'blogs.article.read_more' | t }}
+                      {% if settings.show_button_arrow %}
+                        {% render 'icon-arrow-right' %}
+                      {% endif %}
+                    </a>
+                  {% endif %}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+
+        </article>
+      </div>
+    {% endfor %}
+
+  {% endfor %}
+</div>

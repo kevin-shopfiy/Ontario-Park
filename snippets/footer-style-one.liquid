@@ -1,0 +1,244 @@
+
+<div class="footer-content">
+    <div class="container lg:tw-container 2xl:tw-container">
+
+      <div class="tw-flex tw-justify-center lg:tw-hidden logo h1 lh-1 tw-font-display w-100 tw-mt-4 sm:tw-mt-0 text-{{ section.settings.logo_position }}" >
+        <div class="{% if section.settings.logo != blank %} d-block tw-w-full {% else %} d-inline-block tw-break-words {% endif %}">
+          <a href="{{ routes.root_url }}">
+            {% if section.settings.logo != blank %}
+              {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              <img class="tw-w-full lazyload js"
+                    src="{{ section.settings.logo | img_url: '300x300' }}"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ section.settings.logo.alt | default: shop.name }}"
+                    width="{{ section.settings.logo.width }}"
+                    height="{{ section.settings.logo.height }}"
+                    style="max-width: {{ section.settings.logo_width }}px; {{ logo_justify }}">
+              <noscript>
+                {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+                <img src="{{ section.settings.logo | img_url: image_size }}"
+                      srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                      alt="{{ section.settings.logo.alt | default: shop.name }}"
+                      width="{{ section.settings.logo.width }}"
+                      height="{{ section.settings.logo.height }}"
+                      style="max-width: {{ section.settings.logo_width }}px;">
+              </noscript>
+            {% else %}
+              {{ shop.name }}
+            {% endif %}
+          </a>
+        </div>
+      </div>
+
+      <div class="row mx-lg-n5">
+        <!-- <div class="col-12 col-lg-5 px-lg-5">
+          <div class="row">
+            <div class="col-12">
+              <div class="about py-3 mb-3">
+                {{ section.settings.about }}
+              </div>
+            </div>
+            {% if section.settings.show_address %}
+              <div class="col-12 col-md-6">
+                <p class="h6">{{ 'layout.footer.address_heading' | t}}</p>
+                {% if shop.address.summary != blank %}
+                  <div class="contact mb-3">
+                    {{ shop.address.summary }}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if section.settings.show_phone or section.settings.show_email %}
+              <div class="col-12 col-md-6">
+                {% if section.settings.show_phone %}
+                  <p class="h6">{{ 'layout.footer.phone_heading' | t}}</p>
+                  {% if shop.phone != blank %}
+                    <div class="contact mb-3">
+                      <a href="tel:{{ shop.phone }}">{{ shop.phone }}</a>
+                    </div>
+                  {% endif %}
+                {% endif %}
+                {% if section.settings.show_email %}
+                  <p class="h6">{{ 'layout.footer.email_heading' | t}}</p>
+                  {% if shop.email != blank %}
+                    <div class="contact mb-3">
+                      <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div> -->
+
+        <div class="col-12 px-lg-5">
+          {% assign columns = section.blocks.size %}
+          {% if section.blocks.size > 4 %}
+             {% assign columns = 4 %}
+          {% endif %}
+          <div class="mt-3 mt-lg-0 mb-n3 tw-grid tw-grid-cols-1 md:tw-grid-cols-{{ columns }} tw-gap-4">
+            {% for block in section.blocks %}
+              <div class="">
+                {% case block.type %}
+                  {% when 'menu' %}
+                    {% render 'block-menu', block: block %}
+                  {% when 'legal' %}
+                    {% render 'block-legal', block: block %}
+                  {% when 'social_icons' %}
+                    {% render 'block-social-icons', block: block %}
+                  {% when 'newsletter' %}
+                    {% render 'block-newsletter', block: block %}
+                  {% when 'text' %}
+                    {% render 'block-text', block: block %}
+                  {% when 'talk_with_us' %}
+                    {% render 'block-text', block: block %}
+                {% endcase %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<footer class="footer text-center">
+
+  {% if show_locale_selector or show_currency_selector %}
+    <div class="tw-py-4">
+      {%- form 'localization', class: 'selectors-form', data-disclosure-form: '' -%}
+        <div class="tw-flex tw-justify-center tw-space-x-4">
+          {%- if show_locale_selector -%}
+            <div class="selectors-form__item">
+              <h2 class="sr-only" id="lang-heading">
+                {{ 'general.language.dropdown_label' | t }}
+              </h2>
+
+              <div class="disclosure tw-relative" data-disclosure-locale>
+                <button type="button" class="tw-relative tw-w-32 tw-text-black tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-center tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="lang-list" aria-describedby="lang-heading" data-disclosure-toggle>
+                  <span class="tw-flex tw-items-center">
+                    <span class="tw-block tw-truncate">
+                      {{ form.current_locale.endonym_name }}
+                    </span>
+                  </span>
+                  <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-disclosure-icon>
+                    {% render 'icon-chevron-down' %}
+                  </span>
+                </button>
+                <ul id="lang-list" class="tw-absolute tw-mt-0.5 tw-w-full tw-rounded-2xl tw-overflow-x-hidden tw-text-black tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-z-10 tw-bottom-full-15 tw-opacity-0 tw-hidden" data-disclosure-list>
+                  {% for locale in form.available_locales %}
+                    <li class="tw-select-none tw-relative tw-text-left tw-py-2 tw-px-3 hover:tw-bg-body-mix-2 {% if locale.iso_code == form.current_locale.iso_code %}tw-bg-body-mix-2{% endif %}">
+                      <a class="tw-inline-block tw-w-full" href="#" lang="{{ locale.iso_code }}" {% if locale.iso_code == form.current_locale.iso_code %}aria-current="true"{% endif %} data-value="{{ locale.iso_code }}" data-disclosure-option>
+                        {{ locale.endonym_name }}
+                      </a>
+
+                      {% if locale.iso_code == form.current_locale.iso_code %}
+                        <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                          {% render 'icon-check' %}
+                        </span>
+                      {% endif %}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <input type="hidden" name="locale_code" id="LocaleSelector" value="{{ form.current_locale.iso_code }}" data-disclosure-input/>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if show_currency_selector -%}
+            <div class="selectors-form__item">
+              <h2 class="sr-only" id="currency-heading">
+                {{ 'general.currency.dropdown_label' | t }}
+              </h2>
+
+              <div class="disclosure tw-relative" data-disclosure-currency>
+                <button type="button" class="tw-relative tw-w-32 tw-text-black tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-center tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="currency-list" aria-describedby="currency-heading" data-disclosure-toggle>
+                  <span class="tw-flex tw-items-center">
+                    <span class="tw-block tw-truncate">
+                      {{ form.current_currency.iso_code }} {%- if form.current_currency.symbol -%}{{ form.current_currency.symbol }}{%- endif -%}
+                    </span>
+                  </span>
+                  <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-disclosure-icon>
+                    {% render 'icon-chevron-down' %}
+                  </span>
+                </button>
+                <ul id="currency-list" class="tw-absolute tw-mt-0.5 tw-w-full tw-rounded-2xl tw-overflow-x-hidden tw-text-black tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-z-10 tw-bottom-full-15 tw-opacity-0 tw-hidden" data-disclosure-list>
+                  {% for currency in form.available_currencies %}
+                    <li class="tw-select-none tw-relative tw-text-left tw-py-2 tw-px-3 hover:tw-bg-body-mix-2{% if currency.iso_code == form.current_currency.iso_code %} tw-bg-body-mix-2{% endif %}">
+                      <a class="tw-inline-block tw-w-full" href="#" {% if currency.iso_code == form.current_currency.iso_code %}aria-current="true"{% endif %} data-value="{{ currency.iso_code }}" data-disclosure-option>
+                        {{ currency.iso_code }} {%- if currency.symbol -%}{{ currency.symbol }}{%- endif -%}
+                      </a>
+
+                      {% if currency.iso_code == form.current_currency.iso_code %}
+                        <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                          {% render 'icon-check' %}
+                        </span>
+                      {% endif %}
+
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <input type="hidden" name="currency_code" id="CurrencySelector" value="{{ form.current_currency.iso_code }}" data-disclosure-input/>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+    </div>
+  {% endif %}
+
+  <div class="tw-block lg:tw-flex lg:tw-justify-between tw-px-4 tw-items-center">
+    <div>
+      <p class="copyright m-0">
+        {{ 'layout.footer.copyright' | t}} &copy; Queens Printer for Ontario {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}
+        
+      </p>
+    </div>
+    <div class="tw-hidden lg:tw-block">
+      <div class="logo h1 lh-1 tw-font-display w-100 tw-mt-4 sm:tw-mt-0 text-{{ section.settings.logo_position }}" >
+        <div class="{% if section.settings.logo != blank %} d-block tw-w-full {% else %} d-inline-block tw-break-words {% endif %}">
+          <a href="{{ routes.root_url }}">
+            {% if section.settings.logo != blank %}
+              {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              <img class="tw-w-full lazyload js"
+                    src="{{ section.settings.logo | img_url: '300x300' }}"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ section.settings.logo.alt | default: shop.name }}"
+                    width="{{ section.settings.logo.width }}"
+                    height="{{ section.settings.logo.height }}"
+                    style="max-width: {{ section.settings.logo_width }}px; {{ logo_justify }}">
+              <noscript>
+                {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+                <img src="{{ section.settings.logo | img_url: image_size }}"
+                      srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                      alt="{{ section.settings.logo.alt | default: shop.name }}"
+                      width="{{ section.settings.logo.width }}"
+                      height="{{ section.settings.logo.height }}"
+                      style="max-width: {{ section.settings.logo_width }}px;">
+              </noscript>
+            {% else %}
+              {{ shop.name }}
+            {% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div>
+      {% if section.settings.show_payment_icons %}
+        <span class="sr-only">{{ 'general.accessibility.payment_method' | t }}</span>
+        <div class="payment-icons">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</footer>

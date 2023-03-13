@@ -1,0 +1,98 @@
+{%- liquid
+  assign file_extension = 'png'
+
+  assign color_options = 'color,colour,couleur'
+  assign size_options = 'size'
+  assign type_options = 'type,style'
+  assign enable_type_swatches = block.settings.enable_type_swatches
+  assign color_swatch_style = block.settings.color_swatch_style
+  if color_swatch_style == 'enable' or color_swatch_style == 'custom'
+    assign enable_color_swatches = true
+  endif
+
+  assign option_name = option.name | downcase
+  assign color_name = value
+  if color_options contains option_name
+    assign color_name = value | strip | downcase | replace: ' ', ''
+  endif
+
+  assign no_swatches_label_classes = 'tw-static tw-px-4 tw-h-11 tw-flex tw-items-center'
+  assign max_width_height_classes = 'w-100 h-100'
+
+  assign swatch_container_classes = ''
+  assign swatch_input_classes = ''
+  assign swatch_label_classes = ''
+
+  if color_options contains option_name
+    assign swatch_container_classes = 'tw-w-12 tw-h-12 color-swatch'
+    assign swatch_input_classes = max_width_height_classes
+    assign swatch_label_classes = max_width_height_classes
+
+    unless enable_color_swatches
+      assign swatch_container_classes = 'color-swatch--disabled'
+      assign swatch_input_classes = 'tw-absolute'
+      assign swatch_label_classes = no_swatches_label_classes
+    endunless
+
+  elsif size_options contains option_name
+    assign swatch_container_classes = 'size-swatch'
+    assign swatch_input_classes = 'tw-absolute'
+    assign swatch_label_classes = no_swatches_label_classes
+  elsif type_options contains option_name
+    assign swatch_container_classes = 'tw-w-12 tw-h-12 type-swatch'
+    assign swatch_input_classes = max_width_height_classes
+    assign swatch_label_classes = max_width_height_classes
+
+    unless enable_type_swatches
+      assign swatch_container_classes = 'type-swatch--disabled'
+      assign swatch_input_classes = 'tw-absolute'
+      assign swatch_label_classes = no_swatches_label_classes
+    endunless
+
+  else
+    assign swatch_container_classes = 'unknown-swatch'
+    assign swatch_input_classes = 'tw-absolute'
+    assign swatch_label_classes = no_swatches_label_classes
+  endif
+-%}
+
+<div class="form-check form-check-inline form-check-swatch mb-2 mr-2 rounded {{ swatch_container_classes }}" data-option-index="{{ option_index }}">
+
+  <input
+    id="option-{{ option.position }}-{{ value | handle }}-{{ section.id }}"
+    class="form-check-input {{ swatch_input_classes }}"
+    type="radio"
+    name="options[{{ option.name }}]"
+    value="{{ value | escape }}"
+    data-value="{{ value | escape }}"
+    tabindex="-1"
+    {% if option.selected_value == value %} checked{% endif %}/>
+
+  <label
+    tabindex="0"
+    class="form-check-label rounded text-center {{ swatch_label_classes }}"
+    for="option-{{ option.position }}-{{ value | handle }}-{{ section.id }}"
+    {% if color_options contains option_name and enable_color_swatches %}
+      title="{{ value }}"
+    {% elsif type_options contains option_name and enable_type_swatches %}
+      title="{{ value }}"
+    {% endif %}
+    style="
+    {% if color_options contains option_name and color_swatch_style == 'custom' %}
+      background-image: url({{ option.name | append: '-' | append: value | handle | append: '.' | append: file_extension | asset_img_url: '100x100' }});
+    {% endif %}
+    {%- if type_options contains option_name and enable_type_swatches -%}
+      background-image: url({{ option.name | append: '-' | append: value | handle | append: '.' | append: file_extension | asset_img_url: '100x100' }});
+    {%- endif -%}
+    {%- if color_options contains option_name and enable_color_swatches -%}
+      background-color: {%- render 'color-logic', color: color_name, blocks: section.blocks -%};
+      background-color: {%- render 'custom-colors' color: color_name, blocks: section.blocks -%};
+      background-color: {{ color_name }};
+    {%- endif -%}">
+    <span {% if color_options contains option_name and enable_color_swatches %}class="sr-only"{% endif %} {% if type_options contains option_name and enable_type_swatches %}class="sr-only"{% endif %}>
+      {{ value }}
+    </span>
+    {% render 'soldout' %}
+  </label>
+
+</div>

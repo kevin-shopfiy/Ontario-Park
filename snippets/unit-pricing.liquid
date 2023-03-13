@@ -1,0 +1,30 @@
+{% unless dl %}
+<dl>
+  <div class="{{ price_class }}">
+{% endunless %}
+    <dt>
+      <span class="sr-only">{{ 'products.product.unit_price_label' | t }}</span>
+    </dt>
+
+    {%- capture unit_price_separator -%}
+      <span aria-hidden="true">/</span><span class="sr-only">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+    {%- endcapture -%}
+    {%- capture unit_price_base_unit -%}
+      <span {% if dl %} class="{{ price_class }}" {% endif %} data-unit-price-base-unit>
+        {%- if current_variant.unit_price_measurement -%}
+          {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+            {{- current_variant.unit_price_measurement.reference_value -}}
+          {%- endif -%}
+          {{ current_variant.unit_price_measurement.reference_unit }}
+        {%- endif -%}
+      </span>
+    {%- endcapture -%}
+
+    <dd>
+      <span {% if dl %} class="{{ price_class }}" {% endif %} data-unit-price>{{ current_variant.unit_price | money }}</span>{{- unit_price_separator -}}{{- unit_price_base_unit -}}
+    </dd>
+
+{% unless dl %}
+  </div>
+</dl>
+{% endunless %}

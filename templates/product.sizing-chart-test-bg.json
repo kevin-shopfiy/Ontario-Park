@@ -1,0 +1,120 @@
+{
+  "sections": {
+    "main-product": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "vendor": "{{ product.vendor }}",
+            "show_sku": false
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_compare_price": true
+          }
+        },
+        "product-form": {
+          "type": "product-form",
+          "settings": {
+            "selector_type": "swatches",
+            "enable_payment_button": true,
+            "enable_type_swatches": false,
+            "color_swatch_style": "custom",
+            "unavailable_variants": "hide",
+            "hide_single_option": false
+          }
+        },
+        "product-tabs": {
+          "type": "product-tabs",
+          "settings": {
+            "enable_tab_container": false,
+            "tab_container_height": 250,
+            "show_tab_one": true,
+            "tab_title_one": "Shipping & Returns",
+            "tab_content_one": "<p>Decision: place shipping and return info here, must be same for all products. This is not set on a product by product basis. Could include link in this text to shipping and returns page as well.<\/p>",
+            "tab_order_one": "text",
+            "show_tab_two": true,
+            "tab_title_two": "Sizing Chart",
+            "tab_content_two": "<p>test sizing chart<\/p>",
+            "tab_order_two": "text"
+          }
+        },
+        "trust-badges-mobile": {
+          "type": "trust-badges-mobile",
+          "settings": {}
+        },
+        "social-sharing": {
+          "type": "social-sharing",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "vendor",
+        "price",
+        "product-form",
+        "product-tabs",
+        "trust-badges-mobile",
+        "social-sharing"
+      ],
+      "settings": {
+        "media_size": "medium",
+        "enable_image_zoom": true,
+        "mobile_thumbs": false,
+        "show_badge_1": false,
+        "badge_1_text": "Badge 1",
+        "show_badge_2": false,
+        "badge_2_text": "Badge 2",
+        "show_badge_3": false,
+        "badge_3_text": "Badge 3",
+        "show_badge_4": false,
+        "badge_4_text": "Badge 4",
+        "enable_sticky_cart_desktop": false,
+        "enable_sticky_cart_mobile": true,
+        "sticky_cart_position": "top"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": true,
+        "title": "You'll also like",
+        "products_per_row": 4,
+        "product_rows": 1,
+        "price_style": "variant",
+        "show_vendor": false,
+        "show_price": true,
+        "show_compare_at_price": true,
+        "show_sale_badge": true
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "disabled": true,
+      "settings": {
+        "width": "container-fluid",
+        "bg_color": "",
+        "title": "Subscribe to our newsletter",
+        "text": "<p>Sign up for our newsletter to recieve news, promotions, and annoucements.<\/p>",
+        "show_overlay": false,
+        "alpha": 50,
+        "content_color": "#ffffff",
+        "content_bg_color": "#545779",
+        "show_bg_image": true,
+        "bg_image_style": "dark"
+      }
+    }
+  },
+  "order": [
+    "main-product",
+    "product-recommendations",
+    "newsletter"
+  ]
+}

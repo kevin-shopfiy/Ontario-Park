@@ -1,0 +1,57 @@
+{% if section.settings.show_badge_1 or section.settings.show_badge_2 or section.settings.show_badge_3 or section.settings.show_badge_4 %}
+  <div class="product-trust-badges row row-cols-2 mt-3 mx-n2 mb-n3 {{ display_class }}">
+
+    {% if section.settings.show_badge_1 %}
+      <div class="col px-2 pb-3">
+        <div class="trust-badge d-flex flex-column justify-content-center align-items-center p-2 text-center rounded">
+          {% if section.settings.badge_1_icon != blank %}
+            <img src="{{ section.settings.badge_1_icon | img_url: 'x35' }}" alt="{{ section.settings.badge_1_icon.alt }}"/>
+          {% endif %}
+          <p class="mt-2 mb-0 tw-break-words">
+            {{ section.settings.badge_1_text }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_badge_2 %}
+      <div class="col px-2 pb-3">
+        <div class="trust-badge d-flex flex-column justify-content-center align-items-center p-2 text-center rounded">
+          {% if section.settings.badge_2_icon != blank %}
+            <img src="{{ section.settings.badge_2_icon | img_url: 'x35' }}" alt="{{ section.settings.badge_2_icon.alt }}"/>
+          {% endif %}
+          <p class="mt-2 mb-0 tw-break-words">
+            {{ section.settings.badge_2_text }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_badge_3 %}
+      <div class="col px-2 pb-3">
+        <div class="trust-badge d-flex flex-column justify-content-center align-items-center p-2 text-center rounded">
+          {% if section.settings.badge_3_icon != blank %}
+            <img src="{{ section.settings.badge_3_icon | img_url: 'x35' }}" alt="{{ section.settings.badge_3_icon.alt }}"/>
+          {% endif %}
+          <p class="mt-2 mb-0 tw-break-words">
+            {{ section.settings.badge_3_text }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_badge_4 %}
+      <div class="col px-2 pb-3">
+        <div class="trust-badge d-flex flex-column justify-content-center align-items-center p-2 text-center rounded">
+          {% if section.settings.badge_4_icon != blank %}
+            <img src="{{ section.settings.badge_4_icon | img_url: 'x35' }}" alt="{{ section.settings.badge_4_icon.alt }}"/>
+          {% endif %}
+          <p class="mt-2 mb-0 tw-break-words">
+            {{ section.settings.badge_4_text }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+{% endif %}

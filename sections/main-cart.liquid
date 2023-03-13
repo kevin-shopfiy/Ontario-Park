@@ -1,0 +1,268 @@
+{%- liquid
+  assign continue_shopping_link = settings.continue_shopping_link | default: routes.all_products_collection_url
+-%}
+
+{% render 'breadcrumb-nav' %}
+
+<div data-section-id="{{ section.id }}" data-section-type="cart-template">
+  <div class="container-md">
+
+    <h1 class="cart-title tw-text-3xl md:tw-text-5xl tw-my-6 md:tw-my-10 text-center" data-cart-title>
+      {{ 'cart.general.title' | t }}
+      {% if cart.item_count > 0 %}
+        <span class="cart-count ml-2">
+          {{ cart.item_count }}
+        </span>
+        <span class="cart-count-text">
+          {{ cart.item_count | pluralize: 'cart.general.item', 'cart.general.items' | t }}
+        </span>
+      {% endif %}
+    </h1>
+
+    {% if cart.item_count > 0 %}
+      <form class="cart-form mb-5" action="{{ routes.cart_url }}" method="post" novalidate>
+        <div class="row">
+
+          <div class="col-12 d-md-none mb-3">
+            <div class="cart-checkout">
+              <div class="cart-total px-2 px-md-3 py-md-4 mb-3 mb-md-0 font-5 text-center tw-bg-btn-secondary-bg">
+                {{ 'cart.general.subtotal' | t }}
+                <div class="d-inline d-md-block cart-price ml-1 ml-md-0 font-600">
+                  {{ cart.total_price | money }}
+                </div>
+              </div>
+              <div class="cart-checkout-buttons p-md-3">
+                <input class="tw-btn tw-btn-primary w-100 rounded-pill font-600" type="submit" name="checkout" value="{{ 'cart.general.checkout' | t }}">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-8">
+            <div class="cart-items mx-n3 mx-md-0 bg-white">
+              {% for item in cart.items %}
+                <div class="cart-item row align-items-center p-3 p-md-2 m-0" data-item-key="{{ item.key }}">
+                  {% if item.image != blank %}
+                    <div class="col-4 col-md-2 p-2">
+                      <a class="embed-responsive embed-responsive-1by1 border rounded" href="{{ item.url }}">
+                        <img class="embed-responsive-item h-auto m-auto" src="{{ item.image | img_url: '250x250', crop: 'center' }}" alt="{{ item.image.alt }}"/>
+                      </a>
+                    </div>
+                  {% endif %}
+                  <div class="col-8 col-md-5{% if item.image == blank %} offset-4 offset-md-2{% endif %} p-2" aria-label="{{ 'cart.label.product_details' | t }}">
+                    <a class="d-inline-block" href="{{ item.url }}">
+                      <h2 class="tw-font-semibold tw-font-base mb-0 font-6 font-400 tw-leading-tight">
+                        {{ item.product.title }}
+                      </h2>
+                      {% unless item.variant.title contains 'Default' %}
+                        <dl class="mt-1 mb-0 font-7 text-primary">
+                          {% for option in item.product.options %}
+                            {% assign option_index = forloop.index | prepend: 'option' %}
+                            <div>
+                              <dt class="d-inline font-400 {% unless settings.show_variant_labels %} sr-only {% endunless %}">
+                                {{- option -}}
+                                <span aria-hidden="true">{{ settings.variant_separator }}</span>
+                              </dt>
+                              <dd class="d-inline mr-1 mb-0 font-600">
+                                {{ item.variant[option_index] }}
+                              </dd>
+                            </div>
+                          {% endfor %}
+                        </dl>
+                      {% endunless %}
+                    </a>
+
+                    {% unless item.selling_plan_allocation == nil %}
+                      <div class="text-primary font-7">
+                        {{ item.selling_plan_allocation.selling_plan.name }}
+                      </div>
+                    {% endunless %}
+
+                    <a class="cart-item-remove d-block d-md-none position-absolute p-2 lh-0 tw-text-price-sale" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" aria-label="{{ 'cart.label.remove' | t: product: item.title }}">
+                      {% render 'icon-close' %}
+                    </a>
+                  </div>
+                  <div class="col-12 col-md-5 p-2">
+                    <div class="d-flex justify-content-between align-items-center text-center">
+                      <div class="cart-item-quantity d-flex">
+                        <label for="cart_item_input_{{ item.key }}" class="sr-only" aria-label="{{ 'cart.label.quantity' | t }}">
+                          {{ 'cart.label.quantity' | t }}
+                        </label>
+                        <button class="cart-item-quantity-step p-1 rounded-pill-left lh-0" aria-label="Decrease item quantity" type="button" data-step-down><!--OP modification for AODA added aria-label-->
+                          {% render 'icon-arrow-left' %}
+                        </button>
+                        <input id="cart_item_input_{{ item.key }}" class="cart-item-quantity-input p-1 font-7 text-center" type="number" name="updates[]" value="{{ item.quantity }}" min="0"{% unless item.variant.inventory_management == blank or item.variant.inventory_policy == 'continue' %} max="{{ item.variant.inventory_quantity }}"{% endunless %} aria-label="{{ 'cart.general.quantity' | t }}"/>
+                        <button class="cart-item-quantity-step p-1 rounded-pill-right lh-0" aria-label="Increase item quantity" type="button" data-step-up{% unless item.variant.inventory_management == blank or item.variant.inventory_policy == 'continue' %}{% if item.quantity >= item.variant.inventory_quantity %} disabled{% endif %}{% endunless %}>
+                          {% render 'icon-arrow-right' %}
+                        </button>
+                      </div>
+                      <div class="cart-item-price ml-3 ml-md-0 mr-auto mr-md-n2 font-600">
+                        {% assign has_item_discount = false %}
+                        {% if item.line_level_discount_allocations.size > 0 %}
+                          {% assign has_item_discount = true %}
+                        {% endif %}
+
+                          <div class="{% unless has_item_discount %} tw-hidden {% endunless %}" data-line-price-discounted>
+                            <div class="text-primary tw-text-xs tw-font-normal" aria-label="{{ 'customer.order.discount' | t }}" data-cart-item-discount-amount>
+                              {% for allocation in item.line_level_discount_allocations %}
+                                <div>
+                                  <i class="fa fa-tags"></i> {{ allocation.discount_application.title }}
+                                  (-<span>{{ allocation.amount | money }}</span>)
+                                </div>
+                              {% endfor %}
+                            </div>
+                            <dl class="tw-flex tw-flex-row md:tw-flex-col tw-flex-wrap">
+                              <dt>
+                                <span class="sr-only">{{ 'products.product.regular_price' | t }}</span>
+                              </dt>
+                              <dd>
+                                <s class="tw-mr-2 md:tw-m-0" data-cart-original-price>{{ item.original_line_price | money }}</s>
+                              </dd>
+                              <dt>
+                                <span class="sr-only">{{ 'products.product.sale_price' | t }}</span>
+                              </dt>
+                              <dd>
+                                <span class="tw-text-price-sale" data-cart-final-price>
+                                  {{ item.final_line_price | money }}
+                                </span>
+                              </dd>
+                            </dl>
+                          </div>
+
+                          <dl class="tw-flex tw-flex-row md:tw-flex-col tw-flex-wrap {% if has_item_discount %} tw-hidden{% endif %}" data-line-price>
+                            <dt>
+                              <span class="sr-only">{{ 'products.product.sale_price' | t }}</span>
+                            </dt>
+                            <dd>
+                              <span data-cart-final-price>
+                                {{ item.final_line_price | money }}
+                              </span>
+                            </dd>
+                          </dl>
+
+                          {% if item.unit_price_measurement %}
+                            {% render 'unit-pricing', current_variant: item, price_class: 'tw-font-normal tw-text-sm' %}
+                          {% endif %}
+
+                      </div>
+
+                      <div class="cart-item-x d-none d-md-block">
+                        <a class="cart-item-remove d-block p-2 lh-0 tw-text-price-sale" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" aria-label="{{ 'cart.label.remove' | t: product: item.title }}">
+                          {% render 'icon-close' %}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+            <div class="cart-checkout">
+
+              {% assign has_cart_discounts = false %}
+              {% if cart.cart_level_discount_applications.size > 0 %}
+                {% assign has_cart_discounts = true %}
+              {% endif %}
+
+              <div class="cart-total px-2 px-md-3 py-md-4 mb-3 mb-md-0 font-5 tw-bg-btn-secondary-bg {% if has_cart_discounts %} tw-text-right {% endif %}">
+
+                <div class="{% unless has_cart_discounts %} tw-hidden {% endunless %}" data-price-breakdown>
+                  {% comment %} <div class="subtotal tw-text-sm tw-flex">
+                    <span class="font-600 tw-w-2/3">{{ 'cart.general.subtotal' | t }}</span>
+                    <span class="ml-1 tw-w-1/3" data-cart-price-subtotal>
+                      {{ cart.original_total_price | money }}
+                    </span>
+                  </div> {% endcomment %}
+
+                  <div class="" data-cart-discount-applications>
+                    {% for discount_application in cart.cart_level_discount_applications %}
+                    <div class="tw-text-sm text-primary tw-flex">
+                      <span class="font-600 tw-w-2/3">
+                        <i class="fa fa-tags"></i> {{ discount_application.title }}
+                      </span>
+                      <span class="ml-1 tw-w-1/3">
+                        -{{ discount_application.total_allocated_amount | money }}
+                      </span>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="{% if has_cart_discounts %} tw-flex {% else %} tw-text-center {% endif %}">
+                  <span class="font-600 {% if has_cart_discounts %} tw-w-2/3 {% endif %}" data-cart-price-label>
+                    {{ 'cart.general.subtotal' | t }}
+                  </span>
+                  <span class="cart-price ml-1 font-600 {% if has_cart_discounts %} tw-w-1/3 {% endif %}">
+                    {{ cart.total_price | money }}
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="cart-checkout-buttons p-md-3">
+                <input class="tw-btn tw-btn-primary w-100 rounded-pill font-600" type="submit" name="checkout" value="{{ 'cart.general.checkout' | t }}">
+                {% if settings.show_additional_checkout_buttons and additional_checkout_buttons %}
+                  {{ content_for_additional_checkout_buttons }}
+                {% endif %}
+                <div class="tw-mt-4 tw-pt-4 tw-border-t">
+                  <a class="tw-btn tw-btn-secondary rounded-pill font-600 tw-w-full" href="{{ continue_shopping_link }}">
+                    {{ 'cart.general.continue_shopping' | t }}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          {%- capture taxes_shipping_checkout -%}
+            {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+              {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+            {%- elsif cart.taxes_included -%}
+              {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+            {%- elsif shop.shipping_policy.body != blank -%}
+              {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+            {%- else -%}
+              {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+            {%- endif -%}
+          {%- endcapture -%}
+          <div class="rte tw-flex tw-justify-end tw-w-full tw-mt-4 tw-px-4">
+            <p class="md:tw-w-96 tw-text-sm tw-text-right">{{ taxes_shipping_checkout }}</p>
+          </div>
+
+        </div>
+        {% if settings.enable_cart_notes %}
+          <div class="row">
+            <div class="col-12 col-lg-8 tw-mt-4 cart-note">
+              <label for="cart-note">
+                {{ 'cart.general.note' | t }}
+              </label>
+              <textarea name="note" id="cart-note" rows="3" class="form-control border tw-resize-none">{{ cart.note }}</textarea>
+            </div>
+          </div>
+        {% endif %}
+
+      </form>
+    {% else %}
+      <p class="cart-empty-msg mb-5 text-center">{{ 'cart.general.empty' | t }}</p>
+      <p class="cart-cookie-msg mb-5 text-center">{{ 'cart.general.cookies_required' | t }}</p>
+      <a class="tw-btn tw-btn-primary rounded-pill font-600 tw-block tw-mx-auto tw-w-full md:tw-w-1/4" href="{{ continue_shopping_link }}">
+        {{ 'cart.general.continue_shopping' | t }}
+      </a>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  Avatar.theme.settings.cart.continueShopping = {{ continue_shopping_link | json }}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-cart.name",
+  "settings": [
+  ]
+}
+{% endschema %}

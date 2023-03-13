@@ -1,0 +1,304 @@
+
+  <div class="footer-content">
+    {% comment %} <div class="container"> {% endcomment %}
+     
+      <div class="com text-{{ section.settings.logo_position }}" >
+        <div class="{% if section.settings.logo != blank %} d-block tw-w-full {% else %} d-inline-block tw-break-words {% endif %}">
+          <a href="{{ routes.root_url }}">
+            {% if section.settings.logo != blank %}
+              {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              <img class="footer-img lazyload js"
+                    src="{{ section.settings.logo | img_url: '300x300' }}"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ section.settings.logo.alt | default: shop.name }}"
+                    width="{{ section.settings.logo.width }}"
+                    height="{{ section.settings.logo.height }}"
+                    style="max-width: {{ section.settings.logo_width }}px; {{ logo_justify }}">
+              <noscript>
+                {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+                <img src="{{ section.settings.logo | img_url: image_size }}"
+                      srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                      alt="{{ section.settings.logo.alt | default: shop.name }}"
+                      width="{{ section.settings.logo.width }}"
+                      height="{{ section.settings.logo.height }}"
+                      style="max-width: {{ section.settings.logo_width }}px;">
+              </noscript>
+            
+              {{ shop.name }}
+            {% endif %}
+          </a>
+          <div class="oth-net">
+            <a href="https://facebook.com/ontarioparks" target="_blank">
+              <svg class="inter" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12ZM12.0006 5.6C10.2624 5.6 10.0443 5.6076 9.36164 5.63867C8.6803 5.66987 8.21523 5.77773 7.80829 5.936C7.38735 6.09947 7.03028 6.31814 6.67454 6.67401C6.31854 7.02975 6.09987 7.38682 5.93587 7.80762C5.7772 8.21469 5.6692 8.6799 5.63853 9.36097C5.608 10.0436 5.6 10.2619 5.6 12.0001C5.6 13.7382 5.60773 13.9557 5.63867 14.6384C5.67 15.3197 5.77787 15.7848 5.936 16.1917C6.09961 16.6126 6.31827 16.9697 6.67414 17.3255C7.02975 17.6815 7.38682 17.9007 7.80749 18.0641C8.21469 18.2224 8.6799 18.3303 9.36111 18.3615C10.0438 18.3925 10.2618 18.4001 11.9998 18.4001C13.7381 18.4001 13.9556 18.3925 14.6382 18.3615C15.3196 18.3303 15.7852 18.2224 16.1924 18.0641C16.6132 17.9007 16.9697 17.6815 17.3253 17.3255C17.6813 16.9697 17.9 16.6126 18.064 16.1918C18.2213 15.7848 18.3293 15.3196 18.3613 14.6385C18.392 13.9558 18.4 13.7382 18.4 12.0001C18.4 10.2619 18.392 10.0438 18.3613 9.36111C18.3293 8.67977 18.2213 8.21469 18.064 7.80776C17.9 7.38682 17.6813 7.02975 17.3253 6.67401C16.9693 6.31801 16.6133 6.09934 16.192 5.936C15.784 5.77773 15.3186 5.66987 14.6373 5.63867C13.9546 5.6076 13.7373 5.6 11.9986 5.6H12.0006Z" fill="#BCDDF2"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.4265 6.75335C11.5969 6.75308 11.787 6.75335 12.0006 6.75335C13.7094 6.75335 13.912 6.75948 14.5868 6.79015C15.2108 6.81868 15.5494 6.92295 15.775 7.01055C16.0737 7.12655 16.2866 7.26522 16.5105 7.48922C16.7345 7.71322 16.8732 7.92656 16.9895 8.22523C17.0771 8.45056 17.1815 8.78923 17.2099 9.41324C17.2405 10.0879 17.2472 10.2906 17.2472 11.9986C17.2472 13.7066 17.2405 13.9093 17.2099 14.584C17.1813 15.208 17.0771 15.5466 16.9895 15.772C16.8735 16.0706 16.7345 16.2833 16.5105 16.5072C16.2865 16.7312 16.0738 16.8699 15.775 16.9859C15.5497 17.0739 15.2108 17.1779 14.5868 17.2064C13.9121 17.2371 13.7094 17.2437 12.0006 17.2437C10.2916 17.2437 10.0891 17.2371 9.41444 17.2064C8.79043 17.1776 8.45176 17.0733 8.22603 16.9857C7.92736 16.8697 7.71402 16.731 7.49002 16.507C7.26602 16.283 7.12735 16.0702 7.01108 15.7714C6.92348 15.5461 6.81908 15.2074 6.79068 14.5834C6.76001 13.9088 6.75388 13.7061 6.75388 11.997C6.75388 10.2879 6.76001 10.0863 6.79068 9.41164C6.81921 8.78763 6.92348 8.44896 7.01108 8.22336C7.12708 7.92469 7.26602 7.71136 7.49002 7.48735C7.71402 7.26335 7.92736 7.12468 8.22603 7.00841C8.45163 6.92041 8.79043 6.81641 9.41444 6.78775C10.0048 6.76108 10.2336 6.75308 11.4265 6.75175V6.75335ZM15.4169 7.81602C14.9929 7.81602 14.6489 8.15963 14.6489 8.58376C14.6489 9.00777 14.9929 9.35177 15.4169 9.35177C15.8409 9.35177 16.1849 9.00777 16.1849 8.58376C16.1849 8.15976 15.8409 7.81602 15.4169 7.81602ZM12.0006 8.71337C10.1855 8.71337 8.7139 10.185 8.7139 12.0001C8.7139 13.8152 10.1855 15.2861 12.0006 15.2861C13.8157 15.2861 15.2868 13.8152 15.2868 12.0001C15.2868 10.185 13.8157 8.71337 12.0006 8.71337Z" fill="#BCDDF2"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0006 9.86671C13.1787 9.86671 14.134 10.8218 14.134 12.0001C14.134 13.1782 13.1787 14.1334 12.0006 14.1334C10.8223 14.1334 9.86724 13.1782 9.86724 12.0001C9.86724 10.8218 10.8223 9.86671 12.0006 9.86671Z" fill="#BCDDF2"/>
+              </svg>
+            </a>
+            <a href="https://twitter.com/ontarioparks" target="_blank">
+              <svg class="face" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 12C24 5.3719 18.6281 0 12 0C5.3719 0 0 5.3719 0 12C0 17.9907 4.3875 22.9547 10.125 23.8547V15.4688H7.0781V12H10.125V9.35625C10.125 6.3492 11.9156 4.6875 14.6578 4.6875C15.9703 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8297C14.3391 7.875 13.875 8.8008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8547C19.6125 22.9547 24 17.9907 24 12Z" fill="#BCDDF2"/>
+              </svg>
+            </a>
+            <a href="https://instagram.com/ontarioparks" target="_blank">
+              <svg class="twi" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12ZM11.6406 9.75375L11.6658 10.169L11.2461 10.1181C9.71843 9.92323 8.38383 9.26226 7.25067 8.15216L6.69668 7.60135L6.55399 8.0081C6.25181 8.91482 6.44487 9.87239 7.0744 10.5164C7.41015 10.8723 7.33461 10.9232 6.75544 10.7113C6.55399 10.6435 6.37772 10.5927 6.36093 10.6181C6.30218 10.6774 6.50362 11.4486 6.66311 11.7536C6.88134 12.1773 7.32621 12.5925 7.81305 12.8383L8.22434 13.0332L7.73751 13.0417C7.26746 13.0417 7.25067 13.0501 7.30103 13.2281C7.46891 13.7789 8.13201 14.3636 8.87066 14.6178L9.39108 14.7958L8.93781 15.067C8.26631 15.4568 7.4773 15.6771 6.68829 15.694C6.31057 15.7025 6 15.7364 6 15.7618C6 15.8466 7.02404 16.3211 7.61999 16.5075C9.40786 17.0584 11.5315 16.8211 13.1263 15.8805C14.2595 15.211 15.3926 13.8806 15.9214 12.5925C16.2068 11.9062 16.4922 10.652 16.4922 10.0503C16.4922 9.66054 16.5174 9.60969 16.9874 9.14362C17.2644 8.87245 17.5246 8.57586 17.575 8.49112C17.6589 8.33012 17.6505 8.33011 17.2224 8.47417C16.509 8.72839 16.4083 8.6945 16.7608 8.31317C17.021 8.042 17.3316 7.5505 17.3316 7.40645C17.3316 7.38102 17.2057 7.42339 17.063 7.49966C16.9119 7.5844 16.5761 7.71151 16.3243 7.78778L15.8711 7.93184L15.4598 7.65219C15.2331 7.49966 14.9142 7.33018 14.7463 7.27934C14.3182 7.1607 13.6635 7.17765 13.2774 7.31323C12.2282 7.69456 11.5651 8.67755 11.6406 9.75375Z" fill="#BCDDF2"/>
+              </svg>    
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="list">
+
+        {% comment %} <div class="col-12 col-lg-5 px-lg-5">
+          <div class="row">
+            <div class="col-12">
+              <div class="about py-3 mb-3">
+                {{ section.settings.about }}
+              </div>
+            </div>
+            {% if section.settings.show_address %}
+              <div class="col-12 col-md-6">
+                <p class="h6">{{ 'layout.footer.address_heading' | t}}</p>
+                {% if shop.address.summary != blank %}
+                  <div class="contact mb-3">
+                    {{ shop.address.summary }}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if section.settings.show_phone or section.settings.show_email %}
+              <div class="col-12 col-md-6">
+                {% if section.settings.show_phone %}
+                  <p class="h6">{{ 'layout.footer.phone_heading' | t}}</p>
+                  {% if shop.phone != blank %}
+                    <div class="contact mb-3">
+                      <a href="tel:{{ shop.phone }}">{{ shop.phone }}</a>
+                    </div>
+                  {% endif %}
+                {% endif %}
+                {% if section.settings.show_email %}
+                  <p class="h6">{{ 'layout.footer.email_heading' | t}}</p>
+                  {% if shop.email != blank %}
+                    <div class="contact mb-3">
+                      <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div> {% endcomment %}
+
+        <div class="list-wrapper">
+          <div class="list-content">
+            {% assign columns = 12 %}
+            {% if section.blocks.size >= 3 %}
+              {% assign columns = 4 %}
+            {% endif %}
+            {% if section.blocks.size == 2 %}
+              {% assign columns = 6 %}
+            {% endif %}
+
+            {% for block in section.blocks %}
+              <div class="col-md-{{ columns }}">
+                {% case block.type %}
+                  {% when 'menu' %}
+                    {% render 'block-menu', block: block %}
+                  {% when 'legal' %}
+                    {% render 'block-legal', block: block %}
+                  {% when 'social_icons' %}
+                    {% render 'block-social-icons', block: block %}
+                  {% when 'newsletter' %}
+                    {% render 'block-newsletter', block: block %}
+                  {% when 'text' %}
+                    {% render 'block-text', block: block %}
+                  {% when 'talk_with_us' %}
+                    {% render 'block-text', block: block %}
+                {% endcase %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    {% comment %} </div> {% endcomment %}
+    <div class="email">
+      <div class="text">
+          {% if section.settings.title != blank %}
+            <h2 class="lh-1 tw-break-words">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <p class="tw-font-medium tw-break-words">
+              {{ section.settings.text }}
+            </p>
+          {% endif %} 
+      </div>
+      <div class="news">
+
+        {% form 'customer', class: 'mt-4' %}
+
+          {% if form.posted_successfully? %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black {{ modal_body_size }}" data-form-status>
+              <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+            </div>
+          {% endif %}
+          {% if form.errors %}
+            <div class="tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-red-200 tw-border-red-600 tw-border-2 tw-rounded tw-text-black" data-form-status>
+              <p>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</p>
+            </div>
+          {% endif %}
+
+          <input type="hidden" name="contact[tags]" value="newsletter"/>
+
+          <div class="input-group">
+
+            <label class="sr-only" for="shopify-section-{{ section.id }}-email">
+              {{ 'general.newsletter_form.email_address' | t }}
+            </label>
+
+            <input type="email"
+              id="shopify-section-{{ section.id }}-email"
+              class="form-control {% if form.errors %}tw-border-red-400{% endif %}"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="{{ 'general.newsletter_form.email_address' | t }}"
+              autocorrect="off"
+              autocapitalize="off"
+              aria-required="true"
+              aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-email-error"
+              {% endif %}
+            />
+
+            <div class="input-group-append ml-0">
+              <button class="footer-btn tw-btn" type="submit" aria-label="{{ 'general.accessibility.submit' | t }}">
+                {% if settings.show_button_arrow %}
+                  {% render 'icon-arrow-right-blue' %}
+                {% endif %}
+              </button>
+            </div>
+
+          </div>
+
+          {%- if form.errors contains 'email' -%}
+            <span id="{{ formId }}-email-error" class="sr-only">
+              <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+            </span>
+          {%- endif -%}
+
+        {% endform %}
+
+      </div>
+    </div>  
+  </div>
+
+  <footer class="footer">
+
+    {% if show_locale_selector or show_currency_selector %}
+      <div class="tw-py-4">
+        {%- form 'localization', class: 'selectors-form', data-disclosure-form: '' -%}
+          <div class="tw-flex tw-justify-center tw-space-x-4">
+            {%- if show_locale_selector -%}
+              <div class="selectors-form__item">
+                <h2 class="sr-only" id="lang-heading">
+                  {{ 'general.language.dropdown_label' | t }}
+                </h2>
+
+                <div class="disclosure tw-relative" data-disclosure-locale>
+                  <button type="button" class="tw-relative tw-w-32 tw-text-black tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-center tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="lang-list" aria-describedby="lang-heading" data-disclosure-toggle>
+                    <span class="tw-flex tw-items-center">
+                      <span class="tw-block tw-truncate">
+                        {{ form.current_locale.endonym_name }}
+                      </span>
+                    </span>
+                    <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-disclosure-icon>
+                      {% render 'icon-chevron-down' %}
+                    </span>
+                  </button>
+                  <ul id="lang-list" class="tw-absolute tw-mt-0.5 tw-w-full tw-rounded-2xl tw-overflow-x-hidden tw-text-black tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-z-10 tw-bottom-full-15 tw-opacity-0 tw-hidden" data-disclosure-list>
+                    {% for locale in form.available_locales %}
+                      <li class="tw-select-none tw-relative tw-text-left tw-py-2 tw-px-3 hover:tw-bg-body-mix-2 {% if locale.iso_code == form.current_locale.iso_code %}tw-bg-body-mix-2{% endif %}">
+                        <a class="tw-inline-block tw-w-full" href="#" lang="{{ locale.iso_code }}" {% if locale.iso_code == form.current_locale.iso_code %}aria-current="true"{% endif %} data-value="{{ locale.iso_code }}" data-disclosure-option>
+                          {{ locale.endonym_name }}
+                        </a>
+
+                        {% if locale.iso_code == form.current_locale.iso_code %}
+                          <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                            {% render 'icon-check' %}
+                          </span>
+                        {% endif %}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                  <input type="hidden" name="locale_code" id="LocaleSelector" value="{{ form.current_locale.iso_code }}" data-disclosure-input/>
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if show_currency_selector -%}
+              <div class="selectors-form__item">
+                <h2 class="sr-only" id="currency-heading">
+                  {{ 'general.currency.dropdown_label' | t }}
+                </h2>
+
+                <div class="disclosure tw-relative" data-disclosure-currency>
+                  <button type="button" class="tw-relative tw-w-32 tw-text-black tw-bg-white tw-border tw-border-gray-300 rounded-pill tw-shadow-sm tw-pl-3 tw-pr-10 tw-py-2 tw-text-center tw-cursor-pointer focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-expanded="false" aria-controls="currency-list" aria-describedby="currency-heading" data-disclosure-toggle>
+                    <span class="tw-flex tw-items-center">
+                      <span class="tw-block tw-truncate">
+                        {{ form.current_currency.iso_code }} {%- if form.current_currency.symbol -%}{{ form.current_currency.symbol }}{%- endif -%}
+                      </span>
+                    </span>
+                    <span class="tw-absolute tw-inset-y-0 tw-right-2 tw-flex tw-items-center tw-transform tw-transition-transform tw-duration-300 tw-ease-in-out" data-disclosure-icon>
+                      {% render 'icon-chevron-down' %}
+                    </span>
+                  </button>
+                  <ul id="currency-list" class="tw-absolute tw-mt-0.5 tw-w-full tw-rounded-2xl tw-overflow-x-hidden tw-text-black tw-bg-white tw-shadow-lg tw-transition tw-ease-in tw-duration-100 tw-z-10 tw-bottom-full-15 tw-opacity-0 tw-hidden" data-disclosure-list>
+                    {% for currency in form.available_currencies %}
+                      <li class="tw-select-none tw-relative tw-text-left tw-py-2 tw-px-3 hover:tw-bg-body-mix-2{% if currency.iso_code == form.current_currency.iso_code %} tw-bg-body-mix-2{% endif %}">
+                        <a class="tw-inline-block tw-w-full" href="#" {% if currency.iso_code == form.current_currency.iso_code %}aria-current="true"{% endif %} data-value="{{ currency.iso_code }}" data-disclosure-option>
+                          {{ currency.iso_code }} {%- if currency.symbol -%}{{ currency.symbol }}{%- endif -%}
+                        </a>
+
+                        {% if currency.iso_code == form.current_currency.iso_code %}
+                          <span class="tw-absolute tw-inset-y-0 tw-right-0 tw-flex tw-items-center tw-pr-4">
+                            {% render 'icon-check' %}
+                          </span>
+                        {% endif %}
+
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                  <input type="hidden" name="currency_code" id="CurrencySelector" value="{{ form.current_currency.iso_code }}" data-disclosure-input/>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+      </div>
+    {% endif %}
+
+    
+      {% if section.settings.show_payment_icons %}
+        <span class="sr-only">{{ 'general.accessibility.payment_method' | t }}</span>
+        <div class="payment-icons pb-3">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <p class="copyright m-0">
+        {{ 'layout.footer.copyright' | t}} &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}
+        {{ powered_by_link }}
+      </p>
+    
+  </footer>

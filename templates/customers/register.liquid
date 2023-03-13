@@ -1,0 +1,71 @@
+<div class="container">
+
+
+  <h1 class="tw-text-3xl md:tw-text-5xl tw-my-6 md:tw-my-10 text-center">
+    {{ 'customer.register.title' | t }}
+  </h1>
+
+   <div class="tw-w-full md:tw-w-1/2 tw-mx-auto tw-mb-12">
+    {% assign formId = 'RegisterForm' %}
+    {% form 'create_customer', id: formId, novalidate: 'novalidate' %}
+      {% render 'form-status', form: form, form_id: formId %}
+
+      <div class="form-group">
+        <label for="{{ formId }}-FirstName" class="sr-only">{{ 'customer.register.first_name' | t }}</label>
+        <input id="{{ formId }}-FirstName" class="form-control rounded-pill" type="text" name="customer[first_name]" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+      </div>
+
+      <div class="form-group">
+        <label for="{{ formId }}-LastName" class="sr-only">{{ 'customer.register.last_name' | t }}</label>
+        <input id="{{ formId }}-LastName" class="form-control rounded-pill" type="text" name="customer[last_name]" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+      </div>
+
+      <div class="form-group">
+        <label for="{{ formId }}-email" class="sr-only">{{ 'customer.register.email' | t }}</label>
+        <input id="{{ formId}}-email" class="form-control rounded-pill" type="email" name="customer[email]" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %}
+        autocorrect="off"
+        autocapitalize="off"
+        autocomplete="email"
+        aria-required="true"
+        {%- if form.errors contains 'email' -%}
+          class="input--error"
+          aria-invalid="true"
+          aria-describedby="{{ formId }}-email-error"
+        {%- endif -%}>
+
+        {%- if form.errors contains 'email' -%}
+          <span id="{{ formId }}-email-error" class="tw-block tw-text-center tw-w-2/3 tw-mx-auto tw-bg-red-200 tw-border-red-600 tw-border tw-rounded tw-text-black">
+            <span class="sr-only">{{ 'general.accessibility.error' | t }} </span>
+            <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+          </span>
+        {%- endif -%}
+
+      </div>
+
+      <div class="form-group">
+        <label for="{{ formId }}-password" class="sr-only">{{ 'customer.register.password' | t }}</label>
+        <input id="{{ formId }}-password" class="form-control rounded-pill" type="password" name="customer[password]" placeholder="{{ 'customer.register.password' | t }}"
+        aria-required="true"
+        {%- if form.errors contains 'password' -%}
+          aria-invalid="true"
+          aria-describedby="{{ formId }}-password-error"
+        {%- endif -%}>
+
+        {%- if form.errors contains 'password' -%}
+          <span id="{{ formId }}-password-error" class="tw-block tw-text-center tw-w-2/3 tw-mx-auto tw-bg-red-200 tw-border-red-600 tw-border tw-rounded tw-text-black">
+            <span class="sr-only">{{ 'general.accessibility.error' | t }} </span>
+            <span>{{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+          </span>
+        {%- endif -%}
+
+      </div>
+
+      <button class="tw-btn tw-btn-primary tw-w-full tw-rounded-full tw-flex tw-justify-center tw-items-center tw-font-semibold tw-mb-4" type="submit">
+        {{ 'customer.register.submit' | t }}
+        {% render 'icon-arrow-right' %}
+      </button>
+
+    {% endform %}
+  </div>
+
+</div>

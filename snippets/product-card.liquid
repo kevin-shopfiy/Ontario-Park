@@ -1,0 +1,82 @@
+{%- liquid
+  case settings.product_grid_aspect
+    when '1/1'
+      assign aspect_ratio = 'tw-aspect-w-1 tw-aspect-h-1'
+    when '2/3'
+      assign aspect_ratio = 'tw-aspect-w-2 tw-aspect-h-3'
+    when '4/3'
+      assign aspect_ratio = 'tw-aspect-w-4 tw-aspect-h-3'
+    else
+      assign aspect_ratio = false
+  endcase
+
+  if aspect_ratio != false and settings.product_grid_image_fit == 'fill'
+    assign aspect_ratio = aspect_ratio | append: ' tw-aspect-cover'
+  endif
+
+  assign image_container_class = 'product-card-image tw-mb-4'
+
+  if settings.product_grid_border
+    assign image_container_class = image_container_class | append: ' tw-border'
+  endif
+
+  assign alpha = settings.product_grid_border_color | color_extract: 'alpha'
+
+  if settings.product_grid_border_color != blank and alpha > 0
+    assign image_container_class = image_container_class | append: ' tw-border-product-border'
+  endif
+
+  assign link_url = product.url | within: collection
+-%}
+
+<article class="custom-color product-card tw-relative">
+
+  {% if product.featured_media != blank %}
+    {% render 'image', container_class: image_container_class, image: product.featured_media, width: 500, link_url: link_url, aspect_ratio: aspect_ratio, image_alt: product.featured_media.alt %}
+  {% else %}
+    {% render 'image', container_class: container_class, placeholder: 'product-1', link_url: link_url %}
+  {% endif %}
+
+  <div class="product-card-info tw-text-center">
+
+    <h2 class="product-card-title tw-font-semibold tw-text-xl tw-leading-tight tw-font-base">
+      {{ product.title | link_to: link_url | replace: '<a', '<a class="focus-visible:tw-ring-2 focus-visible:tw-ring-btn-bg focus:tw-outline-none tw-text-color hover:tw-text-link"'  }}
+    </h2>
+
+    {% if show_vendor %}
+      <div class="product-card-vendor">
+        {{ product.vendor | link_to_vendor }}
+      </div>
+    {% endif %}
+    {% if show_price or show_compare_at_price %}
+      <div class="product-card-prices mt-1">
+        {% if show_price %}
+            <span class="product-price font-4 font-600 d-inline">
+              {{ product.price | money }}
+            </span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% render 'product-card-price', product: product, price_style: price_style, show_price: show_price, show_compare_at_price: show_compare_at_price, show_from: show_from, show_sale_badge: show_sale_badge %}
+
+
+    {% if show_add_to_cart_button %}
+      <form class="product-card-form tw-mt-4" action="{{ routes.cart_add_url }}" method="post" data-ajax-submit="false">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"/>
+        {% if product.available %}
+          <button class="tw-btn tw-btn-secondary tw-py-2.5 tw-px-5 tw-inline-flex tw-justify-center tw-items-center tw-text-sm tw-rounded-full" type="submit">
+            {{ 'products.product.add_to_cart' | t }}
+            {% render 'icon-arrow-right', class: 'tw-w-3.5 tw-h-3.5' %}
+          </button>
+        {% else %}
+          <button class="tw-btn tw-btn-secondary tw-py-2.5 tw-px-5 tw-inline-flex tw-justify-center tw-items-center tw-text-sm tw-rounded-full" type="submit" disabled>
+            {{ 'products.product.sold_out' | t }}
+          </button>
+        {% endif %}
+      </form>
+    {% endif %}
+
+  </div>
+
+</article>

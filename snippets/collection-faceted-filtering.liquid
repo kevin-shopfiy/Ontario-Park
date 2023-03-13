@@ -1,0 +1,812 @@
+<style>
+  .collection-filters {
+    grid-template-columns: repeat(2,auto);
+    grid-template-rows: repeat(2,auto);
+  }
+  .facets {
+    display: block;
+    grid-column-start: span 2;
+  }
+  .facets__form {
+    grid-template-columns: auto max-content;
+    gap: 0 8rem;
+  }
+  .facets__heading {
+    display: block;
+    margin: -1.5rem 1.5rem 0 0;
+  }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+  }
+  summary .icon-caret {
+    height: .6rem;
+    padding-left: 4px;
+  }
+  .facets__summary {
+    background-color: var(--facet-btn-bg-color) !important;
+    color: var(--secondary-btn-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 0 0 2px var(--secondary-btn-bg-hover);
+  }
+  .facets__summary:hover {
+    background-color: var(--secondary-btn-bg-color)!important;
+  }
+  .selected .facets__summary {
+    color: #fff !important;
+    background-color: var(--facet-btn-color-bg-active)!important;
+    box-shadow: 0 0 0 2px var(--facet-btn-color-bg-active)!important;
+  }
+  .facets__header {
+    background-color: var(--bg-color);
+  }
+  .facet-checkbox .icon-checkmark {
+    left: 0.69rem!important;
+    top: 0.52rem!important;
+  }
+  .mobile-facets__label .icon-checkmark {
+    left: 2.7rem!important;
+    top: 1.2rem!important;
+  }
+  .facets__summary>div, .mobile-facets__summary>div {
+    display: flex;
+    align-items: center;
+  }
+  .facet-checkbox>input[type=checkbox]:checked~.icon-checkmark {
+    visibility: visible !important;
+  }
+  .field__input::placeholder {
+    opacity: 0;
+  }
+  .field__input:focus~.field__label,
+  .field__input:not(:placeholder-shown)~.field__label { 
+    display:none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  .customer select+svg, .select .icon-caret {
+    height: .6rem;
+    pointer-events: none;
+    position: absolute;
+    top: calc(50% - .3rem);
+    right: 0.7rem;
+  }
+  .active-facets facet-remove:only-child {
+    display: none !important;
+  }
+  .active-facets__button-wrapper {
+    background-color: var(--facet-btn-bg-color) !important
+  }
+  .active-facets__button--light .active-facets__button-inner {
+    background-color: var(--btn-bg-color)!important;
+  }
+  details[open] .mobile-facets__open {
+    visibility: hidden;
+  }
+  .mobile-facets__open svg {
+    width: 2rem;
+  }
+  .active-facets-mobile:empty {
+    display: none;
+  }
+  .disclosure-has-popup[open] > summary + * {
+    z-index: 50;
+  }
+  .menu-opening .mobile-facets__inner {
+    transform: translateX(0);
+  }
+  .disclosure-has-popup:not(.menu-opening) .mobile-facets__inner {
+    transform: translateX(105vw);
+  }
+  details.menu-opening .mobile-facets__close {
+    display: flex !important;
+    opacity: 1 !important;
+    z-index: 51 !important;
+  }
+  .mobile-facets {
+    background-color: rgba(26,27,24,.6);
+  }
+  .mobile-facets__main {
+    min-height: calc(100% - 15rem);
+  }
+  .mobile-facets__inner {
+    width: calc(100% - 3rem);
+    transition: transform 100ms ease;
+    max-width: 37.5rem;
+  }
+  .js .mobile-facets__submenu {
+    transform: translateX(100%);
+    visibility: hidden;
+  }
+  .js details[open].menu-opening>.mobile-facets__submenu {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .js details[open]>.mobile-facets__submenu {
+    transition: transform .4s cubic-bezier(.29, .63, .44, 1),visibility .4s cubic-bezier(.29, .63, .44, 1);
+  }
+  .mobile-facets__close-button {
+    width: calc(100% - 3.2rem);
+    background-color: transparent;
+  }
+  .mobile-facets__close-button .icon-arrow {
+    transform: rotate(180deg);
+    margin-right: 1rem;
+  }
+  .mobile-facets__label>input[type=checkbox]:checked~.icon-checkmark {
+    visibility: visible !important;
+  }
+
+  /* Range Input */
+  [range-slider] {
+    position: relative;
+    height: 0.438rem;
+    border-radius: 10px;
+    text-align: left;
+    margin: 10px 10px;
+  }
+  [range-slider] > div {
+    position: absolute;
+    left: 11px;
+    right: 9px;
+    height: 0.25rem;
+  }
+  [range-slider] > div > [inverse-left] {
+    position: absolute;
+    left: 0;
+    height: 0.25rem;
+    border-radius: 10px;
+    margin: 0 7px;
+    background-color: var(--facet-btn-bg-color);
+    border: 1px solid var(--secondary-btn-bg-hover);
+  }
+ 
+  [range-slider] > div > [inverse-right] {
+    position: absolute;
+    right: 0;
+    height: 0.25rem;
+    border-radius: 10px;
+    margin: 0 7px;
+    background-color: var(--facet-btn-bg-color);
+    border: 1px solid var(--secondary-btn-bg-hover);
+  }
+ 
+  [range-slider] > div > [range] {
+    position: absolute;
+    top: -0.04rem;
+    left: 0;
+    height: 0.375rem;
+    border-radius: 14px;
+    background-color: var(--facet-btn-color-bg-active)!important;
+  }
+ 
+  [range-slider] > div > [thumb] {
+    position: absolute;
+    top: -0.5rem;
+    z-index: 2;
+    height: 1.25rem;
+    width: 1.25rem;
+    text-align: left;
+    margin-left: -11px;
+    cursor: pointer;
+    background-color: var(--secondary-btn-color);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+  }
+
+  div[range-slider] > input[type=range]::-ms-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    cursor: pointer;
+  }
+
+  div[range-slider] > input[type=range]::-moz-range-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    cursor: pointer;
+  }
+
+  div[range-slider] > input[type=range]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  div[range-slider] > input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: 0 none;
+  }
+
+  div[range-slider] > input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: 0 none;
+  }
+
+  [range-slider] > input[type=range] {
+    position: absolute;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 3;
+    height: 0.25rem;
+    width: 100%;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+  }
+
+  div[range-slider] > input[type=range]::-ms-track {
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
+  }
+
+  div[range-slider] > input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    background: transparent;
+    color: transparent;
+  }
+
+  div[range-slider] > input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+    border: transparent;
+  }
+   
+  div[range-slider] > input[type=range]:focus {
+    outline: none;
+  }
+
+</style>
+
+{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+
+<div class="collection-filters tw-grid tw-mt-8">
+  {% unless section.settings.collapse_on_larger_devices %}
+  <collection-filters-form class="facets small-hide tw-text-sm tw-mb-6 tw-hidden md:tw-block">
+    <form id="CollectionFiltersForm" class="facets__form tw-grid">
+      {% if section.settings.enable_filtering %}
+        {% assign total_active_values = 0 %}
+        <div class="facets__wrapper tw-flex tw-flex-wrap tw-self-start tw-items-center tw-col-start-1 tw-col-end-auto">
+          {% unless collection.filters == empty %}
+            <p class="facets__heading caption-large tw-hidden">{{ 'collections.filters.filter_by_label' | t }}</p>
+          {% endunless %}
+
+          {% for filter in collection.filters %}
+            {% assign total_active_values = total_active_values | plus: filter.active_values.size %}
+            {% case filter.type %}
+            {% when 'list' %}
+              <details class="disclosure-has-popup facets__disclosure js-filter tw-mr-2 tw-relative{% if filter.active_values.size > 0 %} selected{% endif %}" data-index="{{ forloop.index }}">
+                <summary class="facets__summary caption-large tw-text-white tw-mb-3 tw-px-4 tw-py-2 tw-rounded">
+                  <div>
+                    <span>{{ filter.label | escape }}</span>
+                    {% render 'icon-caret' %}
+                  </div>
+                </summary>
+                <div class="facets__display tw-z-50 tw-absolute tw-w-96 border tw-rounded tw-max-h-96 tw-overflow-y-auto tw-shadow-lg">
+                  <div class="facets__header tw-flex tw-px-4 tw-py-3 tw-justify-between tw-sticky tw-border-b tw-top-0 tw-z-10">
+                    <span class="facets__selected no-js-hidden">{{ 'collections.filters_selected' | t: count: filter.active_values.size }}</span>
+                    <facet-remove>
+                      <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link">
+                        {{ 'collections.filters.reset' | t }}
+                      </a>
+                    </facet-remove>
+                  </div>
+
+                  <ul class="facets__list list-unstyled tw-px-4 tw-py-2 tw-m-0 tw-bg-white" role="list">
+                    {% for value in filter.values %}
+                      <li class="list-menu__item facets__item tw-flex tw-items-center">
+                        <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="facet-checkbox tw-flex tw-px-2 tw-py-1 tw-flex-grow tw-relative tw-break-words tw-leading-tight {% if value.count == 0 and value.active == false %} facet-checkbox--disabled tw-text-gray-400{% endif %}">
+                          <input type="checkbox"
+                            class="tw-absolute tw-appearance-none tw-w-4 tw-h-4 tw-top-3 tw-left-3 tw-cursor-pointer"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                          >
+                          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="tw-flex-shrink-0 tw-mr-4">
+                            <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
+                          </svg>
+
+                          <svg class="icon icon-checkmark tw-absolute tw-invisible tw-z-10 tw-flex-shrink-0 tw-mr-4"
+                            width="11"
+                            height="7"
+                            viewBox="0 0 11 7"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1"
+                              stroke="currentColor"
+                              stroke-width="1.75"
+                              stroke-linecap="round"
+                              stroke-linejoin="round" />
+                          </svg>
+
+                          </svg>
+                          {{ value.label | escape }}
+                          <span class="tw-ml-auto tw-text-gray-400">{{ value.count }}</span>
+                        </label>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </details>
+            {% when 'price_range' %}
+              {% liquid
+                assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                assign uses_comma_decimals = false
+                if currencies_using_comma_decimals contains cart.currency.iso_code
+                  assign uses_comma_decimals = true
+                endif
+              %}
+              <details class="disclosure-has-popup facets__disclosure js-filter tw-mr-2{% if filter.min_value.value != nil or filter.max_value.value != nil %} selected{% endif %}" data-index="{{ forloop.index }}">
+                <summary class="facets__summary caption-large tw-text-white tw-mb-3 tw-px-4 tw-py-2 tw-rounded">
+                  <div>
+                    <span>{{ filter.label | escape }}</span>
+                    {% render 'icon-caret' %}
+                  </div>
+                </summary>
+                <div class="facets__display tw-z-50 tw-absolute tw-w-96 border tw-bg-white tw-rounded tw-shadow-lg">
+                  <div class="facets__header tw-flex tw-px-4 tw-py-3 tw-justify-between tw-sticky tw-border-b tw-top-0">
+                    {% assign max_price_amount = filter.range_max | money | strip_html | escape %}
+                    <span class="facets__selected">{{ "collections.general.max_price" | t: price: max_price_amount }}</span>
+                    <facet-remove>
+                      <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link" >
+                        {{ 'collections.filters.reset' | t }}
+                      </a>
+                    </facet-remove>
+                  </div>
+                  <price-range class="facets__price">
+                    {% liquid
+                      unless filter.min_value.value
+                        assign input_left = 0
+                      else
+                        if uses_comma_decimals
+                          assign input_left = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        else 
+                          assign input_left = filter.min_value.value | money_without_currency | replace: ',', ''
+                        endif
+                      endunless 
+
+                      unless filter.max_value.value
+                        if uses_comma_decimals
+                          assign input_right = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        else
+                          assign input_right = filter.range_max | money_without_currency | replace: ',', ''
+                        endif
+                      else
+                        if uses_comma_decimals
+                          assign input_right = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        else
+                          assign input_right = filter.max_value.value | money_without_currency | replace: ',', ''
+                        endif
+                      endunless
+                    %}
+
+                    <div class="tw-block tw-pb-1 tw-pt-4">
+                      <!-- Slider -->
+                      <div id="slider-distance" range-slider>
+                        <div class="visual-elements">
+                          <div inverse-left style="width:70%;"></div>
+                          <div inverse-right style="width:70%;"></div>
+                          <div range style="left:30%;right:40%;"></div>
+                          <span thumb thumb-left style="left:30%;"></span>
+                          <span thumb thumb-right style="left:60%;"></span>
+                        </div>
+                        <label for="op-range-left" class="sr-only"><ly-as-555380>Range slider left</ly-as-555380></label>
+                        <label for="op-range-right" class="sr-only"><ly-as-555381>Range slider rigth</ly-as-555381></label>
+                        <input type="range" id="op-range-left" tabindex="0" value="{{ input_left | floor }}" max="{% if uses_comma_decimals %}{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | ceil }}{% else %}{{ filter.range_max | money_without_currency | replace: ',', '' | ceil }}{% endif %}" min="0" step="1" class="handle" data-handle="left"/>
+                        <input type="range" id="op-range-right" tabindex="0" value="{{ input_right | ceil }}" max="{% if uses_comma_decimals %}{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | ceil }}{% else %}{{ filter.range_max | money_without_currency | replace: ',', '' | ceil }}{% endif %}" min="0" step="1" class="handle" data-handle="right"/>
+                      </div>
+                      <!-- End Slider-->
+                    </div>
+                    <div class="tw-flex tw-w-full tw-p-4">
+                      <span class="field-currency tw-self-center tw-pr-2 tw-text-gray-400">{{ cart.currency.symbol }}</span>
+                      <div class="field tw-flex tw-items-center tw-relative tw-w-full">
+                        <input class="field__input tw-flex-grow tw-w-full tw-text-left tw-px-2 tw-py-2 tw-appearance-none tw-border tw-border-gray-400 rounded-pill tw-outline-none"
+                          name="{{ filter.min_value.param_name }}"
+                          id="Filter-{{ filter.label | escape }}-GTE"
+                          {% if filter.min_value.value %}
+                            {% if uses_comma_decimals %}value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor }}"{% else %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' | floor }}"{% endif %}
+                          {% endif %}
+                          type="number"
+                          placeholder="0"
+                          min="0"
+                          {% if uses_comma_decimals %}max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{% else %}max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"{% endif %}
+                        >
+                        </input>
+                        <label class="field__label tw-absolute tw-left-3 tw-top-2" for="Filter-{{ filter.label | escape }}-GTE">{{ 'collections.filters.from' | t }}</label>
+                      </div>
+                      <span class="field-currency tw-self-center tw-px-2 tw-text-gray-400">
+                        {{ cart.currency.symbol }}
+                      </span>
+                      <div class="field tw-flex tw-items-center tw-relative tw-w-full">
+                        <input class="field__input tw-flex-grow tw-w-full tw-text-left tw-px-2 tw-py-2 tw-appearance-none tw-border tw-border-gray-400 rounded-pill tw-outline-none"
+                          name="{{ filter.max_value.param_name }}"
+                          id="Filter-{{ filter.label | escape }}-LTE"
+                          {% if filter.max_value.value %}{% if uses_comma_decimals %}value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | ceil }}"{% else %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' | ceil }}"{% endif %}
+                          {% endif %}
+                          type="number"
+                          min="0"
+                          {% if uses_comma_decimals %}
+                            placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                            max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                          {% else %}
+                            placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          {% endif %}
+                        >
+                        </input>
+                        <label class="field__label tw-absolute tw-left-3 tw-top-2" for="Filter-{{ filter.label | escape }}-LTE">{{ 'collections.filters.to' | t }}</label>
+                      </div>
+                    </div>
+                  </price-range>
+                </div>
+              </details>
+            {% endcase %}
+          {% endfor %}
+          <noscript>
+            <button type="submit" class="facets__button-no-js button button--tertiary">{{ 'collections.filters.filter_button' | t }}</button>
+          </noscript>
+        </div>
+
+        <div class="active-facets active-facets-desktop tw-flex tw-flex-wrap tw-w-full tw-row-start-2 tw-row-end-auto md:tw-col-start-1 md:tw-col-end-auto">
+          <facet-remove class="active-facets__button-wrapper tw-flex tw-items-center tw-justify-center tw-mt-4 tw-mr-2 tw-rounded-3xl tw-py-0.5 tw-px-2">
+            <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="underlined-link">
+              <span>{{ 'collections.filters.clear_all' | t }}</span>
+            </a>
+          </facet-remove>
+          {% for filter in collection.filters %}
+            {% for value in filter.active_values %}
+              <facet-remove>
+                <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light md:tw-mr-2 tw-block tw-mt-4 tw-no-underline">
+                  <span class="active-facets__button-inner button button--tertiary tw-flex tw-rounded-3xl tw-min-h-0 tw-min-w-0 tw-items-center tw-py-0.5 tw-pl-3 tw-pr-2">
+                    {{ value.label | escape }}
+                    {% render 'icon-close-small', class: 'tw-ml-1 tw-pointer-events-none tw-relative tw-top-0.5 md:tw-static tw-w-4 tw-h-5' %}
+                  </span>
+                </a>
+              </facet-remove>
+            {% endfor %}
+            {% if filter.type == "price_range" %}
+              {% if filter.min_value.value != nil or filter.max_value.value != nil %}
+                <facet-remove>
+                  <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light md:tw-mr-2 tw-block tw-mt-4 tw-no-underline">
+                    <span class="active-facets__button-inner button button--tertiary tw-flex tw-rounded-3xl tw-min-h-0 tw-min-w-0 tw-items-center tw-py-0.5 tw-pl-3 tw-pr-2 tw-tracking-wide">
+                      {% if filter.min_value.value %}{{ filter.min_value.value | money }}{% else %}{{ 0 | money }}{% endif %}-{% if filter.max_value.value %}{{ filter.max_value.value | money }}{% else %}{{ filter.range_max | money }}{% endif %}
+                      {% render 'icon-close-small', class: 'tw-ml-1 tw-pointer-events-none tw-relative tw-top-0.5 md:tw-static tw-w-4 tw-h-5' %}
+                    </span>
+                  </a>
+                </facet-remove>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if collection.current_vendor or collection.current_type %}
+        <input type="hidden" name="q" value="{{ collection.current_vendor }}{{ collection.current_type }}">
+      {% endif %}
+
+      {% if section.settings.enable_sorting %}
+        <div class="collection-filters__item sorting caption tw-flex tw-items-start tw-col-start-2 tw-col-end-auto tw-row-start-1 tw-row-end-auto tw-mb-5">
+          <div class="collection-filters__field tw-flex tw-flex-grow tw-justify-end">
+            <label class="collection-filters__label caption-large tw-mb-0 tw-pr-2 tw-self-center" for="SortBy">{{ 'collections.filters.sort_by_label' | t }}</label>
+            <div class="select tw-relative tw-inline-block tw-w-auto tw-border tw-rounded tw-border-gray-300">
+              {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+              <select name="sort_by" class="collection-filters__sort select__select caption-large tw-py-2 tw-pl-2 tw-pr-6 tw-appearance-none tw-rounded" id="SortBy" aria-describedby="a11y-refresh-page-message">
+                {% for option in collection.sort_options %}
+                  <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name | escape }}</option>
+                {% endfor %}
+              </select>
+              {% render 'icon-caret' %}
+            </div>
+          </div>
+
+          <noscript>
+            <button type="submit" class="facets__button-no-js button button--tertiary">{{ 'collections.filters.sort_button' | t }}</button>
+          </noscript>
+        </div>
+      {% endif %}
+
+      <p id="CollectionProductCountDesktop" class="collection-product-count light md:tw-col-start-2 md:tw-row-start-2 md:tw-self-end tw-text-right" role="status">
+        {% if collection.products_count == collection.all_products_count %}
+          {{ 'collections.product_count_simple' | t: count: collection.products_count }}
+        {% else %}
+          {{ 'collections.product_count' | t: product_count: collection.products_count, count: collection.all_products_count }}
+        {% endif %}
+      </p>
+    </form>
+  </collection-filters-form>
+  {% endunless %}
+
+  <menu-drawer class="mobile-facets__wrapper tw-flex tw-ml-0 tw-mb-2{% unless section.settings.collapse_on_larger_devices %} medium-hide md:tw-hidden {% endunless %}" data-breakpoint="mobile">
+    <details class="mobile-facets__disclosure disclosure-has-popup tw-flex tw-relative ">
+      <summary class="mobile-facets__open-wrapper tw-inline-block tw-cursor-pointer tw-list-none tw-relative">
+        <span class="mobile-facets__open tw-flex tw-text-left tw-w-full tw-items-center tw-py-0 tw-h-6">
+          {% render 'icon-filter' %}
+          <span class="mobile-facets__open-label button-label tw-ml-2">
+            {{ 'collections.filters.filter_and_sort' | t }}
+          </span>
+        </span>
+        <span tabindex="0" class="mobile-facets__close mobile-facets__close--no-js tw-hidden tw-items-center tw-justify-center tw-fixed tw-top-4 tw-right-0 tw-h-5 tw-w-14 tw-opacity-0 tw-transition-opacity tw-duration-100 tw-ease-out">
+          {% render 'icon-close' %}
+        </span>
+      </summary>
+      <collection-filters-form>
+        <form id="CollectionFiltersFormMobile" class="mobile-facets tw-fixed tw-inset-0 tw-z-50 tw-pointer-events-none">
+          <div class="mobile-facets__inner tw-bg-white tw-ml-auto tw-h-full tw-overflow-y-auto tw-pointer-events-auto tw-max-w-xl lg:tw-max-w-sm">
+            <div class="mobile-facets__header tw-sticky tw-top-0 tw-py-2 tw-px-2 tw-border-b tw-z-20 tw-border-gray-300 tw-bg-white">
+              <div class="mobile-facets__header-inner tw-text-center">
+                <h2 class="mobile-facets__heading tw-text-2xl">
+                  {{ 'collections.filters.filter_and_sort' | t }}
+                </h2>
+                <p class="mobile-facets__count tw-text-gray-500">
+                  {{ 'collections.product_count' | t: product_count: collection.products_count, count: collection.all_products_count }}
+                </p>
+              </div>
+            </div>
+            <div class="mobile-facets__main tw-px-0 tw-pt-4 tw-relative tw-z-10">
+              {% for filter in collection.filters %}
+                {% case filter.type %}
+                {% when 'list' %}
+                  <details class="mobile-facets__details js-filter" data-index="mobile-{{ forloop.index }}">
+                    <summary class="mobile-facets__summary tw-relative tw-py-3 tw-px-6">
+                      <div class="tw-flex tw-items-center">
+                        <span>{{ filter.label | escape }}</span>
+                        <span class="mobile-facets__arrow no-js-hidden tw-block tw-ml-auto">
+                          {% render 'icon-arrow-right' %}
+                        </span>
+                        <noscript>{% render 'icon-caret' %}</noscript>
+                      </div>
+                    </summary>
+                    <div class="mobile-facets__submenu tw-absolute tw-inset-0 tw-w-full tw-bg-white tw-z-20">
+                      <button class="mobile-facets__close-button link link--text focus-inset tw-flex tw-mt-2 tw-py-2 tw-px-4 tw-no-underline tw-items-center" aria-expanded="true" type="button">
+                        {% render 'icon-arrow-left' class: 'tw-mr-2' %}
+                        {{ filter.label | escape }}
+                      </button>
+                      <ul class="mobile-facets__list list-unstyled tw-p-0 tw-m-0 tw-list-none" role="list">
+                        {% for value in filter.values %}
+                          <li class="mobile-facets__item list-menu__item tw-flex tw-relative tw-items-center">
+                            <label for="Filter-{{ filter.label | escape }}-mobile-{{ forloop.index }}" class="mobile-facets__label tw-flex tw-py-3 tw-pr-0 tw-pl-10 tw-w-full tw-break-words tw-items-center tw-leading-tight {% if value.count == 0 and value.active == false %} mobile-facets__label--disabled tw-text-gray-400{% endif %}">
+                              <input class="mobile-facets__checkbox tw-absolute tw-appearance-none tw-w-4 tw-h-4 tw-top-3 tw-left-3 tw-cursor-pointer tw-z-0" type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="Filter-{{ filter.label | escape }}-mobile-{{ forloop.index }}"
+                                {% if value.active %}checked{% endif %}
+                                {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                              >
+
+                              <span class="mobile-facets__highlight"></span>
+
+                              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="tw-flex-shrink-0 tw-mr-4 tw-z-10">
+                                <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
+                              </svg>
+
+                              <svg class="icon icon-checkmark tw-absolute tw-invisible tw-z-10 tw-flex-shrink-0 tw-mr-4" width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                              </svg>
+
+                              {{ value.label | escape }} ({{ value.count }})
+                            </label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+
+                      <div class="no-js-hidden mobile-facets__footer tw-flex tw-sticky tw-bottom-0 tw-border-t tw-border-gray-300 tw-p-4 tw-bottom-0 tw-z-10 tw-bg-white">
+                        <facet-remove class="mobile-facets__clear-wrapper tw-flex tw-justify-center tw-w-1/2 tw-items-center">
+                          <a href="{{ collection.url }}" class="mobile-facets__clear underlined-link">{{ 'collections.filters.clear' | t }}</a>
+                        </facet-remove>
+                        <button type="button" class="no-js-hidden button tw-btn tw-btn-primary rounded-pill tw-w-1/2" onclick="this.closest('.mobile-facets__wrapper').querySelector('summary').click()">{{ 'collections.general.apply' | t }}</button>
+                        <noscript><button class="button button--primary">{{ 'collections.general.apply' | t }}</button></noscript>
+                      </div>
+                    </div>
+                  </details>
+                {% when 'price_range' %}
+                  <details class="mobile-facets__details js-filter" data-index="mobile-{{ forloop.index }}">
+                    <summary class="mobile-facets__summary tw-py-3 tw-px-6">
+                      <div class="tw-flex tw-items-center">
+                        <span>{{ filter.label | escape }}</span>
+                        <span class="mobile-facets__arrow no-js-hidden tw-block tw-ml-auto">{% render 'icon-arrow-right' %}</span>
+                        <noscript>{% render 'icon-caret' %}</noscript>
+                      </div>
+                    </summary>
+                    <div class="mobile-facets__submenu tw-absolute tw-inset-0 tw-w-full tw-bg-white tw-z-20">
+                      <button class="mobile-facets__close-button link link--text focus-inset tw-flex tw-mt-2 tw-py-2 tw-px-4 tw-no-underline tw-items-center" aria-expanded="true" type="button">
+                        {% render 'icon-arrow-left', class: 'tw-mr-2' %}
+                        {{ filter.label | escape }}
+                      </button>
+
+                      <p class="mobile-facets__info tw-py-1 tw-px-4">
+                        {{ "collections.general.max_price" | t: price: max_price_amount }}
+                      </p>
+
+                      <price-range class="facets__price">
+                        {% liquid
+                          unless filter.min_value.value
+                            assign input_left = 0
+                          else
+                            if uses_comma_decimals
+                              assign input_left = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                            else 
+                              assign input_left = filter.min_value.value | money_without_currency | replace: ',', ''
+                            endif
+                          endunless 
+
+                          unless filter.max_value.value
+                            if uses_comma_decimals
+                              assign input_right = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                            else
+                              assign input_right = filter.range_max | money_without_currency | replace: ',', ''
+                            endif
+                          else
+                            if uses_comma_decimals
+                              assign input_right = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                            else
+                              assign input_right = filter.max_value.value | money_without_currency | replace: ',', ''
+                            endif
+                          endunless
+                        %}
+                        <div class="tw-block tw-pb-1 tw-pt-4">
+                          <!-- Slider -->
+                          <div id="slider-distance" range-slider>
+                            <div class="visual-elements">
+                              <div inverse-left style="width:70%;"></div>
+                              <div inverse-right style="width:70%;"></div>
+                              <div range style="left:30%;right:40%;"></div>
+                              <span thumb thumb-left style="left:30%;"></span>
+                              <span thumb thumb-right style="left:60%;"></span>
+                            </div>
+                            <input type="range" tabindex="0" value="{{ input_left | floor }}" max="{% if uses_comma_decimals %}{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | ceil }}{% else %}{{ filter.range_max | money_without_currency | replace: ',', '' | ceil }}{% endif %}" min="0" step="1" class="handle" data-handle="left"/>
+                            <input type="range" tabindex="0" value="{{ input_right | ceil }}" max="{% if uses_comma_decimals %}{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | ceil }}{% else %}{{ filter.range_max | money_without_currency | replace: ',', '' | ceil }}{% endif %}" min="0" step="1" class="handle" data-handle="right"/>
+                          </div>
+                          <!-- End Slider-->
+                        </div>
+
+                        <div class="tw-flex tw-w-full tw-p-4">
+                          <span class="field-currency tw-self-center tw-pr-2 tw-text-gray-400">{{ cart.currency.symbol }}</span>
+                          <div class="field tw-flex tw-items-center tw-relative tw-w-full">
+                            <input class="field__input tw-flex-grow tw-w-full tw-text-left tw-px-2 tw-py-2 tw-appearance-none tw-border tw-border-gray-400 rounded-pill tw-outline-none"
+                              name="{{ filter.min_value.param_name }}"
+                              id="Mobile-Filter-{{ filter.label | escape }}-GTE"
+                              {% if filter.min_value.value %}
+                                {% if uses_comma_decimals %}value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{% else %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              {% endif %}
+                              type="number"
+                              placeholder="0"
+                              min="0"
+                              {% if uses_comma_decimals %}max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{% else %}max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"{% endif %}
+                            >
+                            </input>
+                            <label class="field__label tw-absolute tw-left-3 tw-top-2" for="Mobile-Filter-{{ filter.label | escape }}-GTE">{{ 'collections.filters.from' | t }}</label>
+                          </div>
+
+                          <span class="field-currency tw-self-center tw-px-2 tw-text-gray-400">{{ cart.currency.symbol }}</span>
+                          <div class="field tw-flex tw-items-center tw-relative tw-w-full">
+                            <input class="field__input tw-flex-grow tw-w-full tw-text-left tw-px-2 tw-py-2 tw-appearance-none tw-border tw-border-gray-400 rounded-pill tw-outline-none"
+                              name="{{ filter.max_value.param_name }}"
+                              id="Mobile-Filter-{{ filter.label | escape }}-LTE"
+                              {% if filter.max_value.value %}
+                                {% if uses_comma_decimals %}value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{% else %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              {% endif %}
+                              type="number"
+                              min="0"
+                              {% if uses_comma_decimals %}
+                                placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                                max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                              {% else %}
+                                placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              {% endif %}
+                            >
+                            </input>
+                            <label class="field__label tw-absolute tw-left-3 tw-top-2" for="Mobile-Filter-{{ filter.label | escape }}-LTE">{{ 'collections.filters.to' | t }}</label>
+                          </div>
+                        </div>
+                      </price-range>
+                    </div>
+                  </details>
+                {% endcase %}
+              {% endfor %}
+
+              {% if section.settings.enable_sorting %}
+                <div class="mobile-facets__details js-filter" data-index="mobile-{{ forloop.index }}">
+                  <div class="mobile-facets__summary tw-py-2 tw-px-5">
+                    <div class="mobile-facets__sort tw-flex tw-items-center tw-justify-between">
+                      <label for="SortBy-mobile">{{ 'collections.filters.sort_by_label' | t }}</label>
+                      <div class="select">
+                        <select name="sort_by" class="select__select" id="SortBy-mobile" aria-describedby="a11y-refresh-page-message">
+                          {% for option in collection.sort_options %}
+                            <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name | escape }}</option>
+                          {% endfor %}
+                        </select>
+                        {% comment%}
+                        {% render 'icon-caret' %}
+                        {% endcomment%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="mobile-facets__footer tw-flex tw-sticky tw-bottom-0 tw-border-t tw-border-gray-300 tw-p-4 tw-bottom-0 tw-z-10 tw-bg-white">
+                <facet-remove class="mobile-facets__clear-wrapper tw-flex tw-justify-center tw-w-1/2 tw-items-center">
+                  <a href="{{ collection.url }}" class="mobile-facets__clear underlined-link">{{ 'collections.filters.clear_all' | t }}</a>
+                </facet-remove>
+                <button type="button" class="no-js-hidden button tw-btn tw-btn-primary rounded-pill tw-w-1/2" onclick="this.closest('.mobile-facets__wrapper').querySelector('summary').click()">{{ 'collections.general.apply' | t }}</button>
+                <noscript><button class="button button--primary">{{ 'collections.general.apply' | t }}</button></noscript>
+              </div>
+            </div>
+
+            {% if collection.current_vendor or collection.current_type %}
+              <input type="hidden" name="q" value="{{ collection.current_vendor }}{{ collection.current_type }}">
+            {% endif %}
+          </div>
+        </form>
+      </collection-filters-form>
+    </details>
+  </menu-drawer>
+
+  <div class="active-facets active-facets-mobile tw-flex tw-flex-wrap tw-w-full tw-col-span-2 tw-col-start-1 tw-row-start-2 tw-row-end-auto {% unless section.settings.collapse_on_larger_devices %} medium-hide md:tw-hidden{% endunless %}">
+    {% assign has_active_filter = false %}
+
+    {% for filter in collection.filters %}
+      {% for value in filter.active_values %}
+        {% assign has_active_filter = true %}
+        <facet-remove>
+          <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light tw-block tw-mr-2 tw-mt-4 tw-no-underline">
+            <span class="active-facets__button-inner button button--tertiary tw-flex tw-rounded-3xl tw-min-h-0 tw-min-w-0 tw-items-center tw-py-0.5 tw-pl-3 tw-pr-2">
+              {{ value.label | escape }}
+              {% render 'icon-close-small', class: 'tw-relative tw-w-6 tw-h-6' %}
+            </span>
+          </a>
+        </facet-remove>
+      {% endfor %}
+
+      {% if filter.type == "price_range" %}
+        {% if filter.min_value.value != nil or filter.max_value.value != nil %}
+          {% assign has_active_filter = true %}
+          <facet-remove>
+            <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light tw-block tw-mr-2 tw-mt-4 tw-no-underline">
+              <span class="active-facets__button-inner button button--tertiary tw-flex tw-rounded-3xl tw-min-h-0 tw-min-w-0 tw-items-center tw-py-0.5 tw-pl-3 tw-pr-2">
+                {% if filter.min_value.value %}{{ filter.min_value.value | money }}{% else %}{{ 0 | money }}{% endif %}-{% if filter.max_value.value %}{{ filter.max_value.value | money }}{% else %}{{ filter.range_max | money }}{% endif %}
+                {% render 'icon-close-small', class: 'tw-relative tw-w-6 tw-h-6' %}
+              </span>
+            </a>
+          </facet-remove>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_active_filter %}
+      <facet-remove class="active-facets__button-wrapper tw-flex tw-items-center tw-justify-center tw-mt-4 tw-mr-2 tw-rounded-3xl tw-py-0.5 tw-px-2">
+        <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="underlined-link">
+          <span>{{ 'collections.filters.clear_all' | t }}</span>
+        </a>
+      </facet-remove>
+    {% endif %}
+    
+  </div>
+
+  <p id="CollectionProductCount" class="collection-product-count light tw-self-center tw-m-0 tw-text-right tw-text-gray-500{% unless section.settings.collapse_on_larger_devices %} medium-hide md:tw-hidden{% endunless %}" role="status">
+    {% if collection.products_count == collection.all_products_count %}
+      {{ 'collections.product_count_simple' | t: count: collection.products_count }}
+    {% else %}
+      {{ 'collections.product_count' | t: product_count: collection.products_count, count: collection.all_products_count }}
+    {% endif %}
+  </p>
+
+</div>

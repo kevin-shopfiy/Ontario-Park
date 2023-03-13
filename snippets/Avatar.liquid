@@ -1,0 +1,119 @@
+{% assign theme_version = '1.2.2' %}
+
+{%- liquid
+  if settings.show_unavailable_products_search
+    assign show_unavailable_products = 'show'
+  else
+    assign show_unavailable_products = 'hide'
+  endif
+
+  if settings.cart_type == 'drawer'
+    assign enable_slider_cart = true
+  else
+    assign enable_slider_cart = false
+  endif
+-%}
+
+<script>
+  window.Avatar = {
+    theme: {
+      version: {{ theme_version | json }},
+      givenName: {{ theme.name | json }},
+      id: {{ theme.id | json }},
+      current: {
+        pageType: {{ request.page_type | json }},
+        template: {{ template.name | json }},
+        templateSuffix: {{ template.suffix | json }},
+        templateFull: {{ template | json }},
+        product: {{ product | json }},
+        variant: {{ product.selected_or_first_available_variant | json }},
+        collection: {{ collection | json }},
+        cart: {{ cart | json }},
+        locale: {{ shop.published_locales.first.iso_code | json }}
+      },
+      settings: {
+        search: {
+          enabled: {{ settings.predictive_search_enabled | json }},
+          showCollections: {{ settings.show_collections_search | json }},
+          showArticles: {{ settings.show_articles_search | json }},
+          showPages: {{ settings.show_pages_search | json }},
+          showUnavailableProducts: {{ show_unavailable_products | json }},
+          searchType: {{ settings.type_search | json }},
+          searchVendor: {{ settings.vendor_search | json }},
+          searchTag: {{ settings.tag_search | json }},
+          searchSku: {{ settings.sku_search | json }},
+          searchVariantTitle: {{ settings.variant_title_search | json }},
+          searchBarcode: {{ settings.barcode_search | json }},
+          searchDescriptions: {{ settings.descriptions_search | json }},
+          searchAuthor: {{ settings.author_search | json }},
+          limit: {{ settings.limit_search | json }},
+        },
+        cart: {
+          continueShopping: '',
+          showRecsOnEmptyCart: null,
+        },
+        breakpoints: {
+          medium: 768,
+        },
+        mediaQuery: {
+          mediumUp: 'screen and (min-width: 768px)',
+          small: 'screen and (max-width: 767px)',
+        },
+      },
+      i18n: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        regularPrice: {{ 'products.product.regular_price' | t | json }},
+        salePrice: {{ 'products.product.sale_price' | t | json }},
+        sale: {{ 'products.product.on_sale' | t | json }},
+        unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+        unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
+        item: {{ 'cart.general.item' | t | json }},
+        items: {{ 'cart.general.items' | t | json }},
+        empty: {{ 'cart.general.empty' | t | json }},
+        continue: {{ 'cart.general.continue_shopping' | t | json }},
+        search: {
+          fromLowestPrice: {{ 'products.product.from_lowest_price_html' | t: lowest_price: '[price]' | json }},
+          placeholders: {
+            products: {{ 'general.search.placeholders.products' | t | json }},
+            collections: {{ 'general.search.placeholders.collections' | t | json }},
+            pages: {{ 'general.search.placeholders.pages' | t | json }},
+            articles: {{ 'general.search.placeholders.articles' | t | json }},
+          },
+          results: {
+            show: {{ 'general.search.results.show' | t | json }},
+            none: {{ 'general.search.results.none' | t | json }}
+          }
+        },
+        cart: {
+          item: {{ 'cart.general.item' | t | json }},
+          items: {{ 'cart.general.items' | t | json }},
+        }
+      },
+      keyboardKeys: {
+        TAB: 9,
+        ENTER: 13,
+        ESCAPE: 27,
+        LEFTARROW: 37,
+        RIGHTARROW: 39
+      }
+    },
+    shop: {
+      root: {{ request.locale.root_url | json }},
+      moneyFormat: {{ shop.money_format | json }}
+    },
+    icons: {
+      collection: {{ 'icon-collection.png' | asset_img_url: '120x' | json }},
+      product: {{ 'icon-product.png' | asset_img_url: '120x' | json }},
+      page: {{ 'icon-page.png' | asset_img_url: '120x' | json }},
+      article: {{ 'icon-article.png' | asset_img_url: '120x' | json }}
+    },
+    skup: {
+      sliderCart: {{ settings.cart_type | json }},
+      exitModal: false,
+    }
+  };
+
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+</script>

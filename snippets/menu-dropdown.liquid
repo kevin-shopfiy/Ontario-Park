@@ -1,0 +1,43 @@
+<ul class="nav justify-content-center align-items-center tw-flex-wrap">
+    {% for link in links %}
+    <li class="nav-item{% if link.levels > 0 %} has-dropdown{% endif %} d-block tw-relative">
+        <a class="nav-link level-1 position-relative  pl-3 font-600 {% if link.active or link.child_active %} nav-link-current {% endif %} {% if enable_sticky %}pt-0 pb-3 tw-bg-sticky-nav-arrow{% else %}py-3{% endif %}"
+            href="{{ link.url }}" {% if link.levels> 0 %} aria-expanded="false" aria-controls="SiteNavLabel-{{
+            link.title | handle }}" data-a11y-dropdown{% endif %}>
+            {{ link.title }}
+        </a>
+        {% if link.levels > 0 %}
+        <div id="SiteNavLabel-{{ link.title | handle }}"
+            class="nav-dropdown is-dropdown position-absolute min-w-full tw-border-t critical-hidden tw-shadow-lg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav row tw-block">
+                            {% for child_link in link.links %}
+                            <li class="nav-item col-12 py-2">
+                                <a class="nav-link level-2 d-block p-0 font-7 font-600 tw-whitespace-nowrap" href="{{ child_link.url }}">
+                                    {{ child_link.title }}
+                                </a>
+                                {% if child_link.levels > 0 %}
+                                <ul class="nav flex-column mt-2 to-left">
+                                    {% for grandchild_link in child_link.links %}
+                                    <li class="nav-item">
+                                        <a class="nav-link level-3 px-0 font-7 tw-whitespace-nowrap" href="{{ grandchild_link.url }}">
+                                            {{ grandchild_link.title }}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                           
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

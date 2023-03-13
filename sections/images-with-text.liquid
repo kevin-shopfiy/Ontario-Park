@@ -1,0 +1,364 @@
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+  #shopify-section-{{ section.id }} {
+    padding-top: 53px;
+    padding-bottom: 53px;
+   
+  }
+  {% if section.settings.bg_color != blank and alpha > 0 %}
+    #shopify-section-{{ section.id }} {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      background-color: {{ section.settings.bg_color }};
+    }
+  {% endif %}
+  #shopify-section-{{ section.id }} .cover {
+    height: {{ section.settings.height | divided_by: 1.5 | round: 0 | append: 'px' }};
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .cover {
+      height: {{ section.settings.height | append: 'px' }};
+    }
+  }
+</style>
+{{'section-images-text.css'| asset_url | stylesheet_tag }}
+{% assign mobile_only_block_count = 0 %}
+
+<div data-section-id="{{ section.id }}" data-section-type="images-with-text">
+  <div class="{{ section.settings.width }}">
+    <div class="custom-container">
+      <div class="images-text row-cols-md-{{ section.settings.images_per_row }} ">
+        {% for block in section.blocks %}
+          {% if block.type == 'mobile-image' %}
+            {% assign mobile_only_block_count = mobile_only_block_count | plus: 1 %}
+          {% endif %}
+
+          <style>
+            #shopify-block-{{ block.id }} .cover {
+              color: {{ block.settings.color }};
+              background-color: {{ block.settings.bg_color }};
+            }
+            #shopify-block-{{ block.id }} h3 {
+              font-size: {{ block.settings.font_size }};
+            }
+            {% if block.settings.show_overlay %}
+              {% assign alpha = block.settings.alpha | divided_by: 100.0 | round: 1 %}
+              #shopify-block-{{ block.id }} .overlay {
+                background-color: {{ block.settings.bg_color | color_modify: 'alpha', alpha }};
+              }
+            {% endif %}
+          </style>
+
+          <div class="{% if block.type == 'mobile-image' %}d-md-none{% endif %}">
+            <div id="shopify-block-{{ block.id }}" class="shopify-block shopify-block-image">
+
+              {% if block.settings.link_url != blank and block.settings.button == blank %}
+                <a class="d-block" href="{{ block.settings.link_url }}">
+              {% endif %}
+
+              <div class="cover d-flex justify-content-center align-items-center tw-relative text-center rounded lazyload"{% if block.settings.image != blank %} data-bgset="{% render 'image-bgset', image: block.settings.image %}" data-sizes="auto" data-parent-fit="cover"{% endif %}>
+
+                {% if block.settings.show_overlay %}
+                  <div class="overlay d-flex justify-content-center align-items-center w-100 h-100 tw-relative">
+                {% endif %}
+
+                {%- if block.settings.image == blank -%}
+                  {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                  {% assign placeholder = 'lifestyle-' | append: current %}
+
+                  <div class="tw-bg-img-placeholder">
+                    {{ placeholder | placeholder_svg_tag }}
+                  </div>
+                {%- endif -%}
+
+                <div class="content {% if block.settings.image == blank %} tw-z-1 {% endif %}">
+                  {% if block.settings.title != blank %}
+                    <h2 class="mb-0 lh-1 tw-break-words">
+                      {{ block.settings.title }}
+                    </h2>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <p class="images mt-4 mb-0 tw-font-medium tw-break-words">
+                      {{ block.settings.text }}
+                    </p>
+                  {% endif %}
+                  
+
+                  {% if block.settings.link_url != blank and block.settings.button != blank %}
+                    <a class="tw-btn tw-btn-primary d-inline-flex justify-content-center align-items-center mt-4 font-600 rounded-pill" href="{{ block.settings.link_url }}">
+                      {{ block.settings.button }}
+                      {% if settings.show_button_arrow %}
+                        {% render 'icon-arrow-right' %}
+                      {% endif %}
+                    </a>
+                  {% endif %}
+
+                </div>
+
+                {% if block.settings.show_overlay %}
+                  </div>
+                {% endif %}
+
+              </div>
+
+              {% render 'noscript', tag: 'div', media: block.settings.image, size: '512x352' %}
+
+              {% if block.settings.link_url != blank and block.settings.button == blank %}
+                </a>
+              {% endif %}
+
+            </div>
+          </div>
+
+        {% endfor %}
+
+        {% comment %} Render if more rows are selected but not enough blocks {% endcomment %}
+        {% assign block_count_without_mobile_only = section.blocks.size | minus: mobile_only_block_count %}
+        {% if block_count_without_mobile_only < section.settings.images_per_row %}
+          {% assign row_extras = section.settings.images_per_row | minus: block_count_without_mobile_only  %}
+          {% for i in (1..row_extras) %}
+            {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+            {% assign placeholder = 'lifestyle-' | append: current %}
+            <div class="col pb-4 tw-hidden md:tw-block">
+              <div class="cover tw-relative text-center rounded">
+                <div class="tw-bg-img-placeholder">
+                  {{ placeholder | placeholder_svg_tag }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        {% endif %}
+      </div>
+  </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.images-with-text.name",
+    "class": "shopify-section-images-with-text",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.images-with-text.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.images-with-text.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.images-with-text.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "label": "t:sections.images-with-text.settings.height.label",
+        "min": 100,
+        "max": 500,
+        "step": 10,
+        "unit": "px",
+        "default": 350
+      },
+      {
+        "type": "range",
+        "id": "images_per_row",
+        "label": "t:sections.images-with-text.settings.images_per_row.label",
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.images-with-text.settings.bg_color.label"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "t:sections.images-with-text.blocks.image.name",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.images-with-text.blocks.image.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "t:sections.hero.settings.title.label"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "t:sections.images-with-text.blocks.image.settings.text.label",
+            "default": "Overlay Text"
+          },
+          {
+            "type": "select",
+            "id": "font_size",
+            "label": "t:sections.images-with-text.blocks.image.settings.font_size.label",
+            "options": [
+              {
+                "value": "calc(1rem + 1vw)",
+                "label": "t:sections.images-with-text.blocks.image.settings.font_size.options__1.label"
+              },
+              {
+                "value": "calc(1.25rem + 1.25vw)",
+                "label": "t:sections.images-with-text.blocks.image.settings.font_size.options__2.label"
+              },
+              {
+                "value": "calc(1.5rem + 1.5vw)",
+                "label": "t:sections.images-with-text.blocks.image.settings.font_size.options__3.label"
+              }
+            ],
+            "default": "calc(1.5rem + 1.5vw)"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "t:sections.images-with-text.blocks.image.settings.link_url.label"
+          },
+          {
+            "type": "text",
+            "id": "button",
+            "label": "t:sections.images-with-text.blocks.image.settings.button.label"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_overlay",
+            "label": "t:sections.images-with-text.blocks.image.settings.show_overlay.label"
+          },
+          {
+            "type": "range",
+            "id": "alpha",
+            "label": "t:sections.images-with-text.blocks.image.settings.alpha.label",
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "%",
+            "default": 50
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "t:sections.images-with-text.blocks.image.settings.color.label",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "t:sections.images-with-text.blocks.image.settings.bg_color.label",
+            "default": "#eee"
+          }
+        ]
+      },
+      {
+        "type": "mobile-image",
+        "name": "t:sections.images-with-text.blocks.mobile-image.name",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.text.label",
+            "default": "Overlay Text"
+          },
+          {
+            "type": "select",
+            "id": "font_size",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.font_size.label",
+            "options": [
+              {
+                "value": "calc(1rem + 1vw)",
+                "label": "t:sections.images-with-text.blocks.mobile-image.settings.font_size.options__1.label"
+              },
+              {
+                "value": "calc(1.25rem + 1.25vw)",
+                "label": "t:sections.images-with-text.blocks.mobile-image.settings.font_size.options__2.label"
+              },
+              {
+                "value": "calc(1.5rem + 1.5vw)",
+                "label": "t:sections.images-with-text.blocks.mobile-image.settings.font_size.options__3.label"
+              }
+            ],
+            "default": "calc(1.5rem + 1.5vw)"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.link_url.label"
+          },
+          {
+            "type": "text",
+            "id": "button",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.button.label"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_overlay",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.show_overlay.label"
+          },
+          {
+            "type": "range",
+            "id": "alpha",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.alpha.label",
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "%",
+            "default": 50
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.color.label",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "t:sections.images-with-text.blocks.mobile-image.settings.bg_color.label",
+            "default": "#eee"
+          }
+        ]
+      }
+    ],
+    "presets" : [
+      {
+        "name": "t:sections.images-with-text.presets.name",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "/",
+              "button": "Shop Now"
+            }
+          },
+          {
+            "type": "image",
+            "settings": {
+              "text": "So many ways to express yourself",
+              "link_url": "/",
+              "button": "Shop Now"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

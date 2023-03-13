@@ -1,0 +1,106 @@
+{% if section.settings.show_product_recommendations %}
+
+  {% assign product_limit = section.settings.products_per_row | times: section.settings.product_rows %}
+
+  {%- if recommendations.performed -%}
+    {%- if recommendations.products_count > 0 -%}
+      <div class="container mb-5">
+
+        {% if section.settings.title != blank %}
+          <h2 class="h4 mb-4 lh-1 text-center">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% render 'product-grid', columns: section.settings.products_per_row, products: recommendations.products, product_limit: product_limit, show_vendor: section.settings.show_vendor, show_price: section.settings.show_price, show_compare_at_price: section.settings.show_compare_at_price, show_sale_badge: section.settings.show_sale_badge, show_add_to_cart_button: false, price_style: section.settings.price_style %}
+
+      </div>
+    {%- endif -%}
+  {%- else  -%}
+    <div class="product-recommendations" data-base-url="{{ routes.product_recommendations_url }}" data-product-id="{{ product.id }}" data-limit="{{ product_limit }}" data-section-id="{{ section.id }}" data-section-type="product-recommendations"></div>
+  {%- endif -%}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "t:sections.product-recommendations.name",
+    "class": "shopify-section-product-recommendations mt-5",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_product_recommendations",
+        "label": "t:sections.product-recommendations.settings.show_product_recommendations.label",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.product-recommendations.settings.title.label",
+        "default": "You'll also like"
+      },
+      {
+        "type": "range",
+        "id": "products_per_row",
+        "label": "t:sections.product-recommendations.settings.products_per_row.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "product_rows",
+        "label": "t:sections.product-recommendations.settings.product_rows.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "t:sections.product-recommendations.settings.header__1.content"
+      },
+      {
+        "type": "radio",
+        "id": "price_style",
+        "label": "t:sections.product-recommendations.settings.price_style.label",
+        "options": [
+          {
+            "value": "variant",
+            "label": "t:sections.product-recommendations.settings.price_style.options__1.label"
+          },
+          {
+            "value": "min",
+            "label": "t:sections.product-recommendations.settings.price_style.options__2.label"
+          }
+        ],
+        "default": "variant"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "t:sections.product-recommendations.settings.show_vendor.label",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price",
+        "label": "t:sections.product-recommendations.settings.show_price.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare_at_price",
+        "label": "t:sections.product-recommendations.settings.show_compare_at_price.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sale_badge",
+        "label": "t:sections.product-recommendations.settings.show_sale_badge.label",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

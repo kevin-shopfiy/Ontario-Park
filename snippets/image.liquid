@@ -1,0 +1,70 @@
+{% comment %}
+  {% render 'image', image|placeholder: *, width: ?, container_class: ?, link_class: ?, image_class: ?, height_class: ?, aspect_ratio: ? %}
+{% endcomment %}
+
+{% if container_class %}
+  {% assign container_class = container_class | append: ' image position-relative rounded' %}
+{% else %}
+  {% assign container_class = 'image rounded' %}
+{% endif %}
+
+{% if link_class %}
+  {% assign link_class = link_class | append: ' d-block position-absolute w-100 h-100 rounded tw-group' %}
+{% else %}
+  {% assign link_class = 'd-block position-absolute w-100 h-100 rounded tw-group' %}
+{% endif %}
+
+{% if image_class %}
+  {% assign image_class = image_class | append: ' d-block position-absolute w-100 h-100 rounded group-focus:tw-opacity-75 lazyload' %}
+{% else %}
+  {% assign image_class = 'd-block position-absolute w-100 h-100 rounded group-focus:tw-opacity-75 lazyload' %}
+{% endif %}
+
+{% if height_class %}
+  {% assign image_class = image_class | replace: 'h-100', height_class %}
+{% endif %}
+
+{% if image.preview_image %}
+  {% assign image = image.preview_image %}
+{% endif %}
+
+
+{% if padding_top %}
+  {% assign aspect_ratio = '' %}
+{% else %}
+  {% if aspect_ratio %}
+    {% assign aspect_ratio = aspect_ratio %}
+  {% elsif image.aspect_ratio %}
+    {% assign padding_top = 1.0 | divided_by: image.aspect_ratio | times: 100 %}
+    {% assign aspect_ratio = '' %}
+  {% else %}
+        {% assign padding_top = 100 %}
+  {% endif %}
+{% endif %}
+
+<div class="{{ container_class }} {{ aspect_ratio }}"
+  {% if padding_top %}style="padding-top: {{ padding_top }}%;"{% endif %}>
+
+  {% if link_url %}
+    <a class="{{ link_class }}" href="{{ link_url }}">
+  {% endif %}
+
+  {% if placeholder %}
+    {{ placeholder | placeholder_svg_tag: image_class | replace: 'lazyload', 'placeholder' }}
+  {% else %}
+    {% assign image_size = width | default: 1000 | append: 'x' %}
+    {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+    <img class="{{ image_class }}"
+      data-src="{{ img_url }}"
+      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+      data-sizes="auto"
+      data-aspectratio="{{ image.aspect_ratio }}" alt="{{ image_alt | default: image.alt }}" data-image-loading-placeholder/>
+
+    {% render 'noscript', tag: 'img', media: image, size: image_size %}
+  {% endif %}
+
+  {% if link_url %}
+    </a>
+  {% endif %}
+
+</div>

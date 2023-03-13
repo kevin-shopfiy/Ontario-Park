@@ -1,0 +1,251 @@
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+<style>
+  {% if section.settings.bg_color != blank and alpha > 0 %}
+    #shopify-section-{{ section.id }} {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      background-color: {{ section.settings.bg_color }};
+    }
+  {% endif %}
+  #shopify-section-{{ section.id }} .cover {
+    height: {{ section.settings.mobile_height | append: 'px' }};
+  }
+  @media (min-width:  768px) {
+    #shopify-section-{{ section.id }} .cover {
+      background-size: cover;
+      height: {{ section.settings.height | append: 'px' }};
+    }
+  }
+  @media (min-width: 2560px) {
+    #shopify-section-{{ section.id }} .cover {
+      height: {{ section.settings.height | times: 1.5 | round | append: 'px' }};
+    }
+  }
+
+  #shopify-section-{{ section.id }} .swiper-control:after {
+    font-size: 2.5rem;
+    color: {{ section.settings.controls_indicators_color }};
+  }
+
+  #shopify-section-{{ section.id }} .swiper-pagination-bullet {
+    border-radius: 0 !important;
+    width: 4em;
+    height: 0.25rem;
+    background: {{ section.settings.controls_indicators_color }};
+  }
+
+  #shopify-section-{{ section.id }} .swiper-pagination-bullet:hover:not(.swiper-pagination-bullet-active) {
+    opacity: 0.5;
+  }
+</style>
+
+<div data-section-id="{{ section.id }}" data-section-type="slideshow">
+  <div class="{{ section.settings.width }}">
+    {% render 'swiper', id: 'swiper-desktop', section: section %}
+    {% render 'swiper', id: 'swiper-mobile', section: section %}
+  </div>
+</div>
+
+{% schema %}
+  {
+  "name":"t:sections.slideshow.name",
+  "class":"shopify-section-slideshow",
+  "max_blocks":10,
+  "settings":[
+    {
+      "type":"select",
+      "id":"width",
+      "label":"t:sections.slideshow.settings.width.label",
+      "options":[
+        {
+          "value":"container-fluid",
+          "label":"t:sections.slideshow.settings.width.option__1.label"
+        },
+        {
+          "value":"container",
+          "label":"t:sections.slideshow.settings.width.option__2.label"
+        }
+      ],
+      "default":"container-fluid"
+    },
+    {
+      "type":"range",
+      "id":"height",
+      "label":"t:sections.slideshow.settings.height.label",
+      "min":100,
+      "max":1000,
+      "step":10,
+      "unit":"t:sections.slideshow.settings.height.unit",
+      "default":500
+    },
+    {
+      "type":"range",
+      "id":"mobile_height",
+      "label":"t:sections.slideshow.settings.mobile_height.label",
+      "min":50,
+      "max":600,
+      "step":10,
+      "unit":"t:sections.slideshow.settings.mobile_height.unit",
+      "default":300
+    },
+    {
+      "type":"checkbox",
+      "id":"autoplay",
+      "label":"t:sections.slideshow.settings.autoplay.label",
+      "default":true
+    },
+    {
+      "type":"range",
+      "id":"interval",
+      "label":"t:sections.slideshow.settings.interval.label",
+      "min":1,
+      "max":9,
+      "step":1,
+      "unit":"t:sections.slideshow.settings.interval.unit",
+      "default":4
+    },
+    {
+      "type":"checkbox",
+      "id":"show_controls",
+      "label":"t:sections.slideshow.settings.show_controls.label",
+      "default":true
+    },
+    {
+      "type":"checkbox",
+      "id":"show_indicators",
+      "label":"t:sections.slideshow.settings.show_indicators.label",
+      "default":true
+    },
+    {
+      "type":"color",
+      "id":"controls_indicators_color",
+      "label":"t:sections.slideshow.settings.controls_indicators_color.label",
+      "default":"#ffffff"
+    },
+    {
+      "type":"color",
+      "id":"bg_color",
+      "label":"t:sections.slideshow.settings.bg_color.label"
+    }
+  ],
+  "blocks":[
+    {
+      "type":"slide",
+      "name":"t:sections.slideshow.blocks.slide.name",
+      "settings":[
+        {
+          "type":"image_picker",
+          "id":"image",
+          "label":"t:sections.slideshow.blocks.slide.settings.image.label"
+        },
+        {
+          "type":"image_picker",
+          "id":"image_mobile",
+          "label":"t:sections.slideshow.blocks.slide.settings.image_mobile.label",
+          "info":"t:sections.slideshow.blocks.slide.settings.image_mobile.info"
+        },
+        {
+          "type":"text",
+          "id":"title",
+          "label":"t:sections.slideshow.blocks.slide.settings.title.label",
+          "default":"Slide"
+        },
+        {
+          "type":"textarea",
+          "id":"text",
+          "label":"t:sections.slideshow.blocks.slide.settings.text.label"
+        },
+        {
+          "type":"select",
+          "id":"font_size",
+          "label":"t:sections.slideshow.blocks.slide.settings.font_size.label",
+          "options":[
+            {
+              "value":"small",
+              "label":"t:sections.slideshow.blocks.slide.settings.font_size.option__1.label"
+            },
+            {
+              "value":"medium",
+              "label":"t:sections.slideshow.blocks.slide.settings.font_size.option__2.label"
+            },
+            {
+              "value":"large",
+              "label":"t:sections.slideshow.blocks.slide.settings.font_size.option__3.label"
+            }
+          ],
+          "default":"large"
+        },
+        {
+          "type":"url",
+          "id":"link_url",
+          "label":"t:sections.slideshow.blocks.slide.settings.link_url.label"
+        },
+        {
+          "type":"text",
+          "id":"button",
+          "label":"t:sections.slideshow.blocks.slide.settings.button.label"
+        },
+        {
+          "type":"checkbox",
+          "id":"show_overlay",
+          "label":"t:sections.slideshow.blocks.slide.settings.show_overlay.label"
+        },
+        {
+          "type":"range",
+          "id":"alpha",
+          "label":"t:sections.slideshow.blocks.slide.settings.alpha.label",
+          "min":0,
+          "max":100,
+          "step":10,
+          "unit":"t:sections.slideshow.blocks.slide.settings.alpha.unit",
+          "default":50
+        },
+        {
+          "type":"color",
+          "id":"color",
+          "label":"t:sections.slideshow.blocks.slide.settings.color.label",
+          "default":"#000"
+        },
+        {
+          "type":"color",
+          "id":"bg_color",
+          "label":"t:sections.slideshow.blocks.slide.settings.bg_color.label",
+          "default":"#eee"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name":"t:sections.slideshow.presets.name",
+      "category":"Image",
+      "blocks":[
+        {
+          "type":"slide",
+          "settings":{
+            "title":"Slide 1",
+            "color":"#000",
+            "bg_color":"#eee"
+          }
+        },
+        {
+          "type":"slide",
+          "settings":{
+            "title":"Slide 2",
+            "color":"#000",
+            "bg_color":"#ddd"
+          }
+        },
+        {
+          "type":"slide",
+          "settings":{
+            "title":"Slide 3",
+            "color":"#000",
+            "bg_color":"#ccc"
+          }
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}

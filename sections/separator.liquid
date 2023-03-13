@@ -1,0 +1,151 @@
+<div data-section-id="{{ section.id }}" data-section-type="separator">
+{% assign alpha = section.settings.bg_color | color_extract: 'alpha' %}
+  <style>
+    {% if section.settings.bg_color != blank and alpha > 0 %}
+      #shopify-section-{{ section.id }} {
+        background-color: {{ section.settings.bg_color }};
+      }
+      #shopify-section-{{ section.id }} > div {
+        overflow: auto;
+      }
+    {% endif %}
+    #shopify-section-{{ section.id }} .separator {
+      {% if section.settings.show_line %}
+        border-bottom-color: {{ section.settings.line_color }};
+      {% else %}
+        border-bottom-color: transparent;
+      {% endif %}
+      border-bottom-style: solid;
+      border-bottom-width: {{ section.settings.line_thickness }};
+    }
+  </style>
+
+  <div class="separator {{ section.settings.line_width }} {{ section.settings.margin_top }} {{ section.settings.margin_bottom }} mx-auto" aria-hidden="true"></div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.separator.name",
+    "class": "shopify-section-separator",
+    "settings": [
+      {
+        "type": "select",
+        "id": "margin_top",
+        "label": "t:sections.separator.settings.margin_top.label",
+        "options": [
+          {
+            "value": "mt-0",
+            "label": "t:sections.separator.settings.margin_top.options__1.label"
+          },
+          {
+            "value": "mt-3",
+            "label": "t:sections.separator.settings.margin_top.options__2.label"
+          },
+          {
+            "value": "mt-4",
+            "label": "t:sections.separator.settings.margin_top.options__3.label"
+          },
+          {
+            "value": "mt-5",
+            "label": "t:sections.separator.settings.margin_top.options__4.label"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "margin_bottom",
+        "label": "t:sections.separator.settings.margin_bottom.label",
+        "options": [
+          {
+            "value": "mb-0",
+            "label": "t:sections.separator.settings.margin_bottom.options__1.label"
+          },
+          {
+            "value": "mb-3",
+            "label": "t:sections.separator.settings.margin_bottom.options__2.label"
+          },
+          {
+            "value": "mb-4",
+            "label": "t:sections.separator.settings.margin_bottom.options__3.label"
+          },
+          {
+            "value": "mb-5",
+            "label": "t:sections.separator.settings.margin_bottom.options__4.label"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.separator.settings.bg_color.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_line",
+        "label": "t:sections.separator.settings.show_line.label"
+      },
+      {
+        "type": "select",
+        "id": "line_thickness",
+        "label": "t:sections.separator.settings.line_thickness.label",
+        "options": [
+          {
+            "value": "1px",
+            "label": "t:sections.separator.settings.line_thickness.options__1.label"
+          },
+          {
+            "value": "2px",
+            "label": "t:sections.separator.settings.line_thickness.options__2.label"
+          },
+          {
+            "value": "3px",
+            "label": "t:sections.separator.settings.line_thickness.options__3.label"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "line_width",
+        "label": "t:sections.separator.settings.line_width.label",
+        "options": [
+          {
+            "value": "w-25",
+            "label": "t:sections.separator.settings.line_width.options__1.label"
+          },
+          {
+            "value": "w-50",
+            "label": "t:sections.separator.settings.line_width.options__2.label"
+          },
+          {
+            "value": "w-75",
+            "label": "t:sections.separator.settings.line_width.options__3.label"
+          },
+          {
+            "value": "w-100",
+            "label": "t:sections.separator.settings.line_width.options__4.label"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "line_color",
+        "label": "t:sections.separator.settings.line_color.label",
+        "default": "#eee"
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.separator.presets.name",
+        "category": "Layout",
+        "settings": {
+          "margin_top": "mt-4",
+          "margin_bottom": "mb-4",
+          "show_line": true,
+          "line_thickness": "1px",
+          "line_width": "w-50"
+        }
+      }
+    ]
+  }
+{% endschema %}

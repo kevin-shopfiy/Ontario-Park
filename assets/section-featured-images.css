@@ -1,0 +1,99 @@
+.collection-card-link .collection-card .collection-card-info {
+    bottom:0 !important;
+    left: 0 !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    justify-content: space-between !important;
+    padding: 20px;
+    align-items: flex-end;
+}
+.featured-img-title {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 110%;
+    /* identical to box height, or 44px */
+
+    letter-spacing: 0.01em;
+
+    /* Text/Secondary */
+
+    color: #045D96;
+    padding: 47px 0 37px 0px;
+    text-align: left;
+    margin: 0;
+}
+.featured-img {
+    display: flex;
+    justify-content: space-between;
+    display: flex;
+    gap: 16px;
+}
+.img-res {
+    padding: 0 !important;
+    padding-bottom: 43px !important;
+    max-width: 32.5%;
+}
+@media (max-width:767px) {
+    .collection-card-link .collection-card .collection-card-info {
+        bottom:0 !important;
+        left: 0 !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        justify-content: space-between !important;
+        padding: 20px;
+        align-items: flex-end;
+        top: 0;
+    }
+
+    .shopify-section-featured-colllections .container-fluid .row .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .featured-img-title {
+        font-family: 'Calibri';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: 0.01em;
+        /* Text/Secondary */
+
+        color: #045D96;
+
+        opacity: 0.7;
+    }
+    .collection-card .collection-card-info h3 {
+        font-family: 'Calibri';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: 0.01em;
+
+        color: #FFFFFF;
+    }
+    .featured-img {
+        flex-direction: column;
+    }
+    .img-res {
+        max-width: 100%;
+    }
+   .collection-card-image {
+    padding-bottom: 60%;
+   }
+   .img-res {
+    padding: 0 !important;
+   }
+
+}
+@media only screen and (max-width:1024px) and (min-width:767px) {
+    .collection-card .collection-card-info h3 {
+        font-size: 20px;
+    }
+}

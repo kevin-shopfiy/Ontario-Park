@@ -1,0 +1,55 @@
+
+.shopify-block .content .images {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px !important;
+    line-height: 120%;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+    margin: 0 !important;
+    padding-top: 14px;
+    height: 90px;
+}
+.shopify-section-images-with-text .content {
+    text-align: left;
+    padding: 179px 0 30px 36px !important;
+}
+.content h2 {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 110%;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+}
+.shopify-block-image div{
+    width: 680px;
+    height: 446px !important;
+    left: 32px;
+    top: 0px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%), url(image.png);
+    border-radius: 6px;
+}
+
+.content a {
+    width: 147px;
+    height: 48px;
+    left: 758px;
+    top: 368px;
+    background: #BCDDF2;
+    border-radius: 6px;
+    color: #000 !important;
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+
+}
+.custom-container .images-text {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;;
+}

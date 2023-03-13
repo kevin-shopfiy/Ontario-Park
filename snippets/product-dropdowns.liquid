@@ -1,0 +1,17 @@
+<div class="tw-relative tw-inline-block mb-2">
+  <select
+    id="Option{{ option.position }}"
+    class="form-dropdown tw-relative tw-py-2.5 tw-pl-3 tw-pr-8 tw-rounded tw-outline-none tw-appearance-none"
+    name="options[{{ option.name | escape }}]">
+    {% for value in option.values %}
+      <option
+        value="{{ value | escape }}"
+        {% if option.selected_value == value %}selected="selected"{% endif %}>
+          {{ value }}
+      </option>
+    {% endfor %}
+  </select>
+  <div class="tw-absolute tw-pointer-events-none tw-top-3.5 tw-right-2">
+    {% render 'icon-chevron-down', class: 'tw-w-4 tw-h-4' %}
+  </div>
+</div>

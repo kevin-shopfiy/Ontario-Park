@@ -1,0 +1,19 @@
+<noscript>
+{% case tag %}
+    {% when 'img' %}
+        <img class="noscript-image"
+            src="{{ media | img_url: size, scale: '2' }}"
+            alt="{{ media.alt | escape }}"
+            id="FeaturedMedia-{{ media.id }}">
+
+    {% when 'div' %}
+        {% assign height = size | split: 'x' | last %}
+        <div class="noscript-background-image"
+            {% unless media.alt == blank %} role="img" aria-label="{{ media.alt | escape }}"{% endunless %}
+            {% unless media == blank %} style="height: {{ height }}px; background-image: url({{ media | img_url: size, crop: 'center' }});"{% endunless %}>
+            {% unless content == blank %}
+                {{ content }}
+            {% endunless %}
+        </div>
+{% endcase %}
+</noscript>

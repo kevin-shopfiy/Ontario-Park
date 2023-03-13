@@ -1,0 +1,49 @@
+{%- liquid
+  if collection != empty
+    assign collection_title = collection.title
+    assign collection_count = collection.all_products_count
+    assign collection_url = collection.url
+    if collection.metafields.my_fields.custom_banner_prod
+      assign collection_image = collection.metafields.my_fields.custom_banner_prod
+    else
+      assign collection_image = collection.products.first.featured_image
+    endif
+  else
+    assign collection_title = 'homepage.onboarding.collection_title' | t
+    assign collection_count = 10
+    assign collection_url = '#'
+  endif
+-%}
+
+<div class="col pb-4">
+  <a class="collection-card-link d-block w-100 h-100" href="{{ collection_url }}">
+    <div class="collection-card position-relative rounded">
+
+      {% if collection != empty %}
+        {% render 'image', image: collection_image, width: 500, container_class: 'collection-card-image', aspect_ratio: aspect_ratio %}
+      {% else %}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {% assign placeholder = 'collection' | append: '-' | append: current %}
+        {% render 'image', placeholder: placeholder %}
+      {% endif %}
+
+      <div class="collection-card-info d-flex flex-column justify-content-end position-absolute w-100 h-100 rounded">
+
+        <h2 class="collection-card-title d-flex align-items-center mb-3 ml-3 font-5 font-600">
+          {{ collection_title }}
+          {% if settings.show_button_arrow %}
+            {% render 'icon-arrow-right' %}
+          {% endif %}
+        </h2>
+
+        {% if section.settings.show_collection_count %}
+          <div class="collection-card-count mt-n3 mb-3 ml-3">
+            {{ 'sections.collection_list.item_count' | t: count: collection_count }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </a>
+</div>

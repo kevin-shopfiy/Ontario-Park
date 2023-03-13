@@ -1,0 +1,169 @@
+{% render 'breadcrumb-nav' %}
+
+<div data-section-id="{{ section.id }}" data-section-type="blog-template">
+  <div class="{{ section.settings.width }}">
+
+    <header class="tw-text-center tw-my-6 md:tw-my-10">
+      <h1 class="tw-text-3xl md:tw-text-5xl tw-font-extrabold">
+        {{ blog.title }}
+      </h1>
+      {% if section.settings.show_rss %}
+        <a class="tw-inline-block tw-mt-2 md:tw-mt-4 tw-w-6 tw-h-6 hover:tw-opacity-70 focus:tw-opacity-70" href="{{ shop.url }}{{ blog.url }}.atom">
+          <span class="sr-only"><ly-as-555376>RSS</ly-as-555376></span>
+          {% include 'icon-rss' %}
+        </a>
+      {% endif %}
+      {% if section.settings.enable_tags and blog.tags.size > 0 %}
+        <div class="blog-filter md:tw-flex tw-items-baseline tw-justify-center tw-my-6">
+          <label class="tw-mr-2 tw-uppercase tw-tracking-wide tw-text-xs" for="BlogTagFilter">{{ 'blogs.article.filter' | t }}</label>
+          <div class="tw-relative tw-cursor-pointer">
+            <select id="BlogTagFilter" class="tw-w-full md:tw-w-56 tw-py-2 tw-px-4 tw-bg-white tw-rounded-full tw-overflow-ellipsis tw-appearance-none tw-border tw-border-bg focus:tw-outline-none focus:tw-ring-1 focus:tw-ring-btn-bg focus:tw-border-btn-bg" aria-describedby="a11y-refresh-page-message a11y-selection-message" data-blog-tag-filter>
+              <option value="{{ blog.url }}">{{ 'blogs.article.all_topics' | t }}</option>
+              {% for tag in blog.all_tags %}
+                <option value="{{ blog.url }}/tagged/{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+              {% endfor %}
+            </select>
+            {% render 'icon-chevron-down', class: 'tw-absolute tw-pointer-events-none tw-transition-transform tw-duration-500 tw-top-2.5 tw-right-2 tw-text-color' %}
+          </div>
+        </div>
+      {% endif %}
+    </header>
+
+    {% if blog.articles.size > 0 %}
+      {% paginate blog.articles by section.settings.articles_per_page %}
+
+        <div class="blog__grid tw-mb-12">
+          {% render 'article-grid', columns: section.settings.articles_per_row, blog: blog, articles: blog.articles %}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+
+      {% endpaginate %}
+    {% else %}
+      <p>{{ 'blogs.general.no_matches' | t }}</p>
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.main-blog.name",
+    "class": "shopify-section-blog-template",
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.main-blog.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.main-blog.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.main-blog.settings.width.options__2.label"
+          }
+        ],
+        "default": "container"
+      },
+      {
+        "type": "range",
+        "id": "articles_per_page",
+        "label": "t:sections.main-blog.settings.articles_per_page.label",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "articles_per_row",
+        "label": "t:sections.main-blog.settings.articles_per_row.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tags",
+        "label": "t:sections.main-blog.settings.enable_tags.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rss",
+        "label": "t:sections.main-blog.settings.show_rss.label",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "t:sections.main-blog.settings.header__1.content"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "image",
+        "name": "t:sections.main-blog.blocks.image.name",
+        "limit": 1
+      },
+      {
+        "type": "info",
+        "name": "t:sections.main-blog.blocks.info.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_tags",
+            "label": "t:sections.main-blog.blocks.info.settings.show_tags.label",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_author",
+            "label": "t:sections.main-blog.blocks.info.settings.show_author.label",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_date",
+            "label": "t:sections.main-blog.blocks.info.settings.show_date.label",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_comment_count",
+            "label": "t:sections.main-blog.blocks.info.settings.show_comment_count.label",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_excerpt",
+            "label": "t:sections.main-blog.blocks.info.settings.show_excerpt.label",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_truncate",
+            "label": "t:sections.main-blog.blocks.info.settings.enable_truncate.label",
+            "default": true
+          },
+          {
+            "type": "range",
+            "id": "excerpt_truncate",
+            "label": "t:sections.main-blog.blocks.info.settings.excerpt_truncate.label",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "default": 25
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

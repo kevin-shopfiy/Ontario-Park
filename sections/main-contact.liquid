@@ -1,0 +1,340 @@
+{% render 'breadcrumb-nav' %}
+
+<div data-section-id="{{ section.id }}" data-section-type="contact-template">
+
+  <div class="{{ section.settings.width }}">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'title' -%}
+          <h1 class="{{ block.settings.title_alignment }} tw-text-3xl md:tw-text-5xl tw-my-6 md:tw-my-10">
+            {{ page.title }}
+          </h1>
+      {%- endcase -%}
+    {%- endfor -%}
+
+    {% if section.settings.page_position == 'top' %}
+      <div class="rte tw-mb-6">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+    <div class="{{ section.settings.content_width }}">
+      <div class="bg-white border rounded-14 mb-5">
+        {% assign formId = 'ContactForm' %}
+        {% form 'contact', id: formId, class: 'py-4 py-md-5 mx-auto' %}
+          {% render 'form-status', form: form, form_id: formId %}
+
+          <div class="form-group">
+            <label for="{{ formId }}-name" class="sr-only">
+              {{ 'contact.form.name' | t }}
+            </label>
+            <input type="text"
+              name="contact[name]"
+              id="{{ formId }}-name"
+              placeholder="{{ 'contact.form.name' | t }}"
+              class="form-control rounded-pill"
+              value="{% if form.name %} {{ form.name }} {% elsif customer %}{{ customer.name }}{% endif %}">
+          </div>
+
+          <div class="form-group">
+            <label for="{{ formId }}-email" class="sr-only">
+              {{ 'contact.form.email' | t }}
+            </label>
+            <input type="email"
+              id="{{ formId }}-email"
+              name="contact[email]"
+              class="form-control rounded-pill {% if form.errors contains 'email' %} tw-border-red-400 {% endif %}"
+              placeholder="{{ 'contact.form.email' | t }}"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              autocorrect="off"
+              autocapitalize="off"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-email-error"
+              {% endif %}>
+
+              {%- if form.errors contains 'email' -%}
+                <span id="{{ formId}}-email-error" class="sr-only">
+                  {{ form.errors.messages['email'] }}
+                </span>
+              {%- endif -%}
+          </div>
+
+          {% for block in section.blocks %}
+            <div class="form-group">
+              {% assign field_type = block.type %}
+              {% if block.type == 'telephone' %}
+                {% assign field_type = 'tel' %}
+              {% endif %}
+
+              {% if block.type == 'text' or block.type == 'telephone' %}
+                {% assign field_name = block.settings.label | escape | downcase %}
+                <label for="{{ formId}}-{{ section.id }}-{{forloop.index0 }}" class="sr-only">
+                  {{ field_name }}
+                </label>
+                <input type="{{ field_type }}"
+                    value="{% if form[field_name] %} {{ form[field_name] }} {% endif %}"
+                    class="form-control rounded-pill"
+                    id="{{ formId}}-{{ section.id }}-{{forloop.index0 }}"
+                    name="contact[{{ field_name }}]"
+                    placeholder="{{ block.settings.label }}"
+                    autocapitalize="words"
+                    {% if field_type == 'tel' %} pattern="[0-9\-]*" {% endif %}
+                    {% if block.settings.required %} required {% endif %} />
+              {% endif %}
+
+              {% if block.type == 'select' %}
+                {% assign first_option = block.settings | first %}
+                <label for="{{ formId}}-{{ section.id }}-{{forloop.index0 }}" class="sr-only">
+                  {{ first_option[1] }}
+                </label>
+                <select id="{{ formId}}-{{ section.id }}-{{ forloop.index0 }}"
+                  class="form-control custom-select rounded-pill"
+                  name="contact[{{ block.settings.name }}]">
+                  {% for option in block.settings %}
+                    {% if block.settings[option] != blank %}
+                      <option value="{% if option != 'name' %}{{ block.settings[option] }}{% endif %}">
+                        {{ block.settings[option] }}
+                      </option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="form-group">
+            <label for="{{ formId}}-body" class="sr-only">
+              {{ 'contact.form.message' | t }}
+            </label>
+            <textarea rows="6"
+              name="contact[body]"
+              id="{{ formId}}-body"
+              class="form-control rounded-25 {% if form.errors contains 'body' %} tw-border-red-400 {% endif %}"
+              placeholder="{{ 'contact.form.message' | t }}"
+              {% if form.errors contains 'body' %}
+                aria-invalid="true"
+                aria-describedby="{{ formId }}-body-error"
+              {% endif %}>
+              {%- if form.body -%}
+                {{- form.body -}}
+              {%- endif -%}
+            </textarea>
+            {%- if form.errors contains 'body' -%}
+              <span id="{{ formId}}-body-error" class="sr-only">
+                {{ form.errors.messages['body'] }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          <button type="submit" class="tw-btn tw-btn-primary d-flex justify-content-center align-items-center w-100 font-600 rounded-pill">
+            {{ 'contact.form.submit' | t }}
+            {% render 'icon-arrow-right' %}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+
+    {% if section.settings.page_position == 'below' %}
+      <div class="rte tw-mb-12">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name":"t:sections.main-contact.name",
+  "class":"shopify-section-contact-template",
+  "settings": [
+    {
+       "type":"header",
+       "content":"t:sections.main-contact.settings.header__1.content"
+    },
+    {
+      "type": "select",
+      "id": "page_position",
+      "label":"t:sections.main-contact.settings.page_position.label",
+      "options": [
+        {
+          "value":"top",
+          "label":"t:sections.main-contact.settings.page_position.options__1.label"
+        },
+        {
+          "value":"below",
+          "label":"t:sections.main-contact.settings.page_position.options__2.label"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:sections.main-contact.settings.width.label",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "t:sections.main-contact.settings.width.options__1.label"
+        },
+        {
+          "value": "container",
+          "label": "t:sections.main-contact.settings.width.options__2.label"
+        },
+        {
+          "value": "container-narrow",
+          "label": "t:sections.main-contact.settings.width.options__3.label"
+        }
+      ],
+      "default": "container-narrow"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:sections.main-contact.settings.content_width.label",
+      "options": [
+        {
+          "value": "",
+          "label": "t:sections.main-contact.settings.content_width.options__1.label"
+        },
+        {
+          "value": "content",
+          "label": "t:sections.main-contact.settings.content_width.options__2.label"
+        }
+      ],
+      "default": "content"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-contact.blocks.title.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "title_alignment",
+          "label": "t:sections.main-contact.blocks.title.settings.title_alignment.label",
+          "options": [
+            {
+              "value": "text-left",
+              "label": "t:sections.main-contact.blocks.title.settings.title_alignment.options__1.label"
+            },
+            {
+              "value": "text-center",
+              "label": "t:sections.main-contact.blocks.title.settings.title_alignment.options__2.label"
+            },
+            {
+              "value": "text-right",
+              "label": "t:sections.main-contact.blocks.title.settings.title_alignment.options__3.label"
+            }
+          ],
+          "default": "text-center"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.main-contact.blocks.text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.main-contact.blocks.text.settings.label.label",
+          "default": "Field name",
+          "info": "t:sections.main-contact.blocks.text.settings.label.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.main-contact.blocks.text.settings.required.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "telephone",
+      "name": "t:sections.main-contact.blocks.telephone.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.main-contact.blocks.telephone.settings.label.label",
+          "default": "Phone Number",
+          "info": "t:sections.main-contact.blocks.telephone.settings.label.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.main-contact.blocks.telephone.settings.required.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "name": "t:sections.main-contact.blocks.select.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "default": "Select an option",
+          "label": "t:sections.main-contact.blocks.select.settings.name.label",
+          "info": "t:sections.main-contact.blocks.select.settings.name.info"
+        },
+        {
+          "type": "text",
+          "id": "label-one",
+          "default": "Option 1",
+          "label": "t:sections.main-contact.blocks.select.settings.label-one.label",
+          "placeholder": "option 1",
+          "info": "t:sections.main-contact.blocks.select.settings.label-one.info"
+        },
+        {
+          "type": "text",
+          "id": "label-two",
+          "default": "Option 2",
+          "label": "t:sections.main-contact.blocks.select.settings.label-two.label",
+          "info": "t:sections.main-contact.blocks.select.settings.label-two.info"
+        },
+        {
+          "type": "text",
+          "id": "label-three",
+          "default": "Option 3",
+          "label": "t:sections.main-contact.blocks.select.settings.label-three.label",
+          "placeholder": "option 3",
+          "info": "t:sections.main-contact.blocks.select.settings.label-three.info"
+        },
+        {
+          "type": "text",
+          "id": "label-four",
+          "label": "t:sections.main-contact.blocks.select.settings.label-four.label",
+          "placeholder": "option 4",
+          "info": "t:sections.main-contact.blocks.select.settings.label-four.info"
+        },
+        {
+          "type": "text",
+          "id": "label-five",
+          "label": "t:sections.main-contact.blocks.select.settings.label-five.label",
+          "placeholder": "option 5",
+          "info": "t:sections.main-contact.blocks.select.settings.label-five.info"
+        },
+        {
+          "type": "text",
+          "id": "label-six",
+          "label": "t:sections.main-contact.blocks.select.settings.label-six.label",
+          "placeholder": "option 6",
+          "info": "t:sections.main-contact.blocks.select.settings.label-six.info"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

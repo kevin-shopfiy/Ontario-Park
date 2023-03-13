@@ -1,0 +1,11 @@
+<div id="shopify-block-{{ block.id }}" class="shopify-block shopify-block-text" {{ block.shopify_attributes }}>
+
+  {% if block.settings.title != blank %}
+    <p class="h6 mb-3">{{ block.settings.title }}</p>
+  {% endif %}
+
+  {% if block.settings.text != blank %}
+    {{ block.settings.text }}
+  {% endif %}
+
+</div>

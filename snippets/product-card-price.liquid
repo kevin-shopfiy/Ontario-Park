@@ -1,0 +1,13 @@
+{%- liquid
+  assign product_display = product
+  assign current_variant = product.variants.first
+-%}
+
+
+
+
+{% if show_sale_badge and product_display.compare_at_price > product_display.price %}
+  <span class="product-card-badge tw-badge tw-bg-price-sale tw-text-body tw-absolute tw-top-2 tw-right-2 tw-px-2 tw-font-semibold tw-rounded-full">
+    {{ 'products.product.on_sale' | t }}
+  </span>
+{% endif %}

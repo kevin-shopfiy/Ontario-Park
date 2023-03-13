@@ -1,0 +1,53 @@
+<div id="sticky-cart" class="sticky-cart w-100 tw-z-20 {{ section.settings.sticky_cart_position }}{% if section.settings.enable_sticky_cart_mobile %} mobile{% endif %}{% if section.settings.enable_sticky_cart_desktop %} desktop{% endif %}" data-sticky-cart-settings='{
+    "position": {{ section.settings.sticky_cart_position | json }},
+    "mobile": {{ section.settings.enable_sticky_cart_mobile | json }},
+    "desktop": {{ section.settings.enable_sticky_cart_desktop | json }}
+  }'>
+  <div class="sticky-cart__content container d-flex align-items-center justify-content-between {% if product.has_only_default_variant %} default{% endif %}">
+
+    <div class="sticky-cart__product-meta">
+      <h2 class="h6 product-title my-1 my-md-2 font-5">{{ product.title }}</h2>
+      <div class="product-prices mb-2 mb-md-3">
+        {% if product.compare_at_price_max > product.price %}
+          <s class="product-compare-price pr-2 font-7 tw-text-price-sale">
+            {% if current_variant.compare_at_price > current_variant.price %}
+              {{ current_variant.compare_at_price | money }}
+            {% endif %}
+          </s>
+        {% endif %}
+        <span class="product-price font-6 font-600 d-inline">
+          {{ current_variant.price | money }}
+        </span>
+      </div>
+    </div>
+
+    <div class="sticky-cart__cta ml-2">
+      {% if product.has_only_default_variant %}
+        <div class="product-add-to-cart">
+            <button class="sticky-cart__button tw-btn tw-btn-primary d-flex justify-content-center align-items-center w-100 font-600 rounded-pill" type="submit"{% unless current_variant.available %} disabled{% endunless %} data-sticky-add-to-cart>
+              {% if current_variant.available %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+              {% if settings.show_button_arrow and current_variant.available %}
+                {% render 'icon-arrow-right' %}
+              {% endif %}
+            </button>
+          </div>
+      {% else %}
+          <button class="sticky-cart__button tw-btn tw-btn-primary d-flex justify-content-center align-items-center w-100 font-600 rounded-pill" type="submit"{% unless current_variant.available %} disabled{% endunless %} data-select-options>
+            {% if current_variant.available %}
+                {{ 'products.product.select_options' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+              {% if settings.show_button_arrow and current_variant.available %}
+                {% render 'icon-arrow-right' %}
+              {% endif %}
+          </button>
+      {% endif %}
+    </div>
+
+  </div>
+</div>

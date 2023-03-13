@@ -1,0 +1,63 @@
+{% render 'breadcrumb-nav' %}
+
+<div class="container">
+  <h1 class="tw-my-6 md:tw-my-10 tw-text-3xl md:tw-text-5xl tw-text-center">{{ 'customer.account.title' | t }}</h1>
+  <p class="tw-text-center">
+    {{ 'layout.customer.log_out' | t | customer_logout_link }}
+  </p>
+
+  <div class="md:tw-flex md:tw-space-x-4">
+    <div class="orders md:tw-w-3/4">
+      <h2 class="tw-my-6 tw-text-xl md:tw-text-3xl">{{ 'customer.orders.title' | t }}</h2>
+
+      {% paginate customer.orders by 50 %}
+        {% if customer.orders.size != 0 %}
+          <div class="tw-scrollable-wrapper">
+            <table class="responsive-table tw-w-full tw-bg-white tw-rounded-table">
+              <thead class="tw-hidden md:tw-table-header-group">
+                <tr>
+                  <th class="tw-py-2 tw-px-3 md:tw-border-gray-300">{{ 'customer.orders.order_number' | t }}</th>
+                  <th class="tw-py-2 tw-px-3 md:tw-border-gray-300">{{ 'customer.orders.date' | t }}</th>
+                  <th class="tw-py-2 tw-px-3 md:tw-border-gray-300">{{ 'customer.orders.payment_status' | t }}</th>
+                  <th class="tw-py-2 tw-px-3 md:tw-border-gray-300">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th class="tw-py-2 tw-px-3 md:tw-border-gray-300 tw-text-right">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody class="tw-bg-body">
+                {% for order in customer.orders %}
+                  <tr class="responsive-table-row tw-border-gray-300 tw-rounded tw-bg-white">
+                    <td class="tw-py-2 tw-px-3 md:tw-border-gray-300" data-label="{{ 'customer.orders.order_number' | t }}">
+                      {{ order.name | link_to: order.customer_url | replace: '<a', '<a class="tw-btn tw-rounded tw-border-btn tw-py-2 tw-px-3 tw-text-color"' }}
+                    </td>
+                    <td class="tw-py-2 tw-px-3 md:tw-border-gray-300" data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | time_tag: format: 'date' }}</td>
+                    <td class="tw-py-2 tw-px-3 md:tw-border-gray-300" data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                    <td class="tw-py-2 tw-px-3 md:tw-border-gray-300" data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                    <td class="tw-py-2 tw-px-3 md:tw-border-gray-300 tw-text-right" data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>{{ 'customer.orders.none' | t }}</p>
+        {% endif %}
+
+        {% render 'pagination', paginate: paginate %}
+
+      {% endpaginate %}
+    </div>
+
+    <div class="addresses md:tw-w-1/4">
+      <h2 class="tw-my-6 tw-text-xl md:tw-text-3xl">{{ 'customer.account.details' | t }}</h2>
+
+      <div class="tw-bg-white tw-rounded tw-border tw-border-gray-300 tw-p-6">
+        {{ customer.default_address | format_address }}
+        <a class="tw-btn tw-btn-secondary tw-font-semibold tw-rounded-full tw-w-full tw-mt-2" href="{{ routes.account_addresses_url }}">
+          {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>

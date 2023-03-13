@@ -1,0 +1,129 @@
+<div class="container" data-login>
+
+  <div class="tw-hidden tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-green-200 tw-border-green-600 tw-border-2 tw-rounded tw-text-black" id="ResetSuccess" data-reset-success-message tabindex="-1">
+    {{ 'customer.recover_password.success' | t }}
+  </div>
+
+  <span id="RecoverEmail-email-error" class="tw-hidden tw-input-error tw-text-center tw-w-2/3 tw-mx-auto tw-my-4 tw-bg-red-200 tw-border-red-600 tw-border-2 tw-rounded tw-text-black tw-block" data-reset-error-message>
+    <span class="sr-only">{{ 'general.accessibility.error' | t }} </span>
+    <span>{{ form.errors.messages['form'] }}</span>
+  </span>
+
+  <div class="tw-w-full md:tw-w-1/2 tw-mx-auto tw-mb-12">
+    {%- assign formId = 'PasswordForm' -%}
+    {% form 'customer_login', id: formId, data-login-form: '' %}
+
+      <h1 class="tw-text-3xl md:tw-text-5xl tw-my-6 md:tw-my-10 text-center" data-login-heading>
+        {{ 'customer.login.title' | t }}
+      </h1>
+
+      {% render 'form-status', form: form, form_id: formId %}
+
+      <div class="form-group">
+        <label for="email" class="sr-only">{{ 'customer.login.email' | t }}</label>
+        <input id="email" class="form-control rounded-pill {% if form.erros %}
+
+        {% endif %}" type="email" name="customer[email]" placeholder="{{ 'customer.login.email' | t }}"
+        autocomplete="username"
+        autocorrect="off"
+        autocapitalize="off"
+        {%- if form.errors contains 'form' -%}
+          aria-invalid="true"
+        {%- endif -%}>
+      </div>
+
+      {% if form.password_needed %}
+        <div class="form-group">
+          <label for="password" class="sr-only">{{ 'customer.login.password' | t }}</label>
+          <input id="password" class="form-control rounded-pill" type="password" name="customer[password]" placeholder="{{ 'customer.login.password' | t }}"
+          autocomplete="current-password"
+          {%- if form.errors contains 'form' -%}
+            aria-invalid="true"
+          {%- endif -%}>
+        </div>
+      {% endif %}
+
+      {% if form.password_needed %}
+        <p class="tw-text-center tw-mb-4"><a href="#recover" id="RecoverPassword" data-recover-password-link>{{ 'customer.login.forgot_password' | t }}</a></p>
+      {% endif %}
+
+      <button class="tw-btn tw-btn-primary tw-w-full tw-rounded-full tw-flex tw-justify-center tw-items-center tw-font-semibold tw-mb-4" type="submit">
+        {{ 'customer.login.sign_in' | t }}
+        {% render 'icon-arrow-right' %}
+      </button>
+
+      <p class="tw-text-center">{{ 'layout.customer.create_account' | t | customer_register_link }}</p>
+    {% endform %}
+  </div>
+
+
+  <div class="tw-w-full md:tw-w-1/2 tw-mx-auto tw-hidden" data-recover-password-form>
+
+    <div class="tw-text-center tw-my-6 md:tw-my-12">
+      <h2 class="tw-mb-4 tw-text-3xl md:tw-text-5xl" data-recover-password-heading>{{ 'customer.recover_password.title' | t }}</h2>
+      <p>{{ 'customer.recover_password.subtext' | t }}</p>
+    </div>
+
+    <div class="">
+      {% form 'recover_customer_password', class: 'mx-auto mb-5' %}
+
+        {% if form.posted_successfully? %}
+          <span class="tw-hidden" data-reset-success></span>
+        {% endif %}
+
+        {%- if form.errors -%}
+          <span class="tw-hidden" data-reset-error>{{ form.errors.messages['form'] }}</span>
+
+        {%- endif -%}
+
+        <div class="form-group">
+          <label for="RecoverEmail" class="sr-only">{{ 'customer.recover_password.email' | t }}</label>
+          <input
+            type="email"
+            value=""
+            name="email"
+            id="RecoverEmail"
+            class="form-control rounded-pill{% if form.errors %} tw-input-error{% endif %}"
+            autocorrect="off"
+            autocapitalize="off"
+            data-recover-password-email-input
+            placeholder="{{ 'customer.recover_password.email' | t }}"
+            {% if form.errors %}
+              aria-invalid="true"
+              aria-describedby="RecoverEmail-email-error"
+            {%- endif -%}
+            >
+        </div>
+
+
+
+        <div class="tw-text-center">
+          <button class="tw-btn tw-btn-primary tw-w-full tw-rounded-full tw-flex tw-justify-center tw-items-center tw-font-semibold tw-mb-4" type="submit">
+            {{ 'customer.recover_password.submit' | t }}
+            {% render 'icon-arrow-right' %}
+          </button>
+
+          <a href="#LoginHeading" id="HideRecoverPasswordLink" data-recover-password-cancel>{{ 'customer.recover_password.cancel' | t }}</a>
+        </div>
+      {% endform %}
+    </div>
+
+  </div>
+
+  {% if shop.checkout.guest_login %}
+    <div class="tw-w-full md:tw-w-1/2 tw-mx-auto tw-mb-12">
+      <h2 class="my-2 my-md-3 text-center">
+        {{ 'customer.login.guest_title' | t }}
+      </h2>
+
+      {% form 'guest_login' %}
+        <button class="tw-btn tw-btn-primary tw-w-full tw-rounded-full tw-flex tw-justify-center tw-items-center tw-font-semibold tw-mb-4" type="submit">
+          {{ 'customer.login.guest_continue' | t }}
+          {% render 'icon-arrow-right' %}
+        </button>
+      {% endform %}
+    </div>
+
+  {% endif %}
+
+</div>

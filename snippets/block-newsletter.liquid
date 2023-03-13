@@ -1,0 +1,31 @@
+<div id="shopify-block-{{ block.id }}" class="shopify-block shopify-block-newsletter" {{ block.shopify_attributes }}>
+
+  {% if block.settings.title != blank %}
+    <p class=" h6 mb-3">{{ block.settings.title }}</p>
+  {% endif %}
+
+  {% form 'customer' %}
+
+    {% if form.posted_successfully? %}
+      <p class="font-8">{{ 'general.newsletter_form.confirmation' | t }}</p>
+    {% elsif form.errors contains 'email' %}
+      <p class="font-8">
+        {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.
+      </p>
+    {% endif %}
+
+    <input type="hidden" name="contact[tags]" value="newsletter"/>
+
+    <label class="sr-only" for="shopify-block-{{ block.id }}-email">
+      {{ 'general.newsletter_form.email_address' | t }}
+    </label>
+
+    <input id="shopify-block-{{ block.id }}-email" class="form-control w-100 mb-2 rounded-pill" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ 'general.newsletter_form.email_address' | t }}"/>
+
+    <button class="tw-btn tw-btn-primary w-100 rounded-pill" type="submit">
+      {{ 'general.newsletter_form.sign_up' | t }}
+    </button>
+
+  {% endform %}
+
+</div>

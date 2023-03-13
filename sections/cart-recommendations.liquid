@@ -1,0 +1,143 @@
+{% if section.settings.show_cart_recommendations %}
+
+  {% unless cart.item_count == 0 and section.settings.show_cart_empty == false %}
+
+    {% assign product_id = cart.items | sort: 'price' | last | map: 'product_id' %}
+    {% assign product_limit = section.settings.products_per_row | times: section.settings.product_rows %}
+
+    {%- if recommendations.performed -%}
+      <div class="container mb-5">
+
+        {% if section.settings.title != blank %}
+          <h2 class="h4 mb-4 lh-1 text-center">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if recommendations.products_count == 0 %}
+          {% assign recommendations = collections[section.settings.collection] | default: collections.all %}
+        {% endif %}
+
+        {% render 'product-grid', columns: section.settings.products_per_row, products: recommendations.products, product_limit: product_limit, show_vendor: section.settings.show_vendor, show_price: section.settings.show_price, show_compare_at_price: section.settings.show_compare_at_price, show_sale_badge: section.settings.show_sale_badge, show_add_to_cart_button: false, price_style: section.settings.price_style %}
+
+      </div>
+    {%- else -%}
+      <div class="cart-recommendations" data-base-url="{{ routes.product_recommendations_url }}" data-product-id="{{ product_id }}" data-limit="{{ product_limit }}" data-section-id="{{ section.id }}" data-section-type="cart-recommendations" data-test="{{ product_limit }}">
+
+        <div class="container mb-5">
+
+          {% if section.settings.title != blank %}
+            <h2 class="h4 mb-4 lh-1 text-center">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% assign recommendations = collections[section.settings.collection] | default: collections.all %}
+
+          {% render 'product-grid', columns: section.settings.products_per_row, products: recommendations.products, product_limit: product_limit, show_vendor: section.settings.show_vendor, show_price: section.settings.show_price, show_compare_at_price: section.settings.show_compare_at_price, show_sale_badge: section.settings.show_sale_badge, show_add_to_cart_button: false, price_style: section.settings.price_style %}
+        </div>
+
+      </div>
+    {%- endif -%}
+
+  {% endunless %}
+
+{% endif %}
+
+<script>
+  Avatar.theme.settings.cart.showRecsOnEmptyCart = {{ section.settings.show_cart_empty | json }}
+</script>
+
+{% schema %}
+  {
+    "name": "t:sections.cart-recommendations.name",
+    "class": "shopify-section-cart-recommendations mt-5",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_cart_recommendations",
+        "label": "t:sections.cart-recommendations.settings.show_cart_recommendations.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_empty",
+        "label": "t:sections.cart-recommendations.settings.show_cart_empty.label",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.cart-recommendations.settings.title.label",
+        "default": "You'll also like"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "t:sections.cart-recommendations.settings.collection.label"
+      },
+      {
+        "type": "range",
+        "id": "products_per_row",
+        "label": "t:sections.cart-recommendations.settings.products_per_row.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "product_rows",
+        "label": "t:sections.cart-recommendations.settings.product_rows.label",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "t:sections.cart-recommendations.settings.products_header.label"
+      },
+      {
+        "type": "radio",
+        "id": "price_style",
+        "label": "t:sections.cart-recommendations.settings.price_style.label",
+        "options": [
+          {
+            "value": "variant",
+            "label": "t:sections.cart-recommendations.settings.price_style.options__1.label"
+          },
+          {
+            "value": "min",
+            "label": "t:sections.cart-recommendations.settings.price_style.options__2.label"
+          }
+        ],
+        "default": "variant"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "t:sections.cart-recommendations.settings.show_vendor.label",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price",
+        "label": "t:sections.cart-recommendations.settings.show_price.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare_at_price",
+        "label": "t:sections.cart-recommendations.settings.show_compare_at_price.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sale_badge",
+        "label": "t:sections.cart-recommendations.settings.show_sale_badge.label",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,101 @@
+{% comment %}ly_liquid_scripts_begin{% endcomment %}{% capture ly_liquid_content %}{% comment %}ly_liquid_scripts_end{% endcomment %}<!doctype html>
+
+<html class="no-js {{ page_title | handle }} {{ template.name | handle }}-template" lang="{{ request.locale.iso_code }}"{% comment %}ly_dir_replace_for_[]_begin{% endcomment %} {%- assign language_code = '_' | append: request.locale.iso_code -%}{%- if '_ar_he_fa_ur' contains language_code -%}dir="rtl" {%- endif -%}{% comment %}ly_dir_replace_end{% endcomment %}>
+
+  <head>
+
+    {% render 'meta' %}
+    {% render 'meta-social' %}
+
+    {%- assign h16_font = settings.h16_font -%}
+    {%- assign font = settings.font -%}
+    {%- assign font_bolder = font | font_modify: 'weight', 'bolder' -%}
+    {%- assign font_bold = font | font_modify: 'weight', 'bold' -%}
+    {%- assign font_italic = font | font_modify: 'style', 'italic' -%}
+    {%- assign font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
+    {%- assign announcement_font = settings.announcement_font -%}
+
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+    <link rel="preload" as="font" href="{{ h16_font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
+
+    {% render 'css-variables' %}
+    {% render 'initial-css' %}
+
+    <style>
+      {{ h16_font | font_face: font_display: 'swap' }}
+      {{ font | font_face: font_display: 'swap' }}
+      {{ font_bold | font_face: font_display: 'swap' }}
+      {{ font_bolder | font_face: font_display: 'swap' }}
+      {{ font_italic | font_face: font_display: 'swap' }}
+      {{ font_bold_italic | font_face: font_display: 'swap' }}
+      {{ announcement_font | font_face: font_display: 'swap' }}
+    </style>
+
+    <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}" type="text/css" media="print" onload="this.media='all'">
+    {% comment %} Only needed for ForkAwesome {% endcomment %}
+    <link rel="stylesheet" href="{{ 'theme-vendor.css' | asset_url }}" type="text/css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'theme-custom.css' | asset_url }}" type="text/css" media="print" onload="this.media='all'">
+
+    <noscript>
+      <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}" type="text/css" media="all">
+      <link rel="stylesheet" href="{{ 'theme-vendor.css' | asset_url }}" type="text/css" media="all">
+    </noscript>
+
+    {% render 'Avatar' %}
+
+    {% render 'style-tags', layout: 'theme' %}
+
+    {%- if request.page_type contains 'customers/' -%}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    {% render 'script-tags', layout: 'theme' %}
+
+    <script src="{{ 'theme-custom.js' | asset_url }}" defer></script>
+ 
+    {% render 'ie-css-var-poly' %}
+    <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3084487,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    {{ content_for_header }}
+  {% comment %}ly_dir_styles_begin{% endcomment %}{%- assign language_code = '_' | append: request.locale.iso_code -%}{%- if '_ar_he_fa_ur' contains language_code -%}{{- 'ly-rtl.css' | asset_url | stylesheet_tag -}}{%- endif -%}{% comment %}ly_dir_styles_end{% endcomment %}</head>
+  
+  <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'jquery.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'slick-js.min.js' | asset_url }}" defer="defer"></script>
+  <link rel="stylesheet" href="{{ 'custom.css' | asset_url }}" type="text/css" media="all">
+  {{ 'slick.css' | asset_url | stylesheet_tag }}
+  {{ 'slick-theme.css' | asset_url | stylesheet_tag }}
+  <body>
+
+    {% render 'spinner' %}
+
+    {% render 'layout' %}
+
+    {% section 'header' %}
+
+    <main class="main-content">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {% if settings.cart_type == 'drawer' %}
+      {% render 'slider-cart' %}
+    {% endif %}
+
+    {% section 'email-modal' %}
+
+    {% render 'a11y-describedby' %}
+  <!-- langify-v2-scripts-begin -->{% comment %}ly_liquid_scripts_begin{% endcomment %}{% endcapture %}{% render 'ly-liquid-scripts' content: ly_liquid_content %}{% comment %}ly_liquid_scripts_end{% endcomment %}{% comment %}ly_core_scripts_begin{% endcomment %}{% render 'ly-core-scripts' %}{% comment %}ly_core_scripts_end{% endcomment %}{% comment %}ly_switcher_factory_begin{% endcomment %}{% render 'ly-switcher-factory' %}{% comment %}ly_switcher_factory_end{% endcomment %}<!-- langify-v2-scripts-end --></body>
+
+</html>

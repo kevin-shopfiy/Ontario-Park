@@ -1,0 +1,112 @@
+{%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+{%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+
+<header role="banner" class="tw-px-8 tw-py-4">
+  <div class="tw-text-center tw-py-8 {% if section.settings.logo != blank %} tw-flex tw-justify-center{% endif %}">
+
+    {% if section.settings.logo %}
+      {% capture image_size %}{{ section.settings.logo_width | times: 2 }}x{% endcapture %}
+      <div style="max-width: {{ section.settings.logo_width }}px;">
+        {{ section.settings.logo | img_url: image_size | img_tag: shop.name1 }}
+      </div>
+    {% else %}
+      <a class="h1 tw-text-color tw-text-center tw-break-words" href="{{ shop.url }}">{{ shop.name }}</a>
+    {% endif %}
+  </div>
+  <div class="tw-container tw-mx-auto md:tw-w-1/2 lg:tw-w-1/3 tw-text-center">
+    <h1 class="tw-text-3xl md:tw-text-5xl tw-py-8">{{ 'gift_cards.issued.subtext' | t }}</h1>
+
+    {% unless gift_card.enabled %}
+      <span>{{ 'gift_cards.issued.disabled' | t }}</span>
+    {% endunless %}
+
+    {%- assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" -%}
+
+    {% if gift_card.expired and gift_card.enabled %}
+      <span>{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+
+    {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+      <span class="tw-text-gray-400">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+  </div>
+</header>
+
+<main class="tw-px-8 {% if gift_card.expired or gift_card.enabled != true %} giftcard--disabled{% endif %}">
+  <div class="tw-container tw-mx-auto md:tw-w-1/2 lg:tw-w-1/3 tw-flex tw-flex-col tw-text-center tw-items-center">
+
+    <div class="tw-relative tw-mb-12">
+      <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="" class="tw-relative">
+
+      {%- assign initial_value_size = formatted_initial_value | size -%}
+      <div class="tw-absolute tw-text-white tw-top-0 tw-right-0 tw-p-4 {% if initial_value_size > 6 %} tw-text-4xl{% else %} tw-text-5xl{% endif %}">
+        {% if gift_card.balance != gift_card.initial_value %}
+          <span class="giftcard__tooltip">
+            <span class="giftcard__tooltip-label">{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card.balance | money }}</span>
+          </span>
+        {% endif %}
+        <strong class="tw-block">{{ formatted_initial_value }}</strong>
+      </div>
+
+      {%- assign code_size = gift_card.code | format_code | size -%}
+      <div class="tw-absolute tw-text-center tw-bottom-1 tw-w-full tw-p-5 tw-z-10">
+        <div class="tw-w-full tw-p-2 tw-bg-white tw-rounded tw-shadow">
+          <input type="text"
+            class="tw-border tw-border-dashed tw-rounded tw-text-xl tw-p-2 tw-text-center tw-w-full {% if gift_card.expired or gift_card.enabled != true %}tw-text-gray-400 tw-line-through disabled{% endif %}"
+            value="{{ gift_card.code | format_code }}"
+            aria-label="{{ 'gift_cards.issued.gift_card_code' | t }}"
+            data-gift-card-digits
+            readonly />
+        </div>
+      </div>
+    </div>
+
+    <p class="tw-text-center tw-mb-4">
+      {{ 'gift_cards.issued.redeem' | t: value: formatted_initial_value_stripped }}
+    </p>
+
+    <a href="{{ shop.url }}" class="tw-btn tw-btn-primary font-600 rounded-pill tw-mb-12" aria-describedby="a11y-new-window-message" data-target-new >
+      {{ 'gift_cards.issued.shop_link' | t }}
+      {% render 'icon-arrow-right' %}
+    </a>
+
+    <div class="tw-flex tw-justify-center tw-mb-12"
+    data-identifier="{{ gift_card.qr_identifier }}"
+    data-qr-code></div>
+
+    {% if gift_card.pass_url %}
+    <a href="{{ gift_card.pass_url }}" class="tw-pb-4">
+      <img class="apple-wallet-image" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}">
+    </a>
+    {% endif %}
+
+    <a href="#" class="tw-btn tw-btn-secondary print-link tw-mb-4 tw-hidden md:tw-inline-block" onclick="window.print();">
+      {{ 'gift_cards.issued.print' | t }}
+    </a>
+
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "t:sections.gift-card.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.gift-card.settings.logo.label"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "t:sections.gift-card.settings.logo_width.label",
+      "min": 50,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "default": 300,
+      "info": "t:sections.gift-card.settings.logo_width.info"
+    }
+  ]
+}
+{% endschema %}

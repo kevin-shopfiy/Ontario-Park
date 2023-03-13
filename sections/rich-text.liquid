@@ -1,0 +1,80 @@
+<div data-section-id="{{ section.id }}" data-section-type="rich-text">
+  <div class="{{ section.settings.width }}">
+    <div class="content tw-text-{{ section.settings.align }}">
+
+      {% if section.settings.title != blank %}
+        <h2 class="tw-text-4xl tw-mb-4 tw-leading-none">{{ section.settings.title }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="rte">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.rich-text.name",
+    "class": "shopify-section-rich-text",
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "t:sections.rich-text.settings.width.label",
+        "options": [
+          {
+            "value": "container-fluid",
+            "label": "t:sections.rich-text.settings.width.options__1.label"
+          },
+          {
+            "value": "container",
+            "label": "t:sections.rich-text.settings.width.options__2.label"
+          }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.rich-text.settings.title.label",
+        "default": "Rich Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "t:sections.rich-text.settings.text.label",
+        "default": "<p>Use this section to display information, describe your brand, or share news and promotions.</p>"
+      },
+      {
+        "type": "select",
+        "id": "align",
+        "label": "t:sections.rich-text.settings.align.label",
+        "options": [
+          {
+            "value": "left",
+            "label": "t:sections.rich-text.settings.align.options__1.label"
+          },
+          {
+            "value": "center",
+            "label": "t:sections.rich-text.settings.align.options__2.label"
+          },
+          {
+            "value": "right",
+            "label": "t:sections.rich-text.settings.align.options__3.label"
+          }
+        ],
+        "default": "center"
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.rich-text.presets.name",
+        "category": "Text"
+      }
+    ]
+  }
+{% endschema %}
